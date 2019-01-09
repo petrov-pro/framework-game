@@ -8,22 +8,21 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import java.util.HashMap;
 
 public class Assets {
 
     private static final String PATH = "";
-    private static final String IMAGE_PATH = "images/";
-    private static final String MAP_PATH = "maps/";
-    private static final String SKIN_PATH = "gdx-skins/default/skin/";
+    public static final String IMAGE_PATH = "images/";
+    public static final String MAP_PATH = "";
+    public static final String SKIN_PATH = "gdx-skins-master/default/skin/";
 
     private final AssetManager manager = new AssetManager();
 
     private final HashMap<String, AssetDescriptor> store = new HashMap();
 
     public void loadTexture(String alias, String path) {
-        load(alias, Assets.PATH + Assets.IMAGE_PATH + path, Texture.class);
+        load(alias, Assets.PATH + path, Texture.class);
     }
 
     public FileHandle loadSkin(String path) {
@@ -32,7 +31,7 @@ public class Assets {
 
     public void loadMap(String alias, String path) {
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-        load(alias, Assets.PATH + Assets.MAP_PATH + path, TiledMap.class);
+        load(alias, Assets.PATH + path, TiledMap.class);
     }
 
     private void load(String alias, String path, Class entityDescriptor) {

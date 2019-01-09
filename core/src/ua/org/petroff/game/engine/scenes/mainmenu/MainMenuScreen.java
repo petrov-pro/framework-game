@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import ua.org.petroff.game.engine.Settings;
-import ua.org.petroff.game.engine.scenes.ScreenLoadResourceInterface;
+import ua.org.petroff.game.engine.scenes.Interface.ScreenLoadResourceInterface;
 import ua.org.petroff.game.engine.util.Assets;
 
 public class MainMenuScreen extends ScreenAdapter implements ScreenLoadResourceInterface {
@@ -31,18 +31,16 @@ public class MainMenuScreen extends ScreenAdapter implements ScreenLoadResourceI
     private TextButton buttonStart;
     private TextButton buttonQuit;
     private Image background;
-    private MainMenuController controller;
 
-    public MainMenuScreen(Assets assets, MainMenuController controller) {
+    public MainMenuScreen(Assets assets) {
         this.assets = assets;
     }
 
     @Override
     public void load() {
         viewport = new FillViewport(Settings.APP_WIDTH, Settings.APP_HEIGHT);
-        assets.loadTexture("background", "mainmenu-background.png");
+        assets.loadTexture("background", Assets.IMAGE_PATH + "mainmenu-background.png");
         stage = new Stage(viewport);
-        Gdx.input.setInputProcessor(stage);
 
         Skin skin = new Skin(assets.loadSkin("uiskin.json"));
         table = new Table();
@@ -52,6 +50,18 @@ public class MainMenuScreen extends ScreenAdapter implements ScreenLoadResourceI
         background = new Image();
         table.setFillParent(true);
         table.setDebug(true);
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public TextButton getButtonStart() {
+        return buttonStart;
+    }
+
+    public TextButton getButtonQuit() {
+        return buttonQuit;
     }
 
     private void composited() {
