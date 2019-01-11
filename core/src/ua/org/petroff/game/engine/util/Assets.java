@@ -14,6 +14,7 @@ public class Assets {
 
     private static final String PATH = "";
     public static final String IMAGE_PATH = "images/";
+    public static final String IMAGE_ENTITIES_PATH = "images/entities/";
     public static final String MAP_PATH = "";
     public static final String SKIN_PATH = "gdx-skins-master/default/skin/";
 

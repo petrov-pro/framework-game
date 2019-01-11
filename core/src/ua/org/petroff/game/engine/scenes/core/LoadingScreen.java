@@ -41,11 +41,13 @@ public class LoadingScreen extends ScreenAdapter {
     public void show() {
         super.show();
         message = returnScene.getSceneName();
+        returnScene.load();
     }
 
     @Override
     public void render(float delta) {
         if (returnScene.getAssets().isUploaded()) {
+            returnScene.init();
             managerScenes.setScreen(returnScene.getView());
         } else {
             progress = returnScene.getAssets().getManager().getProgress();

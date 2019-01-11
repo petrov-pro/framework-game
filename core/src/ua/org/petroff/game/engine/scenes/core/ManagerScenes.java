@@ -22,17 +22,8 @@ public class ManagerScenes {
 
     public void load(String sceneName) {
         ContainerInterface scene = scenesMap.get(sceneName);
-        scene.load();
-
-        ((ScreenLoadResourceInterface) scene.getView()).load();
-        scene.getController().bindControl();
-
-        if (scene.getAssets().isUploaded()) {
-            game.setScreen(scene.getView());
-        } else {
-            loadingScreen.setReturnScene(scene);
-            game.setScreen(loadingScreen);
-        }
+        loadingScreen.setReturnScene(scene);
+        game.setScreen(loadingScreen);
     }
 
     public void quit() {
