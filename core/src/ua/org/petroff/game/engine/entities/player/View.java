@@ -20,7 +20,6 @@ public class View implements ViewInterface {
     private float stateTime = 0;
     private TextureRegion currentFrame;
     private Object graphic;
-    private ShapeRenderer shapeRenderer;
 
     public View(Assets asset, Player model) {
         this.asset = asset;
@@ -50,12 +49,11 @@ public class View implements ViewInterface {
         graphics.put(Player.Actions.STAY, player);
         graphics.put(Player.Actions.MOVERIGHT, walkAnimationRight);
         graphics.put(Player.Actions.MOVELEFT, walkAnimationLeft);
-        shapeRenderer = new ShapeRenderer();
     }
 
     @Override
     public void draw(Camera camera, SpriteBatch spriteBatch) {
-        camera.position.set(5, 0, 0);
+        camera.position.set(0, 0, 0);
         stateTime += Gdx.graphics.getDeltaTime();
 
         graphic = graphics.get(model.state);
@@ -64,10 +62,7 @@ public class View implements ViewInterface {
         } else {
             currentFrame = (TextureRegion) ((Animation) graphic).getKeyFrame(stateTime, true);
         }
-        spriteBatch.draw(currentFrame, model.getPosition().x, model.getPosition().y);
-        shapeRenderer.begin();
-        shapeRenderer.rect(0, 0, 0, 0);
-        shapeRenderer.end();
+        spriteBatch.draw(currentFrame, model.getPosition().x, model.getPosition().y, 6, 6);
     }
 
 }

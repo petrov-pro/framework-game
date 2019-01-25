@@ -41,7 +41,8 @@ public class Level1Container implements ContainerInterface {
 
     private void setEntities() {
         entities.put(Map.DESCRIPTOR, new Map(this.assets));
-        entities.put(Player.DESCRIPTOR, new Player(this.assets));
+        //entities.put(Player.DESCRIPTOR, new Player(this.assets));
+        
     }
 
     @Override
