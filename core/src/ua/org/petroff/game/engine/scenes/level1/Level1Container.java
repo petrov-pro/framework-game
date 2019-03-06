@@ -32,23 +32,22 @@ public class Level1Container implements ContainerInterface {
         screen = new Level1Screen();
         controller = new Level1Controller(manageScene, screen);
         setEntities();
-        
         ((ScreenLoadResourceInterface) screen).load();
         loadEntitiesResources();
-        
+        screen.setEntities(entities);
 
     }
 
     private void setEntities() {
         entities.put(Map.DESCRIPTOR, new Map(this.assets));
-        //entities.put(Player.DESCRIPTOR, new Player(this.assets));
-        
+        entities.put(Player.DESCRIPTOR, new Player(this.assets));
+
     }
 
     @Override
     public void init() {
         initEntitiesResources();
-        screen.setEntities(entities);
+        ((ScreenLoadResourceInterface) screen).init();
         controller.bindControl();
     }
 

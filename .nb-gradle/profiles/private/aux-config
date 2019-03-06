@@ -5,13 +5,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
-        <file>file:/home/petroff/dev/java/framework-game/desktop/src/ua/org/petroff/game/engine/desktop/DesktopLauncher.java</file>
+        <file>file:/home/petroff/dev/java/framework-game/core/src/ua/org/petroff/game/engine/scenes/level1/entities/map/View.java</file>
+        <file>file:/home/petroff/dev/java/framework-game/core/src/ua/org/petroff/game/engine/scenes/level1/Level1Screen.java</file>
+        <file>file:/home/petroff/dev/java/framework-game/core/src/ua/org/petroff/game/engine/scenes/level1/Level1Container.java</file>
+        <file>file:/home/petroff/dev/java/framework-game/core/src/ua/org/petroff/game/engine/Settings.java</file>
       </group>
     </open-files>
     <editor-bookmarks lastBookmarkId="0" xmlns="http://www.netbeans.org/ns/editor-bookmarks/2"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
-        <file>file:/home/petroff/dev/java/framework-game/desktop/src/ua/org/petroff/game/engine/desktop/DesktopLauncher.java</file>
+        <file>file:/home/petroff/dev/java/framework-game/core/src/ua/org/petroff/game/engine/scenes/level1/entities/map/View.java</file>
+        <file>file:/home/petroff/dev/java/framework-game/core/src/ua/org/petroff/game/engine/scenes/level1/Level1Screen.java</file>
+        <file>file:/home/petroff/dev/java/framework-game/core/src/ua/org/petroff/game/engine/scenes/level1/Level1Container.java</file>
+        <file>file:/home/petroff/dev/java/framework-game/core/src/ua/org/petroff/game/engine/Settings.java</file>
       </group>
     </open-files>
   </auxiliary>

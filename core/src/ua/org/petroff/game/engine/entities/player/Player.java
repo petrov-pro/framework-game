@@ -19,7 +19,7 @@ public class Player implements EntityInterface {
     public Player(Assets asset) {
         view = new View(asset, this);
         state = Actions.STAY;
-        position = new Vector2(0, 0);
+        position = new Vector2(0, 15);
     }
 
     @Override

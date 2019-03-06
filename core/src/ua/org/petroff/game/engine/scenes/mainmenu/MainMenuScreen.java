@@ -52,6 +52,10 @@ public class MainMenuScreen extends ScreenAdapter implements ScreenLoadResourceI
         table.setDebug(true);
     }
 
+    @Override
+    public void init() {
+    }
+    
     public Stage getStage() {
         return stage;
     }

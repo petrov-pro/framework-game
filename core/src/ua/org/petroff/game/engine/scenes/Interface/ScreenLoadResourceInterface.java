@@ -4,5 +4,5 @@ public interface ScreenLoadResourceInterface {
 
     public void load();
 
-    
+    public void init();
 }

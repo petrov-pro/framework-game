@@ -2,24 +2,31 @@ package ua.org.petroff.game.engine.entities.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import ua.org.petroff.game.engine.entities.ViewInterface;
 import ua.org.petroff.game.engine.util.Assets;
+import ua.org.petroff.game.engine.entities.GraphicQueueMemberInterface;
+import ua.org.petroff.game.engine.entities.QueueDrawInterface;
+import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 
-public class View implements ViewInterface {
+public class View implements ViewInterface, GraphicQueueMemberInterface {
 
+    private final int zIndex = 1;
     private final Assets asset;
     private final HashMap<Player.Actions, Object> graphics = new HashMap();
     private final Player model;
     private float stateTime = 0;
-    private TextureRegion currentFrame;
     private Object graphic;
+    private TextureRegion player;
+    private QueueDrawInterface drawStayPlayer;
+    private QueueDrawInterface drawMovePlayer;
 
     public View(Assets asset, Player model) {
         this.asset = asset;
@@ -39,7 +46,7 @@ public class View implements ViewInterface {
         for (int i = 0; i < 7; i++) {
             playerRegions[i] = new TextureRegion(playerMT, 64 * i, 704, 64, 64);
         }
-        TextureRegion player = new TextureRegion(playerMT, 0, 384, 64, 64);
+        player = new TextureRegion(playerMT, 0, 384, 64, 64);
         Animation walkAnimationRight = new Animation(0.1f, (Object) playerRegions);
 
         for (int i = 0; i < 7; i++) {
@@ -49,20 +56,35 @@ public class View implements ViewInterface {
         graphics.put(Player.Actions.STAY, player);
         graphics.put(Player.Actions.MOVERIGHT, walkAnimationRight);
         graphics.put(Player.Actions.MOVELEFT, walkAnimationLeft);
+
+        drawStayPlayer = new QueueDrawInterface() {
+            @Override
+            public void draw(GraphicResources graphicResources) {
+                graphicResources.getSpriteBatch().draw(player, model.getPosition().x, model.getPosition().y, 6, 6);
+            }
+
+        };
+
+        drawMovePlayer = new QueueDrawInterface() {
+            @Override
+            public void draw(GraphicResources graphicResources) {
+                stateTime += Gdx.graphics.getDeltaTime();
+                graphic = graphics.get(model.state);
+                graphicResources.getSpriteBatch().draw((TextureRegion) ((Animation) graphic).getKeyFrame(stateTime, true),
+                        model.getPosition().x, model.getPosition().y, 6, 6);
+            }
+
+        };
     }
 
     @Override
-    public void draw(Camera camera, SpriteBatch spriteBatch) {
-        camera.position.set(0, 0, 0);
-        stateTime += Gdx.graphics.getDeltaTime();
+    public Map<Integer, QueueDrawInterface> prepareDraw(GraphicResources graphicResources, Map<Integer, QueueDrawInterface> queueDraw) {
+        queueDraw.put(zIndex, drawStayPlayer);
+        return queueDraw;
+    }
 
-        graphic = graphics.get(model.state);
-        if (graphic instanceof TextureRegion) {
-            currentFrame = (TextureRegion) graphic;
-        } else {
-            currentFrame = (TextureRegion) ((Animation) graphic).getKeyFrame(stateTime, true);
-        }
-        spriteBatch.draw(currentFrame, model.getPosition().x, model.getPosition().y, 6, 6);
+    @Override
+    public void share(GraphicResources graphicResources) {
     }
 
 }
