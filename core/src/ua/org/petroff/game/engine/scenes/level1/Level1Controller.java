@@ -14,7 +14,7 @@ public class Level1Controller extends InputAdapter implements ControllerInterfac
     public Level1Controller(ManagerScenes managerScenes, Level1Screen level1Screen) {
         this.managerScenes = managerScenes;
         this.screen = level1Screen;
-        
+
     }
 
     @Override
@@ -36,6 +36,11 @@ public class Level1Controller extends InputAdapter implements ControllerInterfac
         }
 
         return super.keyDown(keycode);
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return super.keyUp(keycode);
     }
 
 }

@@ -31,4 +31,8 @@ public class Player implements EntityInterface {
         return position;
     }
 
+    @Override
+    public void init() {
+    }
+
 }
