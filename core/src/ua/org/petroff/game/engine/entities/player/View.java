@@ -1,18 +1,15 @@
 package ua.org.petroff.game.engine.entities.player;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import ua.org.petroff.game.engine.entities.ViewInterface;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.entities.GraphicQueueMemberInterface;
+import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.entities.QueueDrawInterface;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 
@@ -79,7 +76,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
     @Override
     public Map<Integer, QueueDrawInterface> prepareDraw(GraphicResources graphicResources, Map<Integer, QueueDrawInterface> queueDraw) {
-        queueDraw.put(zIndex, drawStayPlayer);
+        ((QueueDraw) queueDraw).putSafe(zIndex, drawStayPlayer);
         return queueDraw;
     }
 
