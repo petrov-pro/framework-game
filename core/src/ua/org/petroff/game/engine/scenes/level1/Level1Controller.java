@@ -3,6 +3,8 @@ package ua.org.petroff.game.engine.scenes.level1;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
+import sun.rmi.runtime.Log;
+import ua.org.petroff.game.engine.entities.MoveEntityInterface;
 import ua.org.petroff.game.engine.scenes.Interface.ControllerInterface;
 import ua.org.petroff.game.engine.scenes.core.ManagerScenes;
 
@@ -10,11 +12,12 @@ public class Level1Controller extends InputAdapter implements ControllerInterfac
 
     private final ManagerScenes managerScenes;
     private final Level1Screen screen;
+    private final MoveEntityInterface entity;
 
-    public Level1Controller(ManagerScenes managerScenes, Level1Screen level1Screen) {
+    public Level1Controller(ManagerScenes managerScenes, Level1Screen level1Screen, MoveEntityInterface entity) {
         this.managerScenes = managerScenes;
         this.screen = level1Screen;
-
+        this.entity = entity;
     }
 
     @Override
@@ -28,19 +31,24 @@ public class Level1Controller extends InputAdapter implements ControllerInterfac
         switch (keycode) {
 
             case Keys.RIGHT:
+                entity.right();
                 break;
 
             case Keys.LEFT:
+                entity.left();
                 break;
 
         }
-
+        Gdx.app.log("Key-pressed", "Key: " + Keys.RIGHT);
         return super.keyDown(keycode);
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        entity.stop();
         return super.keyUp(keycode);
     }
+    
+    
 
 }

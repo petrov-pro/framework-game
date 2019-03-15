@@ -24,9 +24,11 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     private OrthographicCamera camera;
     private QueueDrawInterface drawBackground;
     private QueueDrawInterface drawBackgroundEnd;
+    private Map map;
 
-    public View(Assets assets) {
+    public View(Assets assets, Map map) {
         this.assets = assets;
+        this.map = map;
     }
 
     @Override
@@ -38,10 +40,10 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     public void init() {
         renderer = new OrthogonalTiledMapRenderer(((TiledMap) assets.get("map-level1")), 1 / Settings.UNIT_SCALE, new SpriteBatch());
         camera = new OrthographicCamera();
-        camera.position.set(0, 0, 0);
+        camera.position.set(map.getCameraPosition(), 0);
         viewport = new FillViewport(Settings.WIDTH, Settings.HEIGHT, camera);
         renderer.setView(camera);
-        
+
         drawBackground = new QueueDrawInterface() {
             @Override
             public void draw(GraphicResources graphicResources) {

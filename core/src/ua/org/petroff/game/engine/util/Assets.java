@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import java.util.HashMap;
@@ -22,6 +23,8 @@ public class Assets {
 
     private final HashMap<String, AssetDescriptor> store = new HashMap();
 
+    private String aliasMap;
+
     public void loadTexture(String alias, String path) {
         load(alias, Assets.PATH + path, Texture.class);
     }
@@ -31,6 +34,7 @@ public class Assets {
     }
 
     public void loadMap(String alias, String path) {
+        aliasMap = alias;
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         load(alias, Assets.PATH + path, TiledMap.class);
     }
@@ -55,6 +59,13 @@ public class Assets {
 
     public AssetManager getManager() {
         return manager;
+    }
+
+    public Map getMap() {
+        if(aliasMap == null){
+            throw new Error("Map is not loaded");
+        }
+        return (Map) get(aliasMap);
     }
 
 }

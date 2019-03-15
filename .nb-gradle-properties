@@ -6,4 +6,30 @@
     <name>default</name>
     <property name="organization"/>
   </license-header>
+  <built-in-tasks>
+    <task>
+      <display-name>run</display-name>
+      <non-blocking>no</non-blocking>
+      <task-names>
+        <name must-exist="no">:desktop:run</name>
+      </task-names>
+      <task-args>
+        <arg>-PcmdLineArgs=${cmd-line-args}</arg>
+        <arg>-PjvmLineArgs=${jvm-line-args}</arg>
+      </task-args>
+      <task-jvm-args/>
+    </task>
+    <task>
+      <display-name>debug</display-name>
+      <non-blocking>no</non-blocking>
+      <task-names>
+        <name must-exist="no">:desktop:debug</name>
+      </task-names>
+      <task-args>
+        <arg>-PcmdLineArgs=${cmd-line-args}</arg>
+        <arg>-PjvmLineArgs=${jvm-line-args}</arg>
+      </task-args>
+      <task-jvm-args/>
+    </task>
+  </built-in-tasks>
 </gradle-project-properties>

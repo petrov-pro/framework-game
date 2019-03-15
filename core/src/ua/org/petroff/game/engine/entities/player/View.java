@@ -37,17 +37,17 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
     @Override
     public void init() {
-        Texture playerMT = asset.get("player");
+        Texture playerTexture = asset.get("player");
         TextureRegion[] playerRegions = new TextureRegion[7];
         TextureRegion[] playerRegions2 = new TextureRegion[7];
         for (int i = 0; i < 7; i++) {
-            playerRegions[i] = new TextureRegion(playerMT, 64 * i, 704, 64, 64);
+            playerRegions[i] = new TextureRegion(playerTexture, 64 * i, 704, 64, 64);
         }
-        player = new TextureRegion(playerMT, 0, 384, 64, 64);
+        player = new TextureRegion(playerTexture, 0, 384, 64, 64);
         Animation walkAnimationRight = new Animation(0.1f, (Object) playerRegions);
 
         for (int i = 0; i < 7; i++) {
-            playerRegions2[i] = new TextureRegion(playerMT, 64 * i, 576, 64, 64);
+            playerRegions2[i] = new TextureRegion(playerTexture, 64 * i, 576, 64, 64);
         }
         Animation walkAnimationLeft = new Animation(0.1f, (Object) playerRegions2);
         graphics.put(Player.Actions.STAY, player);
@@ -57,7 +57,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         drawStayPlayer = new QueueDrawInterface() {
             @Override
             public void draw(GraphicResources graphicResources) {
-                graphicResources.getSpriteBatch().draw(player, model.getPosition().x, model.getPosition().y, 6, 6);
+                graphicResources.getSpriteBatch().draw(player, model.getPosition().x, model.getPosition().y);
             }
 
         };
@@ -68,7 +68,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
                 stateTime += Gdx.graphics.getDeltaTime();
                 graphic = graphics.get(model.state);
                 graphicResources.getSpriteBatch().draw((TextureRegion) ((Animation) graphic).getKeyFrame(stateTime, true),
-                        model.getPosition().x, model.getPosition().y, 6, 6);
+                        model.getPosition().x, model.getPosition().y);
             }
 
         };

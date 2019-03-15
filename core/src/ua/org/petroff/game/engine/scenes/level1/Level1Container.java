@@ -3,6 +3,7 @@ package ua.org.petroff.game.engine.scenes.level1;
 import com.badlogic.gdx.Screen;
 import java.util.HashMap;
 import ua.org.petroff.game.engine.entities.EntityInterface;
+import ua.org.petroff.game.engine.entities.MoveEntityInterface;
 import ua.org.petroff.game.engine.entities.player.Player;
 import ua.org.petroff.game.engine.scenes.Interface.ContainerInterface;
 import ua.org.petroff.game.engine.scenes.Interface.ScreenLoadResourceInterface;
@@ -29,9 +30,9 @@ public class Level1Container implements ContainerInterface {
     public void load() {
         entities = new HashMap<>();
         assets = new Assets();
-        screen = new Level1Screen();
-        controller = new Level1Controller(manageScene, screen);
         setEntities();
+        screen = new Level1Screen();
+        controller = new Level1Controller(manageScene, screen, (MoveEntityInterface) entities.get(Player.DESCRIPTOR));
         ((ScreenLoadResourceInterface) screen).load();
         loadEntitiesResources();
         screen.setEntities(entities);
@@ -59,6 +60,7 @@ public class Level1Container implements ContainerInterface {
 
     private void initEntitiesResources() {
         for (EntityInterface entity : entities.values()) {
+            entity.init();
             entity.getView().init();
         }
     }

@@ -42,7 +42,6 @@ public class Level1Screen extends ScreenAdapter implements ScreenLoadResourceInt
         fillGraphicQueue();
         renderGraphicQueue();
         graphicResources.getCamera().update();
-
     }
 
     @Override

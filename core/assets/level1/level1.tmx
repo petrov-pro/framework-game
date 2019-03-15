@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="60" height="30" tilewidth="32" tileheight="32" nextobjectid="14">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="60" height="30" tilewidth="32" tileheight="32" nextobjectid="17">
+ <properties>
+  <property name="object_layer_name" value="objects"/>
+ </properties>
  <tileset firstgid="1" name="Tiles_32x32" tilewidth="32" tileheight="32" tilecount="64" columns="8">
   <image source="Tiles 32x32/Tiles_32x32.png" width="256" height="256"/>
   <tile id="1">
@@ -8,10 +11,10 @@
    </animation>
   </tile>
  </tileset>
- <imagelayer name="bg" offsetx="2" offsety="-1">
+ <imagelayer name="background" offsetx="2" offsety="-1">
   <image source="BackgroundGradient.png" width="1280" height="1472"/>
  </imagelayer>
- <layer name="main" width="60" height="30">
+ <layer name="map" width="60" height="30">
   <data encoding="csv">
 51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,43,39,0,0,0,0,0,0,0,0,43,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -45,7 +48,7 @@
 48,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="obj">
+ <objectgroup name="objects">
   <object id="3" name="start player" x="34" y="257" width="64" height="64">
    <properties>
     <property name="class" value="Player"/>
@@ -57,5 +60,6 @@
   <object id="12" name="ground" x="3" y="323">
    <polyline points="0,0 509,-1 605,-61 733,-66"/>
   </object>
+  <object id="14" name="start camera position" x="418" y="258" width="33" height="29"/>
  </objectgroup>
 </map>
