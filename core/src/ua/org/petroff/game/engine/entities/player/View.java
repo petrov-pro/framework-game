@@ -15,7 +15,7 @@ import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 
 public class View implements ViewInterface, GraphicQueueMemberInterface {
 
-    private final int zIndex = 1;
+    private final int zIndex = 2;
     private final Assets asset;
     private final HashMap<Player.Actions, Object> graphics = new HashMap();
     private final Player model;
@@ -36,7 +36,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     }
 
     @Override
-    public void init() {
+    public void init(GraphicResources graphicResources) {
         Texture playerTexture = asset.get("player");
         TextureRegion[] playerRegions = new TextureRegion[7];
         TextureRegion[] playerRegions2 = new TextureRegion[7];
@@ -44,12 +44,12 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             playerRegions[i] = new TextureRegion(playerTexture, 64 * i, 704, 64, 64);
         }
         player = new TextureRegion(playerTexture, 0, 384, 64, 64);
-        Animation walkAnimationRight = new Animation(0.1f, (Object) playerRegions);
+        Animation walkAnimationRight = new Animation(0.1f, (Object[]) playerRegions);
 
         for (int i = 0; i < 7; i++) {
             playerRegions2[i] = new TextureRegion(playerTexture, 64 * i, 576, 64, 64);
         }
-        Animation walkAnimationLeft = new Animation(0.1f, (Object) playerRegions2);
+        Animation walkAnimationLeft = new Animation(0.1f, (Object[]) playerRegions2);
         graphics.put(Player.Actions.STAY, player);
         graphics.put(Player.Actions.MOVERIGHT, walkAnimationRight);
         graphics.put(Player.Actions.MOVELEFT, walkAnimationLeft);
@@ -75,13 +75,13 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     }
 
     @Override
-    public Map<Integer, QueueDrawInterface> prepareDraw(GraphicResources graphicResources, Map<Integer, QueueDrawInterface> queueDraw) {
-        ((QueueDraw) queueDraw).putSafe(zIndex, drawStayPlayer);
+    public Map<Integer, QueueDrawInterface> prepareDraw(Map<Integer, QueueDrawInterface> queueDraw) {
+        if (model.state == Player.Actions.STAY) {
+            ((QueueDraw) queueDraw).putSafe(zIndex, drawStayPlayer);
+        } else if (model.state == Player.Actions.MOVELEFT || model.state == Player.Actions.MOVERIGHT) {
+            ((QueueDraw) queueDraw).putSafe(zIndex, drawMovePlayer);
+        }
         return queueDraw;
-    }
-
-    @Override
-    public void share(GraphicResources graphicResources) {
     }
 
 }

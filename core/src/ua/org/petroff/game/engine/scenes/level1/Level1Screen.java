@@ -9,39 +9,25 @@ import ua.org.petroff.game.engine.entities.EntityInterface;
 import ua.org.petroff.game.engine.entities.GraphicQueueMemberInterface;
 import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.entities.QueueDrawInterface;
-import ua.org.petroff.game.engine.scenes.Interface.ScreenLoadResourceInterface;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 
-public class Level1Screen extends ScreenAdapter implements ScreenLoadResourceInterface {
+public class Level1Screen extends ScreenAdapter {
 
-    private HashMap<String, EntityInterface> entities;
+    private final HashMap<String, EntityInterface> entities;
     private Map<Integer, QueueDrawInterface> queueDraw = new QueueDraw<>();
-    private GraphicResources graphicResources;
+    private final GraphicResources graphicResources;
 
-    @Override
-    public void load() {
-
-    }
-
-    @Override
-    public void init() {
-        graphicResources = new GraphicResources();
-        for (EntityInterface entity : entities.values()) {
-            ((GraphicQueueMemberInterface) entity.getView()).share(graphicResources);
-        }
-    }
-
-    public void setEntities(HashMap<String, EntityInterface> entities) {
+    public Level1Screen(HashMap<String, EntityInterface> entities, GraphicResources graphicResources) {
         this.entities = entities;
+        this.graphicResources = graphicResources;
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
         clearScreen();
-        fillGraphicQueue();
+        handlerEntities();
         renderGraphicQueue();
-        graphicResources.getCamera().update();
     }
 
     @Override
@@ -55,10 +41,12 @@ public class Level1Screen extends ScreenAdapter implements ScreenLoadResourceInt
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
-    private void fillGraphicQueue() {
+    private void handlerEntities() {
         queueDraw.clear();
         for (EntityInterface entity : entities.values()) {
-            queueDraw = ((GraphicQueueMemberInterface) entity.getView()).prepareDraw(graphicResources, queueDraw);
+            entity.update();
+            //fillGraphicQueue
+            queueDraw = ((GraphicQueueMemberInterface) entity.getView()).prepareDraw(queueDraw);
         }
     }
 

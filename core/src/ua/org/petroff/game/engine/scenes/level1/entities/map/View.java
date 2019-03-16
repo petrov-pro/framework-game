@@ -37,12 +37,13 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     }
 
     @Override
-    public void init() {
-        renderer = new OrthogonalTiledMapRenderer(((TiledMap) assets.get("map-level1")), 1 / Settings.UNIT_SCALE, new SpriteBatch());
+    public void init(GraphicResources graphicResources) {
+        renderer = new OrthogonalTiledMapRenderer(((TiledMap) assets.get("map-level1")), new SpriteBatch());
         camera = new OrthographicCamera();
         camera.position.set(map.getCameraPosition(), 0);
         viewport = new FillViewport(Settings.WIDTH, Settings.HEIGHT, camera);
         renderer.setView(camera);
+        share(graphicResources);
 
         drawBackground = new QueueDrawInterface() {
             @Override
@@ -51,6 +52,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
                 renderer.render(backgroundLayers);
                 renderer.render(foregroundLayers);
                 renderer.getBatch().begin();
+                graphicResources.getCamera().update();
             }
 
         };
@@ -59,19 +61,20 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             @Override
             public void draw(GraphicResources graphicResources) {
                 renderer.getBatch().end();
+                map.gameResources.getDebugRenderer().render(
+                        map.gameResources.getWorld(), graphicResources.getCamera().combined);
             }
 
         };
     }
 
     @Override
-    public java.util.Map<Integer, QueueDrawInterface> prepareDraw(GraphicResources graphicResources, java.util.Map<Integer, QueueDrawInterface> queueDraw) {
+    public java.util.Map<Integer, QueueDrawInterface> prepareDraw(java.util.Map<Integer, QueueDrawInterface> queueDraw) {
         queueDraw.put(QueueDraw.Z_INDEX_START, drawBackground);
         queueDraw.put(QueueDraw.Z_INDEX_END, drawBackgroundEnd);
         return queueDraw;
     }
 
-    @Override
     public void share(GraphicResources graphicResources) {
         graphicResources.setCamera(camera);
         graphicResources.setViewport(viewport);
