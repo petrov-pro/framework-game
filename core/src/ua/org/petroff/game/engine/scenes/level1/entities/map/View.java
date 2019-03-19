@@ -7,6 +7,7 @@ import ua.org.petroff.game.engine.entities.ViewInterface;
 import ua.org.petroff.game.engine.util.Assets;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import ua.org.petroff.game.engine.Settings;
@@ -49,10 +50,11 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             @Override
             public void draw(GraphicResources graphicResources) {
                 renderer.setView((OrthographicCamera) graphicResources.getCamera());
+                graphicResources.getCamera().update();
+                renderer.getBatch().setProjectionMatrix(graphicResources.getCamera().combined);
                 renderer.render(backgroundLayers);
                 renderer.render(foregroundLayers);
                 renderer.getBatch().begin();
-                graphicResources.getCamera().update();
             }
 
         };
