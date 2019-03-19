@@ -76,7 +76,6 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     }
 
     public void share(GraphicResources graphicResources) {
-        graphicResources.setCamera(camera);
         graphicResources.setViewport(viewport);
         graphicResources.setSpriteBatch((SpriteBatch) renderer.getBatch());
     }

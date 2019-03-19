@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class GraphicResources {
 
     private Viewport viewport;
-    private OrthographicCamera camera;
     private SpriteBatch spriteBatch;
 
     public Viewport getViewport() {
@@ -19,11 +18,7 @@ public class GraphicResources {
     }
 
     public OrthographicCamera getCamera() {
-        return camera;
-    }
-
-    public void setCamera(OrthographicCamera camera) {
-        this.camera = camera;
+        return (OrthographicCamera) viewport.getCamera();
     }
 
     public SpriteBatch getSpriteBatch() {
