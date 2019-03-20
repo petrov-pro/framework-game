@@ -7,6 +7,7 @@ import ua.org.petroff.game.engine.entities.ViewInterface;
 import ua.org.petroff.game.engine.util.Assets;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -22,7 +23,6 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     private final int[] backgroundLayers = {0, 2};
     private final int[] foregroundLayers = {1};
     private Viewport viewport;
-    private OrthographicCamera camera;
     private QueueDrawInterface drawBackground;
     private QueueDrawInterface drawBackgroundEnd;
     private Map map;
@@ -39,8 +39,8 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
     @Override
     public void init(GraphicResources graphicResources) {
-        renderer = new OrthogonalTiledMapRenderer(((TiledMap) assets.get("map-level1")), new SpriteBatch());
-        camera = new OrthographicCamera();
+        renderer = new OrthogonalTiledMapRenderer(((TiledMap) assets.get("map-level1")), 1 / 32f, new SpriteBatch());
+        OrthographicCamera camera = new OrthographicCamera();
         camera.position.set(map.getCameraPosition(), 0);
         viewport = new FillViewport(Settings.WIDTH, Settings.HEIGHT, camera);
         renderer.setView(camera);
@@ -81,5 +81,6 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         graphicResources.setViewport(viewport);
         graphicResources.setSpriteBatch((SpriteBatch) renderer.getBatch());
     }
+
 
 }

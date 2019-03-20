@@ -8,10 +8,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.World;
+import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.EntityInterface;
 import ua.org.petroff.game.engine.entities.ViewInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.util.Assets;
+import ua.org.petroff.game.engine.util.MapHelper;
 
 public class Map implements EntityInterface {
 
@@ -38,9 +40,9 @@ public class Map implements EntityInterface {
     public void init(GameResources gameResources) {
         this.gameResources = gameResources;
         createPhysicMap();
-        MapObject cameraObject = ua.org.petroff.game.engine.util.Map.findObject(asset.getMap(), OBJECT_NAME);
-        cameraPosition = new Vector2(cameraObject.getProperties().get("x", Float.class),
-                cameraObject.getProperties().get("y", Float.class));
+        MapObject cameraObject = MapHelper.findObject(asset.getMap(), OBJECT_NAME);
+        cameraPosition = new Vector2(MapHelper.coordinateToWorld(cameraObject.getProperties().get("x", Float.class).intValue()),
+                MapHelper.coordinateToWorld(cameraObject.getProperties().get("y", Float.class).intValue()));
         createGround(gameResources);
     }
 
@@ -57,7 +59,7 @@ public class Map implements EntityInterface {
 
     private void createGround(GameResources gameResources) {
 
-        MapObject groundObject = ua.org.petroff.game.engine.util.Map.findObject(asset.getMap(),
+        MapObject groundObject = ua.org.petroff.game.engine.util.MapHelper.findObject(asset.getMap(),
                 "ground");
 
         BodyDef bodyDef = new BodyDef();
@@ -69,8 +71,8 @@ public class Map implements EntityInterface {
 
         for (int i = 0; i < vertices.length / 2; ++i) {
             worldVertices[i] = new Vector2();
-            worldVertices[i].x = vertices[i * 2];
-            worldVertices[i].y = vertices[i * 2 + 1];
+            worldVertices[i].x = vertices[i * 2] * Settings.SCALE;
+            worldVertices[i].y = vertices[i * 2 + 1] * Settings.SCALE;
         }
 
         ChainShape chain = new ChainShape();

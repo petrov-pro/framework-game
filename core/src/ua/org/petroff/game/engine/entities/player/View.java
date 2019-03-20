@@ -57,7 +57,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         drawStayPlayer = new QueueDrawInterface() {
             @Override
             public void draw(GraphicResources graphicResources) {
-                graphicResources.getSpriteBatch().draw(player, model.getPosition().x, model.getPosition().y);
+                graphicResources.getSpriteBatch().draw(player, model.getPosition().x, model.getPosition().y, 2, 2);
             }
 
         };
@@ -68,7 +68,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
                 stateTime += Gdx.graphics.getDeltaTime();
                 graphic = graphics.get(model.state);
                 graphicResources.getSpriteBatch().draw((TextureRegion) ((Animation) graphic).getKeyFrame(stateTime, true),
-                        model.getPosition().x, model.getPosition().y);
+                        model.getPosition().x, model.getPosition().y, 2, 2);
             }
 
         };

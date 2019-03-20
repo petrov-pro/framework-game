@@ -2,8 +2,9 @@ package ua.org.petroff.game.engine.util;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import ua.org.petroff.game.engine.Settings;
 
-public class Map {
+public class MapHelper {
 
     private final static String OBJECT_LAYER_NAME = "object_layer_name";
 
@@ -22,6 +23,14 @@ public class Map {
 
         }
         throw new Error("Map is incorrect, cant find object: " + objectName);
+    }
+
+    public static float coordinateToWorld(int coordinate) {
+        return coordinate * Settings.SCALE;
+    }
+
+    public static int coordinateToScreen(float coordinate) {
+        return (int) (coordinate / Settings.SCALE);
     }
 
 }

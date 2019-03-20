@@ -12,6 +12,7 @@ import ua.org.petroff.game.engine.entities.MoveEntityInterface;
 import ua.org.petroff.game.engine.entities.ViewInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.util.Assets;
+import ua.org.petroff.game.engine.util.MapHelper;
 
 public class Player implements EntityInterface, MoveEntityInterface {
 
@@ -21,7 +22,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     public Actions state;
     private final Assets asset;
     private Body body;
-    private Float velocityX = 50f;
+    private Float velocityX = 5f;
     private Float velocityY = 0f;
 
     public enum Actions {
@@ -46,25 +47,26 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     @Override
     public void init(GameResources gameResources) {
-        MapObject playerObject = ua.org.petroff.game.engine.util.Map.findObject(asset.getMap(),
+        MapObject playerObject = ua.org.petroff.game.engine.util.MapHelper.findObject(asset.getMap(),
                 OBJECT_NAME);
         createBody(gameResources, playerObject);
-        Vector2 position = new Vector2(playerObject.getProperties().get("x", Float.class),
-                playerObject.getProperties().get("y", Float.class));
+        int x = playerObject.getProperties().get("x", Float.class).intValue();
+        int y = playerObject.getProperties().get("y", Float.class).intValue();
+        Vector2 position = new Vector2(MapHelper.coordinateToWorld(x), MapHelper.coordinateToWorld(y));
         body.setTransform(position, 0);
 
     }
 
     private void createBody(GameResources gameResources, MapObject playerObject) {
-        Float width = playerObject.getProperties().get("width", Float.class);
-        Float height = playerObject.getProperties().get("height", Float.class);
+        float width = MapHelper.coordinateToWorld(playerObject.getProperties().get("width", Float.class).intValue());
+        float height = MapHelper.coordinateToWorld(playerObject.getProperties().get("height", Float.class).intValue());
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         body = gameResources.getWorld().createBody(bodyDef);
         PolygonShape poly = new PolygonShape();
-        Vector2 center = new Vector2(width / 2, height / 2);
-        poly.setAsBox(width / 2, height / 2, center, 0);
+        Vector2 center = new Vector2(width / 2, height / 2.2f);
+        poly.setAsBox(width / 4.5f, height / 2.5f, center, 0);
         body.createFixture(poly, 1);
         poly.dispose();
     }
