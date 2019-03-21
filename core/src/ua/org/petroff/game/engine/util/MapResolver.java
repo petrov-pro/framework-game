@@ -2,13 +2,14 @@ package ua.org.petroff.game.engine.util;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import java.util.ArrayList;
 import ua.org.petroff.game.engine.Settings;
 
-public class MapHelper {
+public class MapResolver {
 
     private final static String OBJECT_LAYER_NAME = "object_layer_name";
 
-    public static MapObject findObject(com.badlogic.gdx.maps.Map map, String objectName) {
+    public static <T> T findObject(com.badlogic.gdx.maps.Map map, String objectName) {
 
         String objecLayerName = map.getProperties().get(OBJECT_LAYER_NAME, String.class);
         if (objecLayerName == null) {
@@ -16,13 +17,24 @@ public class MapHelper {
         }
         MapObjects objects = map.getLayers().get(objecLayerName).getObjects();
 
+        ArrayList<MapObject> findedObject = new ArrayList();
+
         for (MapObject object : objects) {
             if (objectName.equals(object.getName())) {
-                return object;
+                findedObject.add(object);
             }
-
         }
-        throw new Error("Map is incorrect, cant find object: " + objectName);
+
+        if (findedObject.isEmpty()) {
+            throw new Error("Map is incorrect, cant find object: " + objectName);
+        }
+
+        if (findedObject.size() == 1) {
+            return (T) findedObject.get(0);
+        } else {
+            return (T) findedObject;
+        }
+
     }
 
     public static float coordinateToWorld(int coordinate) {

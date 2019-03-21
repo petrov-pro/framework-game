@@ -2,6 +2,7 @@ package ua.org.petroff.game.engine.entities.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -12,18 +13,20 @@ import ua.org.petroff.game.engine.entities.MoveEntityInterface;
 import ua.org.petroff.game.engine.entities.ViewInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.util.Assets;
-import ua.org.petroff.game.engine.util.MapHelper;
+import ua.org.petroff.game.engine.util.MapResolver;
 
 public class Player implements EntityInterface, MoveEntityInterface {
 
-    private final int zIndex = 2;
     public static final String OBJECT_NAME = "start player";
     public static final String DESCRIPTOR = "Player";
+    private static final float VELOCITYX = 3f;
+    private static final float VELOCITYY = 0f;
     public Actions state;
+    private final int zIndex = 2;
     private final Assets asset;
     private Body body;
-    private Float velocityX = 5f;
-    private Float velocityY = 0f;
+    private Float currentVelocityX = 0f;
+    private Float currentVelocityY = 0f;
 
     public enum Actions {
         MOVELEFT, MOVERIGHT, JUMP, STAY
@@ -47,19 +50,19 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     @Override
     public void init(GameResources gameResources) {
-        MapObject playerObject = ua.org.petroff.game.engine.util.MapHelper.findObject(asset.getMap(),
+        MapObject playerObject = ua.org.petroff.game.engine.util.MapResolver.findObject(asset.getMap(),
                 OBJECT_NAME);
         createBody(gameResources, playerObject);
         int x = playerObject.getProperties().get("x", Float.class).intValue();
         int y = playerObject.getProperties().get("y", Float.class).intValue();
-        Vector2 position = new Vector2(MapHelper.coordinateToWorld(x), MapHelper.coordinateToWorld(y));
+        Vector2 position = new Vector2(MapResolver.coordinateToWorld(x), MapResolver.coordinateToWorld(y));
         body.setTransform(position, 0);
 
     }
 
     private void createBody(GameResources gameResources, MapObject playerObject) {
-        float width = MapHelper.coordinateToWorld(playerObject.getProperties().get("width", Float.class).intValue());
-        float height = MapHelper.coordinateToWorld(playerObject.getProperties().get("height", Float.class).intValue());
+        float width = MapResolver.coordinateToWorld(playerObject.getProperties().get("width", Float.class).intValue());
+        float height = MapResolver.coordinateToWorld(playerObject.getProperties().get("height", Float.class).intValue());
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
@@ -74,23 +77,31 @@ public class Player implements EntityInterface, MoveEntityInterface {
     @Override
     public void left() {
         state = Actions.MOVELEFT;
-        body.setLinearVelocity(-velocityX, velocityY);
+        currentVelocityX = -Player.VELOCITYX;
     }
 
     @Override
     public void right() {
         state = Actions.MOVERIGHT;
-        body.setLinearVelocity(velocityX, velocityY);
+        currentVelocityX = Player.VELOCITYX;
     }
 
     @Override
     public void stop() {
         state = Actions.STAY;
+        currentVelocityX = 0f;
     }
 
     @Override
     public void update() {
         Gdx.app.log("Velocity", "" + body.getLinearVelocity().x);
+
+        if (currentVelocityX != 0f) {
+            Vector2 velocity = body.getLinearVelocity().cpy();
+            velocity.set(currentVelocityX, velocity.y);
+            body.setLinearVelocity(velocity);
+        }
+
     }
 
     @Override

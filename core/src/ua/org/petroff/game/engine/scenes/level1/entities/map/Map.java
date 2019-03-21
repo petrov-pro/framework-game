@@ -7,13 +7,15 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import java.util.ArrayList;
 import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.EntityInterface;
 import ua.org.petroff.game.engine.entities.ViewInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.util.Assets;
-import ua.org.petroff.game.engine.util.MapHelper;
+import ua.org.petroff.game.engine.util.MapResolver;
 
 public class Map implements EntityInterface {
 
@@ -40,9 +42,9 @@ public class Map implements EntityInterface {
     public void init(GameResources gameResources) {
         this.gameResources = gameResources;
         createPhysicMap();
-        MapObject cameraObject = MapHelper.findObject(asset.getMap(), OBJECT_NAME);
-        cameraPosition = new Vector2(MapHelper.coordinateToWorld(cameraObject.getProperties().get("x", Float.class).intValue()),
-                MapHelper.coordinateToWorld(cameraObject.getProperties().get("y", Float.class).intValue()));
+        MapObject cameraObject = MapResolver.findObject(asset.getMap(), OBJECT_NAME);
+        cameraPosition = new Vector2(MapResolver.coordinateToWorld(cameraObject.getProperties().get("x", Float.class).intValue()),
+                MapResolver.coordinateToWorld(cameraObject.getProperties().get("y", Float.class).intValue()));
         createGround(gameResources);
     }
 
@@ -59,27 +61,36 @@ public class Map implements EntityInterface {
 
     private void createGround(GameResources gameResources) {
 
-        MapObject groundObject = ua.org.petroff.game.engine.util.MapHelper.findObject(asset.getMap(),
+        ArrayList<MapObject> groundObjects = ua.org.petroff.game.engine.util.MapResolver.findObject(asset.getMap(),
                 "ground");
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        Body body = gameResources.getWorld().createBody(bodyDef);
 
-        float[] vertices = ((PolylineMapObject) groundObject).getPolyline().getTransformedVertices();
-        Vector2[] worldVertices = new Vector2[vertices.length / 2];
+        for (MapObject groundObject : groundObjects) {
+            Body body = gameResources.getWorld().createBody(bodyDef);
+            float[] vertices = ((PolylineMapObject) groundObject).getPolyline().getTransformedVertices();
+            Vector2[] worldVertices = new Vector2[vertices.length / 2];
 
-        for (int i = 0; i < vertices.length / 2; ++i) {
-            worldVertices[i] = new Vector2();
-            worldVertices[i].x = vertices[i * 2] * Settings.SCALE;
-            worldVertices[i].y = vertices[i * 2 + 1] * Settings.SCALE;
+            for (int i = 0; i < vertices.length / 2; ++i) {
+                worldVertices[i] = new Vector2();
+                worldVertices[i].x = vertices[i * 2] * Settings.SCALE;
+                worldVertices[i].y = vertices[i * 2 + 1] * Settings.SCALE;
+            }
+
+            ChainShape chain = new ChainShape();
+            chain.createChain(worldVertices);
+
+            FixtureDef groundFixture = new FixtureDef();
+            groundFixture.density = 1f;
+            groundFixture.shape = chain;
+            groundFixture.restitution = 0f;
+            groundFixture.friction = 2f;
+
+            body.createFixture(groundFixture);
+            chain.dispose();
         }
 
-        ChainShape chain = new ChainShape();
-        chain.createChain(worldVertices);
-
-        body.createFixture(chain, 1);
-        chain.dispose();
     }
 
     @Override
