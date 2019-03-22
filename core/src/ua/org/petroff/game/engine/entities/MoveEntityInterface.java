@@ -8,4 +8,6 @@ public interface MoveEntityInterface {
 
     public void stop();
 
+    public void jump();
+
 }

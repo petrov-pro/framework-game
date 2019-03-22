@@ -15,12 +15,15 @@ import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 
 public class View implements ViewInterface, GraphicQueueMemberInterface {
 
+    public enum GraphicType {
+        MOVELEFT, MOVERIGHT, STAY, JUMPLEFT, JUMPRIGHT, STAYJUMP
+    };
+
     private final int zIndex = 2;
     private final Assets asset;
-    private final HashMap<Player.Actions, Object> graphics = new HashMap();
+    private final HashMap<View.GraphicType, Object> graphics = new HashMap();
     private final Player model;
     private float stateTime = 0;
-    private Object graphic;
     private TextureRegion player;
     private QueueDrawInterface drawStayPlayer;
     private QueueDrawInterface drawMovePlayer;
@@ -37,22 +40,8 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
     @Override
     public void init(GraphicResources graphicResources) {
-        Texture playerTexture = asset.get("player");
-        TextureRegion[] playerRegions = new TextureRegion[7];
-        TextureRegion[] playerRegions2 = new TextureRegion[7];
-        for (int i = 0; i < 7; i++) {
-            playerRegions[i] = new TextureRegion(playerTexture, 64 * i, 704, 64, 64);
-        }
-        player = new TextureRegion(playerTexture, 0, 384, 64, 64);
-        Animation walkAnimationRight = new Animation(0.1f, (Object[]) playerRegions);
 
-        for (int i = 0; i < 7; i++) {
-            playerRegions2[i] = new TextureRegion(playerTexture, 64 * i, 576, 64, 64);
-        }
-        Animation walkAnimationLeft = new Animation(0.1f, (Object[]) playerRegions2);
-        graphics.put(Player.Actions.STAY, player);
-        graphics.put(Player.Actions.MOVERIGHT, walkAnimationRight);
-        graphics.put(Player.Actions.MOVELEFT, walkAnimationLeft);
+        loadAnimation();
 
         drawStayPlayer = new QueueDrawInterface() {
             @Override
@@ -66,19 +55,62 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             @Override
             public void draw(GraphicResources graphicResources) {
                 stateTime += Gdx.graphics.getDeltaTime();
-                graphic = graphics.get(model.state);
-                graphicResources.getSpriteBatch().draw((TextureRegion) ((Animation) graphic).getKeyFrame(stateTime, true),
+                Object graphic = graphics.get(model.graphicFrame);
+                graphicResources.getSpriteBatch().draw((TextureRegion) ((Animation) graphic).getKeyFrame(stateTime, model.isLoopAnimation),
                         model.getPosition().x, model.getPosition().y, 2, 2);
             }
 
         };
     }
 
+    private void loadAnimation() {
+        Texture playerTexture = asset.get("player");
+        TextureRegion[] playerRegionsRight = new TextureRegion[7];
+        TextureRegion[] playerRegionsLeft = new TextureRegion[7];
+        TextureRegion[] playerRegionsJumpLeft = new TextureRegion[7];
+        TextureRegion[] playerRegionsJumpRight = new TextureRegion[7];
+        TextureRegion[] playerRegionsJumpStay = new TextureRegion[7];
+
+        player = new TextureRegion(playerTexture, 0, 384, 64, 64);
+
+        for (int i = 0; i < 7; i++) {
+            playerRegionsRight[i] = new TextureRegion(playerTexture, 64 * i, 704, 64, 64);
+        }
+        Animation walkAnimationRight = new Animation(0.1f, (Object[]) playerRegionsRight);
+
+        for (int i = 0; i < 7; i++) {
+            playerRegionsLeft[i] = new TextureRegion(playerTexture, 64 * i, 576, 64, 64);
+        }
+        Animation walkAnimationLeft = new Animation(0.1f, (Object[]) playerRegionsLeft);
+
+        for (int i = 0; i < 7; i++) {
+            playerRegionsJumpLeft[i] = new TextureRegion(playerTexture, 64 * i, 64, 64, 64);
+        }
+        Animation jumpAnimationLeft = new Animation(0.1f, (Object[]) playerRegionsJumpLeft);
+
+        for (int i = 0; i < 7; i++) {
+            playerRegionsJumpRight[i] = new TextureRegion(playerTexture, 64 * i, 192, 64, 64);
+        }
+        Animation jumpAnimationRight = new Animation(0.1f, (Object[]) playerRegionsJumpRight);
+        
+        for (int i = 0; i < 7; i++) {
+            playerRegionsJumpStay[i] = new TextureRegion(playerTexture, 64 * i, 128, 64, 64);
+        }
+        Animation jumpAnimationStay = new Animation(0.1f, (Object[]) playerRegionsJumpStay);
+
+        graphics.put(GraphicType.STAY, player);
+        graphics.put(GraphicType.MOVERIGHT, walkAnimationRight);
+        graphics.put(GraphicType.MOVELEFT, walkAnimationLeft);
+        graphics.put(GraphicType.JUMPLEFT, jumpAnimationLeft);
+        graphics.put(GraphicType.JUMPRIGHT, jumpAnimationRight);
+        graphics.put(GraphicType.STAYJUMP, jumpAnimationStay);
+    }
+
     @Override
     public Map<Integer, QueueDrawInterface> prepareDraw(Map<Integer, QueueDrawInterface> queueDraw) {
         if (model.state == Player.Actions.STAY) {
             ((QueueDraw) queueDraw).putSafe(zIndex, drawStayPlayer);
-        } else if (model.state == Player.Actions.MOVELEFT || model.state == Player.Actions.MOVERIGHT) {
+        } else if (model.state == Player.Actions.MOVE || model.state == Player.Actions.JUMP) {
             ((QueueDraw) queueDraw).putSafe(zIndex, drawMovePlayer);
         }
         return queueDraw;

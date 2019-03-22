@@ -19,14 +19,16 @@ import ua.org.petroff.game.engine.util.MapResolver;
 
 public class Map implements EntityInterface {
 
-    private final int zIndex = 1;
     public static final String OBJECT_NAME = "start camera position";
     public static final String DESCRIPTOR = "map level 1";
-    private final int gravitation = -10;
+    public GameResources gameResources;
     public View view;
+
+    private final float friction = 2f;
+    private final int gravitation = -10;
     private final Assets asset;
     private Vector2 cameraPosition;
-    public GameResources gameResources;
+    private final int zIndex = 1;
 
     public Map(Assets asset) {
         view = new View(asset, this);
@@ -62,12 +64,19 @@ public class Map implements EntityInterface {
     private void createGround(GameResources gameResources) {
 
         ArrayList<MapObject> groundObjects = ua.org.petroff.game.engine.util.MapResolver.findObject(asset.getMap(),
-                "ground");
+                "surface");
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
 
         for (MapObject groundObject : groundObjects) {
+
+            Float friction = groundObject.getProperties().get("friction", Float.class);
+
+            if (null == friction) {
+                friction = this.friction;
+            }
+
             Body body = gameResources.getWorld().createBody(bodyDef);
             float[] vertices = ((PolylineMapObject) groundObject).getPolyline().getTransformedVertices();
             Vector2[] worldVertices = new Vector2[vertices.length / 2];
@@ -85,7 +94,7 @@ public class Map implements EntityInterface {
             groundFixture.density = 1f;
             groundFixture.shape = chain;
             groundFixture.restitution = 0f;
-            groundFixture.friction = 2f;
+            groundFixture.friction = friction;
 
             body.createFixture(groundFixture);
             chain.dispose();

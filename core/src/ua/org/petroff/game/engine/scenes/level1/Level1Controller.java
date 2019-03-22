@@ -37,6 +37,10 @@ public class Level1Controller extends InputAdapter implements ControllerInterfac
                 entity.left();
                 break;
 
+            case Keys.SPACE:
+                entity.jump();
+                break;
+
         }
         return super.keyDown(keycode);
     }
@@ -46,7 +50,5 @@ public class Level1Controller extends InputAdapter implements ControllerInterfac
         entity.stop();
         return super.keyUp(keycode);
     }
-    
-    
 
 }
