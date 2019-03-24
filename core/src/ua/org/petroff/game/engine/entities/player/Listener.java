@@ -1,0 +1,33 @@
+package ua.org.petroff.game.engine.entities.player;
+
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.Manifold;
+import ua.org.petroff.game.engine.entities.Interfaces.EntityListenerInterface;
+
+public class Listener implements EntityListenerInterface {
+
+    private Player model;
+
+    public Listener(Player model) {
+        this.model = model;
+    }
+
+    @Override
+    public void beginContact(Contact contact) {
+        
+    }
+
+    @Override
+    public void endContact(Contact contact) {
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
+    }
+
+}

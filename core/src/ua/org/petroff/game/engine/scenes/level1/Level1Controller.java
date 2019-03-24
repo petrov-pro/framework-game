@@ -3,7 +3,7 @@ package ua.org.petroff.game.engine.scenes.level1;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
-import ua.org.petroff.game.engine.entities.MoveEntityInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
 import ua.org.petroff.game.engine.scenes.Interface.ControllerInterface;
 import ua.org.petroff.game.engine.scenes.core.ManagerScenes;
 

@@ -7,10 +7,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import ua.org.petroff.game.engine.entities.EntityInterface;
-import ua.org.petroff.game.engine.entities.MoveEntityInterface;
-import ua.org.petroff.game.engine.entities.ViewInterface;
+import ua.org.petroff.game.engine.entities.BodyDescriber;
+import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.util.MapResolver;
@@ -19,6 +22,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     public static final String OBJECT_NAME = "start player";
     public static final String DESCRIPTOR = "Player";
+    public static final String SENSOR = "foot";
     public Actions state;
     public View.GraphicType graphicFrame;
     public boolean isLoopAnimation = true;
@@ -77,7 +81,18 @@ public class Player implements EntityInterface, MoveEntityInterface {
         Vector2 center = new Vector2(width / 2, height / 2.2f);
         poly.setAsBox(width / 4.5f, height / 2.5f, center, 0);
         body.createFixture(poly, 1);
+
+        center.sub(0, 0.8f);
+        poly.setAsBox(width / 6f, 0.05f, center, 0);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = poly;
+        fixtureDef.density = 1;
+        fixtureDef.isSensor = true;
+        Fixture footSensorFixture = body.createFixture(fixtureDef);
+        footSensorFixture.setUserData(new BodyDescriber(DESCRIPTOR, SENSOR));
         poly.dispose();
+
+        gameResources.getWorldContactListener().addListener(new Listener(this));
     }
 
     @Override
@@ -89,6 +104,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     @Override
     public void right() {
+        Gdx.app.log("Touch", "Right ");
         state = Actions.MOVE;
         graphicFrame = View.GraphicType.MOVERIGHT;
         currentVelocityX = Player.VELOCITYX;
@@ -96,17 +112,29 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     @Override
     public void stop() {
-        state = Actions.STAY;
-        graphicFrame = View.GraphicType.STAY;
-        currentVelocityX = 0f;
+        if (state == Actions.MOVE) {
+            state = Actions.STAY;
+            graphicFrame = View.GraphicType.STAY;
+            currentVelocityX = 0f;
+        }
     }
 
     @Override
     public void jump() {
-        state = Actions.JUMP;
-        graphicFrame = View.GraphicType.STAYJUMP;
+        if (state != Actions.JUMP) {
+            state = Actions.JUMP;
+            if (body.getLinearVelocity().x > 0) {
+                graphicFrame = View.GraphicType.JUMPRIGHT;
+            } else if (body.getLinearVelocity().x < 0) {
+                graphicFrame = View.GraphicType.JUMPLEFT;
+            } else {
+                graphicFrame = View.GraphicType.STAYJUMP;
+            }
+
+            body.applyForceToCenter(0, 1080f, true);
+        }
     }
-    
+
     @Override
     public void update() {
 
@@ -114,12 +142,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
             Vector2 velocity = body.getLinearVelocity().cpy();
             velocity.set(currentVelocityX, velocity.y);
             body.setLinearVelocity(velocity);
-            if (state == Actions.JUMP && MathUtils.isZero(velocity.y)) {
-                body.applyForceToCenter(0, 1080f, true);
-            }
-            Gdx.app.log("Velocity", state + " x:" + velocity.x + " y:" + velocity.y);
         }
-
     }
 
     @Override

@@ -1,4 +1,4 @@
-package ua.org.petroff.game.engine.entities;
+package ua.org.petroff.game.engine.entities.Interfaces;
 
 import java.util.Map;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;

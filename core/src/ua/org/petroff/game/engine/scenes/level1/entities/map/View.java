@@ -2,8 +2,8 @@ package ua.org.petroff.game.engine.scenes.level1.entities.map;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import ua.org.petroff.game.engine.entities.GraphicQueueMemberInterface;
-import ua.org.petroff.game.engine.entities.ViewInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 import ua.org.petroff.game.engine.util.Assets;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.QueueDraw;
-import ua.org.petroff.game.engine.entities.QueueDrawInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 
 public class View implements ViewInterface, GraphicQueueMemberInterface {

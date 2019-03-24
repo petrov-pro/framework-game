@@ -6,11 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.HashMap;
 import java.util.Map;
-import ua.org.petroff.game.engine.entities.ViewInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 import ua.org.petroff.game.engine.util.Assets;
-import ua.org.petroff.game.engine.entities.GraphicQueueMemberInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterface;
 import ua.org.petroff.game.engine.entities.QueueDraw;
-import ua.org.petroff.game.engine.entities.QueueDrawInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 
 public class View implements ViewInterface, GraphicQueueMemberInterface {
