@@ -32,12 +32,10 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private final Assets asset;
     private Body body;
     private Float currentVelocityX = 0f;
-    private Float currentVelocityY = 0f;
     private static final float VELOCITYX = 3f;
-    private static final float VELOCITYY = 0f;
     private static final float JUMPVELOCITY = 1080f;
     private GameResources gameResources;
-    private View view;
+    private final View view;
 
     private enum PlayerVector {
         LEFT, RIGHT, STAY
@@ -52,7 +50,8 @@ public class Player implements EntityInterface, MoveEntityInterface {
     public Player(Assets asset) {
         view = new View(asset, this);
         this.asset = asset;
-        stopPlayer();
+        view.graphicFrame = View.GraphicType.STAY;
+        vector = PlayerVector.STAY;
     }
 
     @Override
@@ -197,14 +196,6 @@ public class Player implements EntityInterface, MoveEntityInterface {
     public void grounded() {
         isGround = true;
         view.setDefaultAnimationParams();
-    }
-
-    private void stopPlayer() {
-        view.graphicFrame = View.GraphicType.STAY;
-        vector = PlayerVector.STAY;
-        isMove = false;
-        isJump = false;
-        isAction = false;
     }
 
 }
