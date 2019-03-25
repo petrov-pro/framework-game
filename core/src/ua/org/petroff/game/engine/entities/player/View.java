@@ -29,7 +29,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     private float stateTime = 0;
     private TextureRegion player;
     private QueueDrawInterface drawStayPlayer;
-    private QueueDrawInterface drawMovePlayer;
+    private QueueDrawInterface drawAnimationPlayer;
 
     public View(Assets asset, Player model) {
         this.asset = asset;
@@ -54,13 +54,15 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
         };
 
-        drawMovePlayer = new QueueDrawInterface() {
+        drawAnimationPlayer = new QueueDrawInterface() {
             @Override
             public void draw(GraphicResources graphicResources) {
                 stateTime += Gdx.graphics.getDeltaTime();
                 Object graphic = graphics.get(graphicFrame);
-                graphicResources.getSpriteBatch().draw((TextureRegion) ((Animation) graphic).getKeyFrame(stateTime * speedAnimation, isLoopAnimation),
-                        model.getPosition().x, model.getPosition().y, 2, 2);
+                graphicResources.getSpriteBatch()
+                        .draw((TextureRegion) ((Animation) graphic).getKeyFrame(stateTime * speedAnimation, isLoopAnimation),
+                                model.getPosition().x, model.getPosition().y, 2, 2);
+                Gdx.app.log("VIEW", " speed ani:" + speedAnimation + " isLoop:" + isLoopAnimation);
             }
 
         };
@@ -114,7 +116,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         if (graphicFrame == graphicFrame.STAY) {
             ((QueueDraw) queueDraw).putSafe(zIndex, drawStayPlayer);
         } else {
-            ((QueueDraw) queueDraw).putSafe(zIndex, drawMovePlayer);
+            ((QueueDraw) queueDraw).putSafe(zIndex, drawAnimationPlayer);
         }
         return queueDraw;
     }
@@ -122,6 +124,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     public void setDefaultAnimationParams() {
         isLoopAnimation = true;
         speedAnimation = 1f;
+        stateTime = 0;
     }
 
 }

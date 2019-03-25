@@ -112,12 +112,6 @@ public class Player implements EntityInterface, MoveEntityInterface {
         currentVelocityX = -Player.VELOCITYX;
         isMove = true;
         vector = PlayerVector.LEFT;
-        if (isGround) {
-            view.graphicFrame = View.GraphicType.MOVELEFT;
-        } else {
-            view.graphicFrame = View.GraphicType.JUMPLEFT;
-
-        }
     }
 
     @Override
@@ -125,33 +119,20 @@ public class Player implements EntityInterface, MoveEntityInterface {
         currentVelocityX = Player.VELOCITYX;
         isMove = true;
         vector = PlayerVector.RIGHT;
-        if (isGround) {
-            view.graphicFrame = View.GraphicType.MOVERIGHT;
-        } else {
-            view.graphicFrame = View.GraphicType.JUMPRIGHT;
-
-        }
-
     }
 
     @Override
     public void stop(Player.Actions action) {
 
         switch (action) {
-            case MOVE: {
-                view.graphicFrame = View.GraphicType.STAY;
+            case MOVE:
                 vector = PlayerVector.STAY;
                 currentVelocityX = 0f;
                 isMove = false;
-            }
-            break;
+                break;
 
-            case JUMP: {
+            case JUMP:
                 isJump = false;
-            }
-            break;
-
-            default: ;
                 break;
         }
 
@@ -160,19 +141,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     @Override
     public void jump() {
         if (isGround) {
-            view.isLoopAnimation = false;
-            view.speedAnimation = 0.3f;
             isJump = true;
-            if (vector.equals(PlayerVector.RIGHT)) {
-                view.graphicFrame = View.GraphicType.JUMPRIGHT;
-            } else if (vector.equals(PlayerVector.LEFT)) {
-                view.graphicFrame = View.GraphicType.JUMPLEFT;
-            } else {
-                view.graphicFrame = View.GraphicType.STAYJUMP;
-            }
-
-            body.applyForceToCenter(0, JUMPVELOCITY, true);
-            isGround = false;
         }
     }
 
@@ -184,17 +153,50 @@ public class Player implements EntityInterface, MoveEntityInterface {
             velocity.set(currentVelocityX, velocity.y);
             body.setLinearVelocity(velocity);
         }
-        
-        if(isJump && isGround){
-            
+
+        if (isJump && isGround) {
+            view.isLoopAnimation = false;
+            view.speedAnimation = 0.3f;
+            body.applyForceToCenter(0, JUMPVELOCITY, true);
+            isGround = false;
         }
+
+        handlerGrpahicFrame();
 
     }
 
+    private void handlerGrpahicFrame() {
+
+        if (isGround) {
+            switch (vector) {
+                case RIGHT:
+                    view.graphicFrame = View.GraphicType.MOVERIGHT;
+                    break;
+                case LEFT:
+                    view.graphicFrame = View.GraphicType.MOVELEFT;
+                    break;
+                default:
+                    view.graphicFrame = View.GraphicType.STAY;
+                    break;
+            }
+        } else {
+            switch (vector) {
+                case RIGHT:
+                    view.graphicFrame = View.GraphicType.JUMPRIGHT;
+                    break;
+                case LEFT:
+                    view.graphicFrame = View.GraphicType.JUMPLEFT;
+                    break;
+                default:
+                    view.graphicFrame = View.GraphicType.STAYJUMP;
+                    break;
+            }
+        }
+    }
+
     public void grounded() {
-        isJump = false;
+        isGround = true;
         view.setDefaultAnimationParams();
-        Gdx.app.log("GROUND", "true");
     }
 
     private void stopPlayer() {
