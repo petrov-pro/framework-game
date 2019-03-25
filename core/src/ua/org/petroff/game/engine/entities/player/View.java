@@ -18,6 +18,9 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     public enum GraphicType {
         MOVELEFT, MOVERIGHT, STAY, JUMPLEFT, JUMPRIGHT, STAYJUMP
     };
+    public View.GraphicType graphicFrame;
+    public boolean isLoopAnimation = true;
+    public float speedAnimation = 1f;
 
     private final int zIndex = 2;
     private final Assets asset;
@@ -55,8 +58,8 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             @Override
             public void draw(GraphicResources graphicResources) {
                 stateTime += Gdx.graphics.getDeltaTime();
-                Object graphic = graphics.get(model.graphicFrame);
-                graphicResources.getSpriteBatch().draw((TextureRegion) ((Animation) graphic).getKeyFrame(stateTime, model.isLoopAnimation),
+                Object graphic = graphics.get(graphicFrame);
+                graphicResources.getSpriteBatch().draw((TextureRegion) ((Animation) graphic).getKeyFrame(stateTime * speedAnimation, isLoopAnimation),
                         model.getPosition().x, model.getPosition().y, 2, 2);
             }
 
@@ -92,7 +95,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             playerRegionsJumpRight[i] = new TextureRegion(playerTexture, 64 * i, 192, 64, 64);
         }
         Animation jumpAnimationRight = new Animation(0.1f, (Object[]) playerRegionsJumpRight);
-        
+
         for (int i = 0; i < 7; i++) {
             playerRegionsJumpStay[i] = new TextureRegion(playerTexture, 64 * i, 128, 64, 64);
         }
@@ -108,12 +111,17 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
     @Override
     public Map<Integer, QueueDrawInterface> prepareDraw(Map<Integer, QueueDrawInterface> queueDraw) {
-        if (model.state == Player.Actions.STAY) {
+        if (graphicFrame == graphicFrame.STAY) {
             ((QueueDraw) queueDraw).putSafe(zIndex, drawStayPlayer);
-        } else if (model.state == Player.Actions.MOVE || model.state == Player.Actions.JUMP) {
+        } else {
             ((QueueDraw) queueDraw).putSafe(zIndex, drawMovePlayer);
         }
         return queueDraw;
+    }
+
+    public void setDefaultAnimationParams() {
+        isLoopAnimation = true;
+        speedAnimation = 1f;
     }
 
 }

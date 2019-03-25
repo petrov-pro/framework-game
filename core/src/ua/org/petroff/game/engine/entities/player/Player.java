@@ -23,9 +23,10 @@ public class Player implements EntityInterface, MoveEntityInterface {
     public static final String OBJECT_NAME = "start player";
     public static final String DESCRIPTOR = "Player";
     public static final String SENSOR = "foot";
-    public Actions state;
-    public View.GraphicType graphicFrame;
-    public boolean isLoopAnimation = true;
+
+    public enum Actions {
+        MOVE, JUMP, USE, HIT
+    };
 
     private final int zIndex = 2;
     private final Assets asset;
@@ -34,23 +35,34 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private Float currentVelocityY = 0f;
     private static final float VELOCITYX = 3f;
     private static final float VELOCITYY = 0f;
+    private static final float JUMPVELOCITY = 1080f;
     private GameResources gameResources;
+    private View view;
 
-    public enum Actions {
-        MOVE, JUMP, STAY
+    private enum PlayerVector {
+        LEFT, RIGHT, STAY
     };
-    public View view;
+    private boolean isMove = false;
+    private boolean isJump = false;
+    private boolean isGround = true;
+    private boolean isAction = false;
+
+    private PlayerVector vector;
 
     public Player(Assets asset) {
         view = new View(asset, this);
-        state = Actions.STAY;
-        graphicFrame = View.GraphicType.STAY;
         this.asset = asset;
+        stopPlayer();
     }
 
     @Override
     public ViewInterface getView() {
         return view;
+    }
+
+    @Override
+    public int getZIndex() {
+        return zIndex;
     }
 
     public Vector2 getPosition() {
@@ -97,57 +109,100 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     @Override
     public void left() {
-        state = Actions.MOVE;
-        graphicFrame = View.GraphicType.MOVELEFT;
         currentVelocityX = -Player.VELOCITYX;
-    }
+        isMove = true;
+        vector = PlayerVector.LEFT;
+        if (isGround) {
+            view.graphicFrame = View.GraphicType.MOVELEFT;
+        } else {
+            view.graphicFrame = View.GraphicType.JUMPLEFT;
 
-    @Override
-    public void right() {
-        Gdx.app.log("Touch", "Right ");
-        state = Actions.MOVE;
-        graphicFrame = View.GraphicType.MOVERIGHT;
-        currentVelocityX = Player.VELOCITYX;
-    }
-
-    @Override
-    public void stop() {
-        if (state == Actions.MOVE) {
-            state = Actions.STAY;
-            graphicFrame = View.GraphicType.STAY;
-            currentVelocityX = 0f;
         }
     }
 
     @Override
+    public void right() {
+        currentVelocityX = Player.VELOCITYX;
+        isMove = true;
+        vector = PlayerVector.RIGHT;
+        if (isGround) {
+            view.graphicFrame = View.GraphicType.MOVERIGHT;
+        } else {
+            view.graphicFrame = View.GraphicType.JUMPRIGHT;
+
+        }
+
+    }
+
+    @Override
+    public void stop(Player.Actions action) {
+
+        switch (action) {
+            case MOVE: {
+                view.graphicFrame = View.GraphicType.STAY;
+                vector = PlayerVector.STAY;
+                currentVelocityX = 0f;
+                isMove = false;
+            }
+            break;
+
+            case JUMP: {
+                isJump = false;
+            }
+            break;
+
+            default: ;
+                break;
+        }
+
+    }
+
+    @Override
     public void jump() {
-        if (state != Actions.JUMP) {
-            state = Actions.JUMP;
-            if (body.getLinearVelocity().x > 0) {
-                graphicFrame = View.GraphicType.JUMPRIGHT;
-            } else if (body.getLinearVelocity().x < 0) {
-                graphicFrame = View.GraphicType.JUMPLEFT;
+        if (isGround) {
+            view.isLoopAnimation = false;
+            view.speedAnimation = 0.3f;
+            isJump = true;
+            if (vector.equals(PlayerVector.RIGHT)) {
+                view.graphicFrame = View.GraphicType.JUMPRIGHT;
+            } else if (vector.equals(PlayerVector.LEFT)) {
+                view.graphicFrame = View.GraphicType.JUMPLEFT;
             } else {
-                graphicFrame = View.GraphicType.STAYJUMP;
+                view.graphicFrame = View.GraphicType.STAYJUMP;
             }
 
-            body.applyForceToCenter(0, 1080f, true);
+            body.applyForceToCenter(0, JUMPVELOCITY, true);
+            isGround = false;
         }
     }
 
     @Override
     public void update() {
 
-        if (state == Actions.MOVE || state == Actions.JUMP) {
+        if (isMove) {
             Vector2 velocity = body.getLinearVelocity().cpy();
             velocity.set(currentVelocityX, velocity.y);
             body.setLinearVelocity(velocity);
         }
+        
+        if(isJump && isGround){
+            
+        }
+
     }
 
-    @Override
-    public int getZIndex() {
-        return zIndex;
+    public void grounded() {
+        isJump = false;
+        view.setDefaultAnimationParams();
+        Gdx.app.log("GROUND", "true");
+    }
+
+    private void stopPlayer() {
+        view.graphicFrame = View.GraphicType.STAY;
+        vector = PlayerVector.STAY;
+        isMove = false;
+        isJump = false;
+        isAction = false;
     }
 
 }
