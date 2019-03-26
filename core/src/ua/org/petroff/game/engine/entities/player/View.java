@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import java.util.HashMap;
 import java.util.Map;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
@@ -21,6 +23,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     public View.GraphicType graphicFrame;
     public boolean isLoopAnimation = true;
     public float speedAnimation = 1f;
+    public GraphicResources graphicResources;
 
     private final int zIndex = 2;
     private final Assets asset;
@@ -43,7 +46,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
     @Override
     public void init(GraphicResources graphicResources) {
-
+        this.graphicResources = graphicResources;
         loadAnimation();
 
         drawStayPlayer = new QueueDrawInterface() {
@@ -62,7 +65,6 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
                 graphicResources.getSpriteBatch()
                         .draw((TextureRegion) ((Animation) graphic).getKeyFrame(stateTime * speedAnimation, isLoopAnimation),
                                 model.getPosition().x, model.getPosition().y, 2, 2);
-                Gdx.app.log("VIEW", " speed ani:" + speedAnimation + " isLoop:" + isLoopAnimation);
             }
 
         };
@@ -118,6 +120,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         } else {
             ((QueueDraw) queueDraw).putSafe(zIndex, drawAnimationPlayer);
         }
+        model.calculateCameraPositionForPlayer(graphicResources.getCamera().position);
         return queueDraw;
     }
 

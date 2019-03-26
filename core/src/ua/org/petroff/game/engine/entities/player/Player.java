@@ -1,9 +1,11 @@
 package ua.org.petroff.game.engine.entities.player;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -33,7 +35,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private Body body;
     private Float currentVelocityX = 0f;
     private static final float VELOCITYX = 3f;
-    private static final float JUMPVELOCITY = 1080f;
+    private static final float JUMPVELOCITY = 700f;
     private GameResources gameResources;
     private final View view;
 
@@ -139,9 +141,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     @Override
     public void jump() {
-        if (isGround) {
-            isJump = true;
-        }
+        isJump = true;
     }
 
     @Override
@@ -161,7 +161,6 @@ public class Player implements EntityInterface, MoveEntityInterface {
         }
 
         handlerGrpahicFrame();
-
     }
 
     private void handlerGrpahicFrame() {
@@ -196,6 +195,15 @@ public class Player implements EntityInterface, MoveEntityInterface {
     public void grounded() {
         isGround = true;
         view.setDefaultAnimationParams();
+    }
+
+    public void calculateCameraPositionForPlayer(Vector3 cameraPosition) {
+        Float deltaTime = Gdx.graphics.getDeltaTime();
+        float lerp = 0.9f;
+        cameraPosition.x += (getPosition().x - cameraPosition.x) * lerp * deltaTime;
+        cameraPosition.y += (getPosition().y - cameraPosition.y) * lerp * deltaTime;
+        Gdx.app.log("Camera", "x: " + cameraPosition.x + " y: " + cameraPosition.y);
+
     }
 
 }

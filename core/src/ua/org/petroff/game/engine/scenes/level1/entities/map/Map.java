@@ -44,7 +44,13 @@ public class Map implements EntityInterface {
     public void init(GameResources gameResources) {
         this.gameResources = gameResources;
         createPhysicMap();
-        MapObject cameraObject = MapResolver.findObject(asset.getMap(), OBJECT_NAME);
+        com.badlogic.gdx.maps.Map map = asset.getMap();
+        int width = map.getProperties().get("width", Integer.class);
+        int height = map.getProperties().get("height", Integer.class);
+        gameResources.setWorldHeight(height);
+        gameResources.setWorldWidth(width);
+        MapObject cameraObject = MapResolver.findObject(map, OBJECT_NAME);
+        
         cameraPosition = new Vector2(MapResolver.coordinateToWorld(cameraObject.getProperties().get("x", Float.class).intValue()),
                 MapResolver.coordinateToWorld(cameraObject.getProperties().get("y", Float.class).intValue()));
         createGround(gameResources);

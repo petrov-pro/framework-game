@@ -63,8 +63,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             @Override
             public void draw(GraphicResources graphicResources) {
                 renderer.getBatch().end();
-                map.gameResources.getDebugRenderer().render(
-                        map.gameResources.getWorld(), graphicResources.getCamera().combined);
+                map.gameResources.debugPhysic(graphicResources.getCamera().combined);
             }
 
         };
@@ -81,6 +80,5 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         graphicResources.setViewport(viewport);
         graphicResources.setSpriteBatch((SpriteBatch) renderer.getBatch());
     }
-
 
 }
