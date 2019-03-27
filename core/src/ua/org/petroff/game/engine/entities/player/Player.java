@@ -39,7 +39,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private GameResources gameResources;
     private final View view;
 
-    private enum PlayerVector {
+    public enum PlayerVector {
         LEFT, RIGHT, STAY
     };
     private boolean isMove = false;
@@ -52,7 +52,6 @@ public class Player implements EntityInterface, MoveEntityInterface {
     public Player(Assets asset) {
         view = new View(asset, this);
         this.asset = asset;
-        view.graphicFrame = View.GraphicType.STAY;
         vector = PlayerVector.STAY;
     }
 
@@ -66,6 +65,18 @@ public class Player implements EntityInterface, MoveEntityInterface {
         return zIndex;
     }
 
+    public boolean isGround() {
+        return isGround;
+    }
+
+    public boolean isAction() {
+        return isAction;
+    }
+
+    public PlayerVector getVector() {
+        return vector;
+    }
+    
     public Vector2 getPosition() {
         return body.getPosition();
     }
@@ -160,36 +171,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
             isGround = false;
         }
 
-        handlerGrpahicFrame();
-    }
-
-    private void handlerGrpahicFrame() {
-
-        if (isGround) {
-            switch (vector) {
-                case RIGHT:
-                    view.graphicFrame = View.GraphicType.MOVERIGHT;
-                    break;
-                case LEFT:
-                    view.graphicFrame = View.GraphicType.MOVELEFT;
-                    break;
-                default:
-                    view.graphicFrame = View.GraphicType.STAY;
-                    break;
-            }
-        } else {
-            switch (vector) {
-                case RIGHT:
-                    view.graphicFrame = View.GraphicType.JUMPRIGHT;
-                    break;
-                case LEFT:
-                    view.graphicFrame = View.GraphicType.JUMPLEFT;
-                    break;
-                default:
-                    view.graphicFrame = View.GraphicType.STAYJUMP;
-                    break;
-            }
-        }
+        calculateCameraPositionForPlayer();
     }
 
     public void grounded() {
@@ -197,13 +179,13 @@ public class Player implements EntityInterface, MoveEntityInterface {
         view.setDefaultAnimationParams();
     }
 
-    public void calculateCameraPositionForPlayer(Vector3 cameraPosition) {
+    private void calculateCameraPositionForPlayer() {
+        Vector3 cameraPosition = view.graphicResources.getCamera().position;
         Float deltaTime = Gdx.graphics.getDeltaTime();
         float lerp = 0.9f;
         cameraPosition.x += (getPosition().x - cameraPosition.x) * lerp * deltaTime;
         cameraPosition.y += (getPosition().y - cameraPosition.y) * lerp * deltaTime;
         Gdx.app.log("Camera", "x: " + cameraPosition.x + " y: " + cameraPosition.y);
-
     }
 
 }

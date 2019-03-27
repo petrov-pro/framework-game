@@ -48,6 +48,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     public void init(GraphicResources graphicResources) {
         this.graphicResources = graphicResources;
         loadAnimation();
+        graphicFrame = GraphicType.STAY;
 
         drawStayPlayer = new QueueDrawInterface() {
             @Override
@@ -115,13 +116,43 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
     @Override
     public Map<Integer, QueueDrawInterface> prepareDraw(Map<Integer, QueueDrawInterface> queueDraw) {
+
+        handlerGrpahicFrame();
         if (graphicFrame == graphicFrame.STAY) {
             ((QueueDraw) queueDraw).putSafe(zIndex, drawStayPlayer);
         } else {
             ((QueueDraw) queueDraw).putSafe(zIndex, drawAnimationPlayer);
         }
-        model.calculateCameraPositionForPlayer(graphicResources.getCamera().position);
         return queueDraw;
+    }
+
+    private void handlerGrpahicFrame() {
+
+        if (model.isGround()) {
+            switch (model.getVector()) {
+                case RIGHT:
+                    graphicFrame = GraphicType.MOVERIGHT;
+                    break;
+                case LEFT:
+                    graphicFrame = GraphicType.MOVELEFT;
+                    break;
+                default:
+                    graphicFrame = GraphicType.STAY;
+                    break;
+            }
+        } else {
+            switch (model.getVector()) {
+                case RIGHT:
+                    graphicFrame = GraphicType.JUMPRIGHT;
+                    break;
+                case LEFT:
+                    graphicFrame = GraphicType.JUMPLEFT;
+                    break;
+                default:
+                    graphicFrame = GraphicType.STAYJUMP;
+                    break;
+            }
+        }
     }
 
     public void setDefaultAnimationParams() {
