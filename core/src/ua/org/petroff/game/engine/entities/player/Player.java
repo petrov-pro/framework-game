@@ -16,6 +16,7 @@ import ua.org.petroff.game.engine.entities.BodyDescriber;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
+import ua.org.petroff.game.engine.scenes.core.CameraBound;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.util.MapResolver;
@@ -76,7 +77,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     public PlayerVector getVector() {
         return vector;
     }
-    
+
     public Vector2 getPosition() {
         return body.getPosition();
     }
@@ -183,8 +184,12 @@ public class Player implements EntityInterface, MoveEntityInterface {
         Vector3 cameraPosition = view.graphicResources.getCamera().position;
         Float deltaTime = Gdx.graphics.getDeltaTime();
         float lerp = 0.9f;
-        cameraPosition.x += (getPosition().x - cameraPosition.x) * lerp * deltaTime;
-        cameraPosition.y += (getPosition().y - cameraPosition.y) * lerp * deltaTime;
+        float x = cameraPosition.x;
+        float y = cameraPosition.y;
+        x += (getPosition().x - cameraPosition.x) * lerp * deltaTime;
+        y += (getPosition().y - cameraPosition.y) * lerp * deltaTime;
+
+        ((CameraBound) view.graphicResources.getCamera()).positionSafe(x, y);
         Gdx.app.log("Camera", "x: " + cameraPosition.x + " y: " + cameraPosition.y);
     }
 

@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
+import ua.org.petroff.game.engine.scenes.core.CameraBound;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 
 public class View implements ViewInterface, GraphicQueueMemberInterface {
@@ -40,11 +41,13 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     @Override
     public void init(GraphicResources graphicResources) {
         renderer = new OrthogonalTiledMapRenderer(((TiledMap) assets.get("map-level1")), 1 / 32f, new SpriteBatch());
-        OrthographicCamera camera = new OrthographicCamera();
+        CameraBound camera = new CameraBound();
         camera.position.set(map.getCameraPosition(), 0);
+        camera.setWorldBounds(0, 0, map.gameResources.getWorldWidth(), map.gameResources.getWorldHeight());
         viewport = new FillViewport(Settings.WIDTH, Settings.HEIGHT, camera);
         renderer.setView(camera);
         share(graphicResources);
+        
 
         drawBackground = new QueueDrawInterface() {
             @Override

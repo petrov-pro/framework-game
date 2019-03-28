@@ -116,7 +116,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
     @Override
     public Map<Integer, QueueDrawInterface> prepareDraw(Map<Integer, QueueDrawInterface> queueDraw) {
-
+        
         handlerGrpahicFrame();
         if (graphicFrame == graphicFrame.STAY) {
             ((QueueDraw) queueDraw).putSafe(zIndex, drawStayPlayer);
