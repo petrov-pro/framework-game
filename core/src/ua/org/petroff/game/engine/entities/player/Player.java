@@ -37,7 +37,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private Body body;
     private Float currentVelocityX = 0f;
     private static final float VELOCITYX = 3f;
-    private static final float JUMPVELOCITY = 700f;
+    private static final float JUMPVELOCITY = 800f;
     private GameResources gameResources;
     private final View view;
 
