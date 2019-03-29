@@ -10,14 +10,14 @@ public class CameraBound extends OrthographicCamera {
     private BoundingBox left, right, top, bottom = null;
     private Vector3 lastPosition = new Vector3();
 
-    public void setWorldBounds(int left, int bottom, int width, int height) {
-        int top = bottom + height;
-        int right = left + width;
+    public void setWorldBounds(int width, int height) {
 
-        this.left = new BoundingBox(new Vector3(left - 2, 0, 0), new Vector3(left, top, 0));
-        this.right = new BoundingBox(new Vector3(right + 1, 0, 0), new Vector3(right + 2, top, 0));
-        this.top = new BoundingBox(new Vector3(0, top + 1, 0), new Vector3(right, top + 2, 0));
-        this.bottom = new BoundingBox(new Vector3(0, bottom - 1, 0), new Vector3(right, bottom - 2, 0));
+        this.left = new BoundingBox(new Vector3(0, 0, 0), new Vector3(0, height, 0));
+        this.right = new BoundingBox(new Vector3(width, 0, 0), new Vector3(width, height, 0));
+
+        this.top = new BoundingBox(new Vector3(0, 67, 0), new Vector3(height, 67, 0));
+
+        this.bottom = new BoundingBox(new Vector3(0, -7, 0), new Vector3(height, -7, 0));
     }
 
     public void positionSafe(float x, float y) {
@@ -31,11 +31,11 @@ public class CameraBound extends OrthographicCamera {
 
     public void ensureBounds() {
 
-        if (frustum.boundsInFrustum(left)) {
+        if (frustum.boundsInFrustum(left) || frustum.boundsInFrustum(right)) {
             position.set(lastPosition.x, position.y, 0);
         }
 
-        if (frustum.boundsInFrustum(top)) {
+        if (frustum.boundsInFrustum(bottom) || frustum.boundsInFrustum(top)) {
             position.set(position.x, lastPosition.y, 0);
         }
     }

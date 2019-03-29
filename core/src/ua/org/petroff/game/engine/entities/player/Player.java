@@ -1,6 +1,7 @@
 package ua.org.petroff.game.engine.entities.player;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
@@ -186,11 +187,13 @@ public class Player implements EntityInterface, MoveEntityInterface {
         float lerp = 0.9f;
         float x = cameraPosition.x;
         float y = cameraPosition.y;
+
         x += (getPosition().x - cameraPosition.x) * lerp * deltaTime;
         y += (getPosition().y - cameraPosition.y) * lerp * deltaTime;
 
         ((CameraBound) view.graphicResources.getCamera()).positionSafe(x, y);
-        Gdx.app.log("Camera", "x: " + cameraPosition.x + " y: " + cameraPosition.y);
+
+//        Gdx.app.log("Camera", "x: " + getPosition().x + " y: " + getPosition().y);
     }
 
 }

@@ -43,7 +43,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         renderer = new OrthogonalTiledMapRenderer(((TiledMap) assets.get("map-level1")), 1 / 32f, new SpriteBatch());
         CameraBound camera = new CameraBound();
         camera.position.set(map.getCameraPosition(), 0);
-        camera.setWorldBounds(0, 0, map.gameResources.getWorldWidth(), map.gameResources.getWorldHeight());
+        camera.setWorldBounds(map.gameResources.getWorldWidth(), map.gameResources.getWorldHeight());
         viewport = new FillViewport(Settings.WIDTH, Settings.HEIGHT, camera);
         renderer.setView(camera);
         share(graphicResources);
