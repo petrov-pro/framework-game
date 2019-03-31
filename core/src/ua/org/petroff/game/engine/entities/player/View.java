@@ -13,6 +13,7 @@ import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterface;
 import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
+import ua.org.petroff.game.engine.scenes.core.CameraBound;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 
 public class View implements ViewInterface, GraphicQueueMemberInterface {
@@ -116,13 +117,14 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
     @Override
     public Map<Integer, QueueDrawInterface> prepareDraw(Map<Integer, QueueDrawInterface> queueDraw) {
-        
+
         handlerGrpahicFrame();
         if (graphicFrame == graphicFrame.STAY) {
             ((QueueDraw) queueDraw).putSafe(zIndex, drawStayPlayer);
         } else {
             ((QueueDraw) queueDraw).putSafe(zIndex, drawAnimationPlayer);
         }
+        ((CameraBound) graphicResources.getCamera()).positionSafe(model.getCameraNewPosition());
         return queueDraw;
     }
 

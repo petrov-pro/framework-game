@@ -1,10 +1,7 @@
 package ua.org.petroff.game.engine.entities.player;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -14,10 +11,10 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import ua.org.petroff.game.engine.entities.BodyDescriber;
+import ua.org.petroff.game.engine.entities.GroupDescriber;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
-import ua.org.petroff.game.engine.scenes.core.CameraBound;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.util.MapResolver;
@@ -26,7 +23,9 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     public static final String OBJECT_NAME = "start player";
     public static final String DESCRIPTOR = "Player";
-    public static final String SENSOR = "foot";
+
+    public static final String BODY_NAME = "player";
+    public static final String BODY_TYPE_SENSOR = "foot";
 
     public enum Actions {
         MOVE, JUMP, USE, HIT
@@ -40,6 +39,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private static final float JUMPVELOCITY = 800f;
     private GameResources gameResources;
     private final View view;
+    private Vector3 cameraNewPosition = new Vector3();
 
     public enum PlayerVector {
         LEFT, RIGHT, STAY
@@ -83,6 +83,10 @@ public class Player implements EntityInterface, MoveEntityInterface {
         return body.getPosition();
     }
 
+    public Vector3 getCameraNewPosition() {
+        return cameraNewPosition;
+    }
+
     @Override
     public void init(GameResources gameResources) {
         this.gameResources = gameResources;
@@ -115,7 +119,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
         fixtureDef.density = 1;
         fixtureDef.isSensor = true;
         Fixture footSensorFixture = body.createFixture(fixtureDef);
-        footSensorFixture.setUserData(new BodyDescriber(DESCRIPTOR, SENSOR));
+        footSensorFixture.setUserData(new BodyDescriber(BODY_NAME, BODY_TYPE_SENSOR, GroupDescriber.ALIVE));
         poly.dispose();
 
         gameResources.getWorldContactListener().addListener(new Listener(this));
@@ -185,15 +189,12 @@ public class Player implements EntityInterface, MoveEntityInterface {
         Vector3 cameraPosition = view.graphicResources.getCamera().position;
         Float deltaTime = Gdx.graphics.getDeltaTime();
         float lerp = 0.9f;
-        float x = cameraPosition.x;
-        float y = cameraPosition.y;
+        cameraNewPosition.x = cameraPosition.x;
+        cameraNewPosition.y = cameraPosition.y;
 
-        x += (getPosition().x - cameraPosition.x) * lerp * deltaTime;
-        y += (getPosition().y - cameraPosition.y) * lerp * deltaTime;
+        cameraNewPosition.x += (getPosition().x - cameraPosition.x) * lerp * deltaTime;
+        cameraNewPosition.y += (getPosition().y - cameraPosition.y) * lerp * deltaTime;
 
-        ((CameraBound) view.graphicResources.getCamera()).positionSafe(x, y);
-
-//        Gdx.app.log("Camera", "x: " + getPosition().x + " y: " + getPosition().y);
     }
 
 }

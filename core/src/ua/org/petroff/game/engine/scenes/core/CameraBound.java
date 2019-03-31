@@ -14,16 +14,13 @@ public class CameraBound extends OrthographicCamera {
 
         this.left = new BoundingBox(new Vector3(0, 0, 0), new Vector3(0, height, 0));
         this.right = new BoundingBox(new Vector3(width, 0, 0), new Vector3(width, height, 0));
-
         this.top = new BoundingBox(new Vector3(0, height, 0), new Vector3(height, height, 0));
-
         this.bottom = new BoundingBox(new Vector3(0, 0, 0), new Vector3(height, 0, 0));
     }
 
-    public void positionSafe(float x, float y) {
-        lastPosition.set(position.x, position.y, 0);
-        position.x = x;
-        position.y = y;
+    public void positionSafe(Vector3 newPosition) {
+        lastPosition.set(position.cpy());
+        position.set(newPosition);
         update();
         ensureBounds();
         update();

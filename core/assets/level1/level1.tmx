@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" nextobjectid="43">
+<map version="1.0" tiledversion="2017.07.26" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" nextobjectid="43">
  <properties>
   <property name="object_layer_name" value="objects"/>
  </properties>
@@ -107,7 +107,10 @@
    <polyline points="0,0 0,187"/>
   </object>
   <object id="39" name="surface" x="736" y="447">
-   <polyline points="0,0 64,0 64,-31 160,-32"/>
+   <properties>
+    <property name="type" value="dead"/>
+   </properties>
+   <polyline points="0,0 64,0 64,-31 144,-30.5 223.5,-30.75 224,-183"/>
   </object>
   <object id="40" name="surface" x="1058" y="259">
    <polyline points="0,0 861,0 862,-226"/>
