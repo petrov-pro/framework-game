@@ -62,6 +62,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             public void draw(GraphicResources graphicResources) {
                 stateTime += Gdx.graphics.getDeltaTime();
                 Object graphic = graphics.get(graphicFrame);
+                boolean t = ((Animation) graphic).isAnimationFinished(stateTime);
                 graphicResources.getSpriteBatch()
                         .draw((TextureRegion) ((Animation) graphic).getKeyFrame(stateTime * speedAnimation, isLoopAnimation),
                                 model.getPosition().x, model.getPosition().y, 2, 2);
@@ -77,7 +78,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         TextureRegion[] playerRegionsJumpLeft = new TextureRegion[7];
         TextureRegion[] playerRegionsJumpRight = new TextureRegion[7];
         TextureRegion[] playerRegionsJumpStay = new TextureRegion[7];
-        TextureRegion[] playerRegionsDied = new TextureRegion[7];
+        TextureRegion[] playerRegionsDied = new TextureRegion[5];
 
         player = new TextureRegion(playerTexture, 0, 384, 64, 64);
 
@@ -105,8 +106,8 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             playerRegionsJumpStay[i] = new TextureRegion(playerTexture, 64 * i, 128, 64, 64);
         }
         Animation jumpAnimationStay = new Animation(0.1f, (Object[]) playerRegionsJumpStay);
-        
-        for (int i = 0; i < 7; i++) {
+
+        for (int i = 0; i < 5; i++) {
             playerRegionsDied[i] = new TextureRegion(playerTexture, 64 * i, 1280, 64, 64);
         }
         Animation diedAnimationStay = new Animation(0.1f, (Object[]) playerRegionsDied);
@@ -124,7 +125,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     public Map<Integer, QueueDrawInterface> prepareDraw(Map<Integer, QueueDrawInterface> queueDraw) {
 
         handlerGrpahicFrame();
-        if (graphicFrame == graphicFrame.STAY) {
+        if (graphicFrame == GraphicType.STAY) {
             ((QueueDraw) queueDraw).putSafe(zIndex, drawStayPlayer);
         } else {
             ((QueueDraw) queueDraw).putSafe(zIndex, drawAnimationPlayer);
@@ -135,12 +136,16 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
     private void handlerGrpahicFrame() {
 
-        if (model.getVector() == Player.PlayerState.DIED) {
+        if (model.isDie()) {
             graphicFrame = GraphicType.DIED;
+            isLoopAnimation = false;
+            speedAnimation = 1f;
             return;
         }
 
         if (model.isGround()) {
+            isLoopAnimation = true;
+            speedAnimation = 1f;
             switch (model.getVector()) {
                 case RIGHT:
                     graphicFrame = GraphicType.MOVERIGHT;
@@ -153,6 +158,8 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
                     break;
             }
         } else {
+            isLoopAnimation = false;
+            speedAnimation = 0.3f;
             switch (model.getVector()) {
                 case RIGHT:
                     graphicFrame = GraphicType.JUMPRIGHT;
@@ -167,15 +174,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         }
     }
 
-    public void setDefaultAnimationParams() {
-        isLoopAnimation = true;
-        speedAnimation = 1f;
-        stateTime = 0;
-    }
-    
-    public void setDiedAnimationParams() {
-        isLoopAnimation = true;
-        speedAnimation = 1f;
+    public void changeState() {
         stateTime = 0;
     }
 

@@ -41,15 +41,16 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private final Vector3 cameraNewPosition = new Vector3();
     private Telegraph telegraph;
 
-    public enum PlayerState {
-        LEFT, RIGHT, STAY, DIED
+    public enum PlayerVector {
+        LEFT, RIGHT, STAY
     };
     private boolean isMove = false;
     private boolean isJump = false;
     private boolean isGround = true;
+    private boolean isDie = false;
     private boolean isAction = false;
 
-    private PlayerState state;
+    private PlayerVector vector;
 
     public Player(Assets asset) {
         view = new View(asset, this);
@@ -74,8 +75,12 @@ public class Player implements EntityInterface, MoveEntityInterface {
         return isAction;
     }
 
-    public PlayerState getVector() {
-        return state;
+    public boolean isDie() {
+        return isDie;
+    }
+
+    public PlayerVector getVector() {
+        return vector;
     }
 
     public Vector2 getPosition() {
@@ -91,7 +96,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
         this.gameResources = gameResources;
         telegraph = new Telegraph(this, gameResources);
         gameResources.getMessageManger().addTelegraph(DESCRIPTOR, telegraph);
-        state = PlayerState.STAY;
+        vector = PlayerVector.STAY;
         MapObject playerObject = ua.org.petroff.game.engine.util.MapResolver.findObject(asset.getMap(),
                 OBJECT_NAME);
         createBody(playerObject);
@@ -135,14 +140,14 @@ public class Player implements EntityInterface, MoveEntityInterface {
     public void left() {
         currentVelocityX = -Player.VELOCITYX;
         isMove = true;
-        state = PlayerState.LEFT;
+        vector = PlayerVector.LEFT;
     }
 
     @Override
     public void right() {
         currentVelocityX = Player.VELOCITYX;
         isMove = true;
-        state = PlayerState.RIGHT;
+        vector = PlayerVector.RIGHT;
     }
 
     @Override
@@ -150,7 +155,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
         switch (action) {
             case MOVE:
-                state = PlayerState.STAY;
+                vector = PlayerVector.STAY;
                 currentVelocityX = 0f;
                 isMove = false;
                 break;
@@ -170,6 +175,10 @@ public class Player implements EntityInterface, MoveEntityInterface {
     @Override
     public void update() {
 
+        if (isDie) {
+            return;
+        }
+
         if (isMove) {
             Vector2 velocity = body.getLinearVelocity().cpy();
             velocity.set(currentVelocityX, velocity.y);
@@ -177,8 +186,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
         }
 
         if (isJump && isGround) {
-            view.isLoopAnimation = false;
-            view.speedAnimation = 0.3f;
+
             body.applyForceToCenter(0, JUMPVELOCITY, true);
             isGround = false;
         }
@@ -188,12 +196,12 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     public void grounded() {
         isGround = true;
-        view.setDefaultAnimationParams();
+        view.changeState();
     }
 
     public void died() {
-        state = PlayerState.DIED;
-        view.setDiedAnimationParams();
+        isDie = true;
+        view.changeState();
     }
 
     private void calculateCameraPositionForPlayer() {
