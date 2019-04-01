@@ -1,5 +1,7 @@
-package ua.org.petroff.game.engine.scenes.level1.entities.map;
+package ua.org.petroff.game.engine.entities.surface;
 
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.math.Vector2;
@@ -12,32 +14,53 @@ import java.util.ArrayList;
 import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.BodyDescriber;
 import ua.org.petroff.game.engine.entities.GroupDescriber;
-import ua.org.petroff.game.engine.entities.player.Listener;
+import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.util.Assets;
 
-public class Surface {
+public class Surface implements EntityInterface, Telegraph {
 
-    private final Assets asset;
-    private final GameResources gameResources;
-    private final float friction = 2f;
+    public static final String DESCRIPTOR = "surface";
     public static final String NAME = "ground";
 
     public static final String DAMAGE_TYPE = "damage";
     public static final int DAMAGE = 100;
     public static final String DAMAGE_FIELD = "damage";
 
-    public Surface(Assets asset, GameResources gameResources) {
+    private final Assets asset;
+    private final float friction = 2f;
+    private GameResources gameResources;
+
+    private final int zIndex = 2;
+
+    public Surface(Assets asset) {
         this.asset = asset;
-        this.gameResources = gameResources;
     }
 
-    public void create(com.badlogic.gdx.maps.Map map) {
+    @Override
+    public ViewInterface getView() {
+        throw new UnsupportedOperationException();
+    }
 
-        int width = map.getProperties().get("width", Integer.class);
-        int height = map.getProperties().get("height", Integer.class);
-        gameResources.setWorldHeight(height);
-        gameResources.setWorldWidth(width);
+    @Override
+    public void init(GameResources gameResources) {
+        this.gameResources = gameResources;
+        gameResources.getMessageManger().addTelegraph(DESCRIPTOR, this);
+        create();
+    }
+
+    @Override
+    public void update() {
+    }
+
+    @Override
+    public int getZIndex() {
+        return zIndex;
+    }
+
+    public void create() {
+        com.badlogic.gdx.maps.Map map = asset.getMap();
 
         ArrayList<MapObject> groundObjects = ua.org.petroff.game.engine.util.MapResolver.findObject(asset.getMap(),
                 GroupDescriber.SURFACE);
@@ -85,7 +108,12 @@ public class Surface {
             chain.dispose();
 
         }
-        gameResources.getWorldContactListener().addListener(new SurfaceListener());
+        gameResources.getWorldContactListener().addListener(new SurfaceListener(gameResources, this));
+    }
+
+    @Override
+    public boolean handleMessage(Telegram tlgrm) {
+        return true;
     }
 
 }

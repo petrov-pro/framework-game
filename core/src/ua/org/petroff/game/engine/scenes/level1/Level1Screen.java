@@ -45,7 +45,11 @@ public class Level1Screen extends ScreenAdapter {
         queueDraw.clear();
         for (EntityInterface entity : entities.values()) {
             entity.update();
-            queueDraw = ((GraphicQueueMemberInterface) entity.getView()).prepareDraw(queueDraw);
+            try {
+                queueDraw = ((GraphicQueueMemberInterface) entity.getView()).prepareDraw(queueDraw);
+            } catch (UnsupportedOperationException UNOE) {
+            }
+
         }
     }
 

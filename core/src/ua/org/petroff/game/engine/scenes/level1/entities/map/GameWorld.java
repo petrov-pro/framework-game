@@ -1,5 +1,7 @@
 package ua.org.petroff.game.engine.scenes.level1.entities.map;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -10,7 +12,7 @@ import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.util.MapResolver;
 
-public class Map implements EntityInterface {
+public class GameWorld implements EntityInterface {
 
     public static final String OBJECT_NAME = "start camera position";
     public static final String DESCRIPTOR = "map level 1";
@@ -22,7 +24,7 @@ public class Map implements EntityInterface {
     private Vector2 cameraPosition;
     private final int zIndex = 1;
 
-    public Map(Assets asset) {
+    public GameWorld(Assets asset) {
         view = new View(asset, this);
         this.asset = asset;
     }
@@ -35,14 +37,13 @@ public class Map implements EntityInterface {
     @Override
     public void init(GameResources gameResources) {
         this.gameResources = gameResources;
-        Surface surface = new Surface(asset, gameResources);
         com.badlogic.gdx.maps.Map map = asset.getMap();
 
-        createPhysicWorld();
+        createPhysicWorld(map);
+
+        createMessageDispatcher();
 
         createCameraPosition(map);
-
-        surface.create(map);
 
     }
 
@@ -57,7 +58,12 @@ public class Map implements EntityInterface {
                 MapResolver.coordinateToWorld(cameraObject.getProperties().get("y", Float.class).intValue()));
     }
 
-    private void createPhysicWorld() {
+    private void createMessageDispatcher() {
+        MessageManger messageManger = new MessageManger();
+        gameResources.setMessageManger(messageManger);
+    }
+
+    private void createPhysicWorld(com.badlogic.gdx.maps.Map map) {
         World world = new World(new Vector2(0, gravitation), true);
         Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
         WorldContactListener worldContactListener = new WorldContactListener();
@@ -65,11 +71,18 @@ public class Map implements EntityInterface {
         gameResources.setWorld(world);
         gameResources.setWorldContactListener(worldContactListener);
         gameResources.setDebugRenderer(debugRenderer);
+
+        int width = map.getProperties().get("width", Integer.class);
+        int height = map.getProperties().get("height", Integer.class);
+        gameResources.setWorldHeight(height);
+        gameResources.setWorldWidth(width);
     }
 
     @Override
     public void update() {
         gameResources.getWorld().step(1 / 60f, 6, 2);
+        gameResources.getMessageManger().update();
+        GdxAI.getTimepiece().update(Gdx.graphics.getDeltaTime());
     }
 
     @Override

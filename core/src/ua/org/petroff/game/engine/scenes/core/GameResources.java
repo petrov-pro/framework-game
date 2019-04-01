@@ -1,10 +1,12 @@
 package ua.org.petroff.game.engine.scenes.core;
 
+import com.badlogic.gdx.ai.msg.MessageDispatcher;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import ua.org.petroff.game.engine.scenes.level1.entities.map.MessageManger;
 import ua.org.petroff.game.engine.scenes.level1.entities.map.WorldContactListener;
 
 public class GameResources {
@@ -12,9 +14,18 @@ public class GameResources {
     private World world;
     private Box2DDebugRenderer debugRenderer;
     private WorldContactListener worldContactListener;
+    private MessageManger messageManger;
     private FPSLogger fps = new FPSLogger();
     private int worldWidth;
     private int worldHeight;
+
+    public MessageManger getMessageManger() {
+        return messageManger;
+    }
+
+    public void setMessageManger(MessageManger messageManger) {
+        this.messageManger = messageManger;
+    }
 
     public int getWorldWidth() {
         return worldWidth;

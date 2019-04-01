@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
 import java.util.HashMap;
 import java.util.Map;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
@@ -19,7 +17,7 @@ import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 public class View implements ViewInterface, GraphicQueueMemberInterface {
 
     public enum GraphicType {
-        MOVELEFT, MOVERIGHT, STAY, JUMPLEFT, JUMPRIGHT, STAYJUMP
+        MOVELEFT, MOVERIGHT, STAY, JUMPLEFT, JUMPRIGHT, STAYJUMP, DIED
     };
     public View.GraphicType graphicFrame;
     public boolean isLoopAnimation = true;
@@ -79,6 +77,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         TextureRegion[] playerRegionsJumpLeft = new TextureRegion[7];
         TextureRegion[] playerRegionsJumpRight = new TextureRegion[7];
         TextureRegion[] playerRegionsJumpStay = new TextureRegion[7];
+        TextureRegion[] playerRegionsDied = new TextureRegion[7];
 
         player = new TextureRegion(playerTexture, 0, 384, 64, 64);
 
@@ -106,6 +105,11 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             playerRegionsJumpStay[i] = new TextureRegion(playerTexture, 64 * i, 128, 64, 64);
         }
         Animation jumpAnimationStay = new Animation(0.1f, (Object[]) playerRegionsJumpStay);
+        
+        for (int i = 0; i < 7; i++) {
+            playerRegionsDied[i] = new TextureRegion(playerTexture, 64 * i, 1280, 64, 64);
+        }
+        Animation diedAnimationStay = new Animation(0.1f, (Object[]) playerRegionsDied);
 
         graphics.put(GraphicType.STAY, player);
         graphics.put(GraphicType.MOVERIGHT, walkAnimationRight);
@@ -113,6 +117,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         graphics.put(GraphicType.JUMPLEFT, jumpAnimationLeft);
         graphics.put(GraphicType.JUMPRIGHT, jumpAnimationRight);
         graphics.put(GraphicType.STAYJUMP, jumpAnimationStay);
+        graphics.put(GraphicType.DIED, diedAnimationStay);
     }
 
     @Override
@@ -129,6 +134,11 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     }
 
     private void handlerGrpahicFrame() {
+
+        if (model.getVector() == Player.PlayerState.DIED) {
+            graphicFrame = GraphicType.DIED;
+            return;
+        }
 
         if (model.isGround()) {
             switch (model.getVector()) {
@@ -158,6 +168,12 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     }
 
     public void setDefaultAnimationParams() {
+        isLoopAnimation = true;
+        speedAnimation = 1f;
+        stateTime = 0;
+    }
+    
+    public void setDiedAnimationParams() {
         isLoopAnimation = true;
         speedAnimation = 1f;
         stateTime = 0;

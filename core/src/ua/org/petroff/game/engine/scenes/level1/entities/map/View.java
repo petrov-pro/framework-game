@@ -7,9 +7,6 @@ import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 import ua.org.petroff.game.engine.util.Assets;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import ua.org.petroff.game.engine.Settings;
@@ -27,9 +24,9 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     private Viewport viewport;
     private QueueDrawInterface drawBackground;
     private QueueDrawInterface drawBackgroundEnd;
-    private Map map;
+    private final GameWorld map;
 
-    public View(Assets assets, Map map) {
+    public View(Assets assets, GameWorld map) {
         this.assets = assets;
         this.map = map;
     }

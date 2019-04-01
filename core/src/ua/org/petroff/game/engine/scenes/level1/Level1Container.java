@@ -14,7 +14,8 @@ import ua.org.petroff.game.engine.scenes.Interface.ContainerInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.scenes.core.ManagerScenes;
-import ua.org.petroff.game.engine.scenes.level1.entities.map.Map;
+import ua.org.petroff.game.engine.scenes.level1.entities.map.GameWorld;
+import ua.org.petroff.game.engine.entities.surface.Surface;
 import ua.org.petroff.game.engine.util.Assets;
 
 public class Level1Container implements ContainerInterface {
@@ -45,26 +46,31 @@ public class Level1Container implements ContainerInterface {
         loadEntitiesResources();
     }
 
-    private void loadEntities() {
-        entities.put(Player.DESCRIPTOR, new Player(this.assets));
-        entities.put(Map.DESCRIPTOR, new Map(this.assets));
-
-    }
-
     @Override
     public void init() {
         initEntitiesResources();
         controller.bindControl();
     }
 
+    private void loadEntities() {
+        entities.put(Player.DESCRIPTOR, new Player(assets));
+        entities.put(Surface.DESCRIPTOR, new Surface(assets));
+        entities.put(GameWorld.DESCRIPTOR, new GameWorld(assets));
+
+    }
+
     private void loadEntitiesResources() {
         for (EntityInterface entity : entities.values()) {
-            entity.getView().loadResources();
+            try {
+                entity.getView().loadResources();
+            } catch (UnsupportedOperationException UNOE) {
+            }
+
         }
     }
 
     private void initEntitiesResources() {
-        
+
         List<EntityInterface> entitiesOrdered = new ArrayList<>(entities.values());
         Collections.sort(entitiesOrdered, new Comparator<EntityInterface>() {
             @Override
@@ -78,7 +84,11 @@ public class Level1Container implements ContainerInterface {
 
         for (EntityInterface entity : entitiesOrdered) {
             entity.init(gameResources);
-            entity.getView().init(graphicResources);
+            try {
+                entity.getView().init(graphicResources);
+            } catch (UnsupportedOperationException UNOE) {
+            }
+
         }
     }
 
