@@ -33,33 +33,41 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private final int zIndex = 3;
     private final Assets asset;
     private Body body;
-    private Float currentVelocityX = 0f;
+    private Float currentVelocityX;
     private static final float VELOCITYX = 3f;
     private static final float JUMPVELOCITY = 800f;
     private GameResources gameResources;
     private final View view;
+    private final ViewInterface graphic;
     private final Vector3 cameraNewPosition = new Vector3();
     private Telegraph telegraph;
 
     public enum PlayerVector {
         LEFT, RIGHT, STAY
     };
-    private boolean isMove = false;
-    private boolean isJump = false;
-    private boolean isGround = true;
-    private boolean isDie = false;
-    private boolean isAction = false;
+    private boolean isMove;
+    private boolean isJump;
+    private boolean isGround;
+    private boolean isDie;
+    private boolean isAction;
 
     private PlayerVector vector;
 
     public Player(Assets asset) {
-        view = new View(asset, this);
+        view = new View(this);
+        graphic = new Graphic(asset, view);
+        view.setGraphic((Graphic) graphic);
         this.asset = asset;
     }
 
     @Override
     public ViewInterface getView() {
-        return view;
+        return graphic;
+    }
+
+    @Override
+    public EntityInterface prepareModel() {
+        return this;
     }
 
     @Override
@@ -101,6 +109,13 @@ public class Player implements EntityInterface, MoveEntityInterface {
                 OBJECT_NAME);
         createBody(playerObject);
         setStartPlayerPostion(playerObject);
+
+        isMove = false;
+        isJump = false;
+        isGround = true;
+        isDie = false;
+        isAction = false;
+        currentVelocityX = 0f;
 
     }
 

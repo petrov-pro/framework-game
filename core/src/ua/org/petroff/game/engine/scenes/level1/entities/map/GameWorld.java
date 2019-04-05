@@ -19,7 +19,7 @@ public class GameWorld implements EntityInterface {
     public GameResources gameResources;
     public View view;
 
-    private final int gravitation = -10;
+    private static final int GRAVITATION = -10;
     private final Assets asset;
     private Vector2 cameraPosition;
     private final int zIndex = 1;
@@ -32,6 +32,11 @@ public class GameWorld implements EntityInterface {
     @Override
     public ViewInterface getView() {
         return view;
+    }
+
+    @Override
+    public EntityInterface prepareModel() {
+        return this;
     }
 
     @Override
@@ -64,7 +69,7 @@ public class GameWorld implements EntityInterface {
     }
 
     private void createPhysicWorld(com.badlogic.gdx.maps.Map map) {
-        World world = new World(new Vector2(0, gravitation), true);
+        World world = new World(new Vector2(0, GRAVITATION), true);
         Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
         WorldContactListener worldContactListener = new WorldContactListener();
         world.setContactListener(worldContactListener);

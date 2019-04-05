@@ -3,23 +3,21 @@ package ua.org.petroff.game.engine.scenes.level1;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import java.util.HashMap;
-import java.util.Map;
+import com.badlogic.gdx.utils.Array;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
-import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterface;
-import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 
 public class Level1Screen extends ScreenAdapter {
 
-    private final HashMap<String, EntityInterface> entities;
-    private Map<Integer, QueueDrawInterface> queueDraw = new QueueDraw<>();
     private final GraphicResources graphicResources;
+    private final Array<EntityInterface> models;
+    private final Array<QueueDrawInterface> drawings;
 
-    public Level1Screen(HashMap<String, EntityInterface> entities, GraphicResources graphicResources) {
-        this.entities = entities;
+    public Level1Screen(Array<EntityInterface> models, Array<QueueDrawInterface> drawings, GraphicResources graphicResources) {
         this.graphicResources = graphicResources;
+        this.models = models;
+        this.drawings = drawings;
     }
 
     @Override
@@ -33,6 +31,8 @@ public class Level1Screen extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         graphicResources.getViewport().update(width, height);
+        graphicResources.getViewportHud().update(width, height);
+
     }
 
     private void clearScreen() {
@@ -42,20 +42,14 @@ public class Level1Screen extends ScreenAdapter {
     }
 
     private void handlerEntities() {
-        queueDraw.clear();
-        for (EntityInterface entity : entities.values()) {
+        for (EntityInterface entity : models) {
             entity.update();
-            try {
-                queueDraw = ((GraphicQueueMemberInterface) entity.getView()).prepareDraw(queueDraw);
-            } catch (UnsupportedOperationException UNOE) {
-            }
-
         }
     }
 
     private void renderGraphicQueue() {
-        for (QueueDrawInterface entite : queueDraw.values()) {
-            entite.draw(graphicResources);
+        for (QueueDrawInterface entity : drawings) {
+            entity.draw();
         }
     }
 

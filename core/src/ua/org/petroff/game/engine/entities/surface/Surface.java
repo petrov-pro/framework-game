@@ -44,6 +44,11 @@ public class Surface implements EntityInterface, Telegraph {
     }
 
     @Override
+    public EntityInterface prepareModel() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void init(GameResources gameResources) {
         this.gameResources = gameResources;
         gameResources.getMessageManger().addTelegraph(DESCRIPTOR, this);

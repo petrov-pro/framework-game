@@ -1,14 +1,20 @@
 package ua.org.petroff.game.engine.scenes.level1;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
+import ua.org.petroff.game.engine.entities.QueueDraw;
+import ua.org.petroff.game.engine.entities.hud.HUD;
 import ua.org.petroff.game.engine.entities.player.Player;
 import ua.org.petroff.game.engine.scenes.Interface.ContainerInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
@@ -29,6 +35,8 @@ public class Level1Container implements ContainerInterface {
     private HashMap<String, EntityInterface> entities;
     private GraphicResources graphicResources;
     private GameResources gameResources;
+    private Array<QueueDrawInterface> drawings;
+    private Array<EntityInterface> models;
 
     public Level1Container(ManagerScenes manageScene) {
         this.manageScene = manageScene;
@@ -41,7 +49,9 @@ public class Level1Container implements ContainerInterface {
         entities = new HashMap<>();
         assets = new Assets();
         loadEntities();
-        screen = new Level1Screen(entities, graphicResources);
+        drawings = new Array();
+        models = new Array();
+        screen = new Level1Screen(models, drawings, graphicResources);
         controller = new Level1Controller(manageScene, screen, (MoveEntityInterface) entities.get(Player.DESCRIPTOR));
         loadEntitiesResources();
     }
@@ -55,6 +65,7 @@ public class Level1Container implements ContainerInterface {
     private void loadEntities() {
         entities.put(Player.DESCRIPTOR, new Player(assets));
         entities.put(Surface.DESCRIPTOR, new Surface(assets));
+        entities.put(HUD.DESCRIPTOR, new HUD(assets));
         entities.put(GameWorld.DESCRIPTOR, new GameWorld(assets));
 
     }
@@ -82,13 +93,36 @@ public class Level1Container implements ContainerInterface {
             }
         });
 
+        Map<Integer, QueueDrawInterface> queueDraw = prepareModels(entitiesOrdered);
+
+        prepareDrawings(queueDraw);
+
+    }
+
+    public Map<Integer, QueueDrawInterface> prepareModels(List<EntityInterface> entitiesOrdered) {
+        Map<Integer, QueueDrawInterface> queueDraw = new QueueDraw<>();
         for (EntityInterface entity : entitiesOrdered) {
             entity.init(gameResources);
             try {
                 entity.getView().init(graphicResources);
+                ((GraphicQueueMemberInterface) entity.getView()).prepareDraw(queueDraw);
             } catch (UnsupportedOperationException UNOE) {
             }
 
+            try {
+                EntityInterface model = entity.prepareModel();
+                models.add(entity);
+            } catch (UnsupportedOperationException UNOE) {
+            }
+
+        }
+
+        return queueDraw;
+    }
+
+    private void prepareDrawings(Map<Integer, QueueDrawInterface> queueDraw) {
+        for (QueueDrawInterface entity : queueDraw.values()) {
+            drawings.add(entity);
         }
     }
 

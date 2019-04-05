@@ -7,7 +7,16 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class GraphicResources {
 
     private Viewport viewport;
+    private Viewport viewportHud;
     private SpriteBatch spriteBatch;
+
+    public Viewport getViewportHud() {
+        return viewportHud;
+    }
+
+    public void setViewportHud(Viewport viewportHud) {
+        this.viewportHud = viewportHud;
+    }
 
     public Viewport getViewport() {
         return viewport;

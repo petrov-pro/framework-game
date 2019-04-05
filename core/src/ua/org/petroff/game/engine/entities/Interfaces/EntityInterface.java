@@ -11,5 +11,7 @@ public interface EntityInterface {
     public void update();
     
     public int getZIndex();
+    
+    public EntityInterface prepareModel();
 
 }

@@ -22,9 +22,8 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     private final int[] backgroundLayers = {0, 2};
     private final int[] foregroundLayers = {1};
     private Viewport viewport;
-    private QueueDrawInterface drawBackground;
-    private QueueDrawInterface drawBackgroundEnd;
     private final GameWorld map;
+    private GraphicResources graphicResources;
 
     public View(Assets assets, GameWorld map) {
         this.assets = assets;
@@ -38,6 +37,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
     @Override
     public void init(GraphicResources graphicResources) {
+        this.graphicResources = graphicResources;
         renderer = new OrthogonalTiledMapRenderer(((TiledMap) assets.get("map-level1")), Settings.SCALE, new SpriteBatch());
         CameraBound camera = new CameraBound();
         camera.position.set(map.getCameraPosition(), 0);
@@ -46,9 +46,15 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         renderer.setView(camera);
         share(graphicResources);
 
-        drawBackground = new QueueDrawInterface() {
+    }
+
+    @Override
+    public void prepareDraw(java.util.Map<Integer, QueueDrawInterface> queueDraw) {
+
+        queueDraw.put(QueueDraw.Z_INDEX_START, new QueueDrawInterface() {
             @Override
-            public void draw(GraphicResources graphicResources) {
+            public void draw() {
+                viewport.apply();
                 renderer.setView((OrthographicCamera) graphicResources.getCamera());
                 graphicResources.getCamera().update();
                 renderer.getBatch().setProjectionMatrix(graphicResources.getCamera().combined);
@@ -57,23 +63,15 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
                 renderer.getBatch().begin();
             }
 
-        };
-
-        drawBackgroundEnd = new QueueDrawInterface() {
+        });
+        queueDraw.put(QueueDraw.Z_INDEX_END - 1, new QueueDrawInterface() {
             @Override
-            public void draw(GraphicResources graphicResources) {
+            public void draw() {
                 renderer.getBatch().end();
                 map.gameResources.debugPhysic(graphicResources.getCamera().combined);
             }
 
-        };
-    }
-
-    @Override
-    public java.util.Map<Integer, QueueDrawInterface> prepareDraw(java.util.Map<Integer, QueueDrawInterface> queueDraw) {
-        queueDraw.put(QueueDraw.Z_INDEX_START, drawBackground);
-        queueDraw.put(QueueDraw.Z_INDEX_END, drawBackgroundEnd);
-        return queueDraw;
+        });
     }
 
     public void share(GraphicResources graphicResources) {
