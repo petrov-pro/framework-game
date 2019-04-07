@@ -2,10 +2,16 @@ package ua.org.petroff.game.engine.entities.hud;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import java.util.Map;
 import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterface;
@@ -26,12 +32,14 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
     private Label timeLabel;
     private Label levelLabel;
     private Label worldLabel;
-    private Label marioLabel;
+    private Label scoreNameLabel;
+    private Label liveLabel;
 
     private final Assets asset;
     private final int zIndex = 2;
     private GraphicResources graphicResources;
-    private HUD model;
+    private final HUD model;
+    private Animation healthAnimation;
 
     public View(Assets asset, HUD model) {
         this.asset = asset;
@@ -45,11 +53,24 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
 
     @Override
     public void loadResources() {
+        this.asset.loadTexture("health", Assets.IMAGE_PATH + "/health.png");
+    }
+
+    private void loadAnimation() {
+        Texture playerTexture = asset.get("health");
+        TextureRegion[] playerRegionsHealth = new TextureRegion[7];
+
+        for (int i = 0; i < 7; i++) {
+            playerRegionsHealth[i] = new TextureRegion(playerTexture, 50 * i, 0, 50, 63);
+        }
+        healthAnimation = new Animation(0.1f, (Object[]) playerRegionsHealth);
+
     }
 
     @Override
     public void init(GraphicResources graphicResources) {
         this.graphicResources = graphicResources;
+        loadAnimation();
 
         viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
         stage = new Stage(viewport, graphicResources.getSpriteBatch()); // We must create order by creating a table in our stage
@@ -65,9 +86,9 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         timeLabel = new Label("TIME", skin);
         levelLabel = new Label("WASTE LAND", skin);
         worldLabel = new Label("ROUND 1", skin);
-        marioLabel = new Label("SCORE:", skin);
+        scoreNameLabel = new Label("SCORE:", skin);
 
-        table.add(marioLabel).expandX().padTop(10); // This expand X makes everything in the row share the row equally
+        table.add(scoreNameLabel).expandX().padTop(10); // This expand X makes everything in the row share the row equally
         table.add(worldLabel).expandX().padTop(10);
         table.add(timeLabel).expandX().padTop(10);
 
@@ -76,8 +97,25 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         table.add(levelLabel).expandX();
         table.add(countdownLabel).expandX();
 
+        table.row().expandY().bottom();
+        ImageAnimation image = new ImageAnimation();
+        image.setAnimation(healthAnimation);
+        table.add(image)
+                .left()
+                .padLeft(50)
+                .padRight(50)
+                .padBottom(50);
+
+        liveLabel = new Label("100", skin);
+        liveLabel.setFontScale(2);
+        table.add(liveLabel)
+                .left()
+                .padLeft(-280)
+                .padBottom(50);
+
         // add table to our stage
         stage.addActor(table);
+        //table.setDebug(true);
 
         graphicResources.setViewportHud(viewport);
     }
