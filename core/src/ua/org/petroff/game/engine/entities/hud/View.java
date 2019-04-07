@@ -102,6 +102,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         image.setAnimation(healthAnimation);
         table.add(image)
                 .left()
+                .expandY()
                 .padLeft(50)
                 .padRight(50)
                 .padBottom(50);
@@ -110,12 +111,13 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         liveLabel.setFontScale(2);
         table.add(liveLabel)
                 .left()
+                .expandY()
                 .padLeft(-280)
                 .padBottom(50);
 
         // add table to our stage
         stage.addActor(table);
-        //table.setDebug(true);
+        table.setDebug(true);
 
         graphicResources.setViewportHud(viewport);
     }
