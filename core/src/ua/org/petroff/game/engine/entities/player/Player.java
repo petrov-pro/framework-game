@@ -25,6 +25,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     public static final String DESCRIPTOR = "Player";
 
     public static final String BODY_TYPE_SENSOR = "foot";
+    public static final Integer START_LIVE_VALUE = 100;
 
     public enum Actions {
         MOVE, JUMP, USE, HIT
@@ -34,6 +35,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private final Assets asset;
     private Body body;
     private Float currentVelocityX;
+    private int currentLive;
     private static final float VELOCITYX = 3f;
     private static final float JUMPVELOCITY = 800f;
     private GameResources gameResources;
@@ -105,6 +107,8 @@ public class Player implements EntityInterface, MoveEntityInterface {
         telegraph = new Telegraph(this, gameResources);
         gameResources.getMessageManger().addTelegraph(DESCRIPTOR, telegraph);
         vector = PlayerVector.STAY;
+        currentLive = START_LIVE_VALUE;
+
         MapObject playerObject = ua.org.petroff.game.engine.util.MapResolver.findObject(asset.getMap(),
                 OBJECT_NAME);
         createBody(playerObject);

@@ -1,23 +1,23 @@
 package ua.org.petroff.game.engine.entities.hud;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import java.util.Map;
+import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 import ua.org.petroff.game.engine.entities.QueueDraw;
+import ua.org.petroff.game.engine.entities.player.Player;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 
@@ -72,7 +72,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         this.graphicResources = graphicResources;
         loadAnimation();
 
-        viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
+        viewport = new ExtendViewport(Settings.APP_WIDTH, Settings.APP_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, graphicResources.getSpriteBatch()); // We must create order by creating a table in our stage
 
         Skin skin = new Skin(asset.loadSkin("uiskin.json"));
@@ -98,21 +98,22 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         table.add(countdownLabel).expandX();
 
         table.row().expandY().bottom();
+        HorizontalGroup liveGroup = new HorizontalGroup();
+
         ImageAnimation image = new ImageAnimation();
         image.setAnimation(healthAnimation);
-        table.add(image)
-                .left()
-                .expandY()
-                .padLeft(50)
-                .padRight(50)
-                .padBottom(50);
+        liveGroup.left()
+                .addActor(image);
 
-        liveLabel = new Label("100", skin);
+        liveLabel = new Label(Player.START_LIVE_VALUE.toString(), skin);
         liveLabel.setFontScale(2);
-        table.add(liveLabel)
+        liveGroup.rowBottom()
+                .space(5)
+                .addActor(liveLabel);
+
+        table.add(liveGroup)
                 .left()
-                .expandY()
-                .padLeft(-280)
+                .padLeft(50)
                 .padBottom(50);
 
         // add table to our stage

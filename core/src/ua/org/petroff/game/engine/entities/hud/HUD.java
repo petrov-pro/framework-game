@@ -32,6 +32,8 @@ public class HUD implements EntityInterface {
         worldTimer = 0;
         timeCount = 0;
         score = 0;
+        Telegraph telegraph = new Telegraph(this, gameResources);
+        gameResources.getMessageManger().addTelegraph(DESCRIPTOR, telegraph);
     }
 
     @Override
