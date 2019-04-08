@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -23,6 +22,8 @@ import ua.org.petroff.game.engine.util.Assets;
 
 public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDrawInterface {
 
+    private Label levelLabel;
+
     private Stage stage;
     private ExtendViewport viewport;
     private Table table;
@@ -30,7 +31,6 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
     private Label countdownLabel;
     static Label scoreLabel;
     private Label timeLabel;
-    private Label levelLabel;
     private Label worldLabel;
     private Label scoreNameLabel;
     private Label liveLabel;
@@ -105,7 +105,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         liveGroup.left()
                 .addActor(image);
 
-        liveLabel = new Label(Player.START_LIVE_VALUE.toString(), skin);
+        liveLabel = new Label(model.currentLive.toString(), skin);
         liveLabel.setFontScale(2);
         liveGroup.rowBottom()
                 .space(5)
@@ -129,6 +129,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         stage.act();
         stage.draw();
         countdownLabel.setText(String.format("%03d", model.worldTimer));
+        liveLabel.setText(model.currentLive.toString());
     }
 
 }
