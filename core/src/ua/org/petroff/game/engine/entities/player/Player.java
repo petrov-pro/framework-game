@@ -102,17 +102,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     @Override
     public void init(GameResources gameResources) {
-        this.gameResources = gameResources;
-        telegraph = new Telegraph(this, gameResources);
-        gameResources.getMessageManger().addTelegraph(DESCRIPTOR, telegraph);
-        vector = PlayerVector.STAY;
         currentLive = 100;
-
-        MapObject playerObject = ua.org.petroff.game.engine.util.MapResolver.findObject(asset.getMap(),
-                OBJECT_NAME);
-        createBody(playerObject);
-        setStartPlayerPostion(playerObject);
-
         isMove = false;
         isJump = false;
         isGround = true;
@@ -120,6 +110,14 @@ public class Player implements EntityInterface, MoveEntityInterface {
         isAction = false;
         currentVelocityX = 0f;
 
+        this.gameResources = gameResources;
+        telegraph = new Telegraph(this, gameResources);
+        gameResources.getMessageManger().addTelegraph(DESCRIPTOR, telegraph);
+        vector = PlayerVector.STAY;
+        MapObject playerObject = ua.org.petroff.game.engine.util.MapResolver.findObject(asset.getMap(),
+                OBJECT_NAME);
+        createBody(playerObject);
+        setStartPlayerPostion(playerObject);
     }
 
     public int getCurrentLive() {
