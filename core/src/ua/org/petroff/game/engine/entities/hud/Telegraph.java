@@ -22,7 +22,7 @@ public class Telegraph implements com.badlogic.gdx.ai.msg.Telegraph, TelegramPro
     @Override
     public boolean handleMessage(Telegram tlgrm) {
         switch (tlgrm.message) {
-            case TelegramDescriber.DEAD:
+            case TelegramDescriber.PLAYER_DEAD:
                 model.playerDied();
                 break;
             case TelegramDescriber.PLAYER_STATUS:
