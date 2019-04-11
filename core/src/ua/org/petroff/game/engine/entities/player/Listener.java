@@ -8,7 +8,7 @@ import ua.org.petroff.game.engine.entities.Interfaces.EntityListenerInterface;
 
 public class Listener implements EntityListenerInterface {
 
-    private Player model;
+    private final Player model;
 
     public Listener(Player model) {
         this.model = model;

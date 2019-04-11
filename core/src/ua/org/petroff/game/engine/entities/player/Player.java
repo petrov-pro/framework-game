@@ -24,8 +24,6 @@ public class Player implements EntityInterface, MoveEntityInterface {
     public static final String OBJECT_NAME = "start player";
     public static final String DESCRIPTOR = "Player";
 
-    public static final String BODY_TYPE_SENSOR = "foot";
-
     public enum Actions {
         MOVE, JUMP, USE, HIT
     };
@@ -141,7 +139,8 @@ public class Player implements EntityInterface, MoveEntityInterface {
         PolygonShape poly = new PolygonShape();
         Vector2 center = new Vector2(width / 2, height / 2.2f);
         poly.setAsBox(width / 4.5f, height / 2.5f, center, 0);
-        body.createFixture(poly, 1);
+        Fixture bodyPlayer = body.createFixture(poly, 1);
+        bodyPlayer.setUserData(new BodyDescriber(DESCRIPTOR, BodyDescriber.BODY, GroupDescriber.ALIVE));
 
         center.sub(0, 0.8f);
         poly.setAsBox(width / 6f, 0.05f, center, 0);
@@ -150,7 +149,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
         fixtureDef.density = 1;
         fixtureDef.isSensor = true;
         Fixture footSensorFixture = body.createFixture(fixtureDef);
-        footSensorFixture.setUserData(new BodyDescriber(DESCRIPTOR, BODY_TYPE_SENSOR, GroupDescriber.ALIVE));
+        footSensorFixture.setUserData(new BodyDescriber(DESCRIPTOR, BodyDescriber.BODY_FOOT, GroupDescriber.ALIVE));
         poly.dispose();
 
         gameResources.getWorldContactListener().addListener(new Listener(this));

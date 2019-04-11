@@ -3,6 +3,9 @@ package ua.org.petroff.game.engine.entities;
 import java.util.HashMap;
 
 public class BodyDescriber<T> {
+    
+    public static final String BODY_FOOT = "foot";
+    public static final String BODY = "body";
 
     private String name;
     private String type;

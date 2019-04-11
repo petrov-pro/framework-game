@@ -1,5 +1,6 @@
 package ua.org.petroff.game.engine.entities.hud;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -34,6 +35,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
     private Label worldLabel;
     private Label scoreNameLabel;
     private Label liveLabel;
+    private Label deadLabel;
 
     private final Assets asset;
     private final int zIndex = 2;
@@ -86,7 +88,11 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         timeLabel = new Label("TIME", skin);
         levelLabel = new Label("WASTE LAND", skin);
         worldLabel = new Label("ROUND 1", skin);
-        scoreNameLabel = new Label("SCORE:", skin);
+
+        deadLabel = new Label("YOU ARE DEAD", skin);
+        deadLabel.setFontScale(3);
+        deadLabel.setColor(Color.RED);
+        deadLabel.setVisible(false);
 
         table.add(scoreNameLabel).expandX().padTop(10); // This expand X makes everything in the row share the row equally
         table.add(worldLabel).expandX().padTop(10);
@@ -116,6 +122,9 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
                 .padLeft(50)
                 .padBottom(50);
 
+        table.add(deadLabel)
+                .center();
+
         // add table to our stage
         stage.addActor(table);
         table.setDebug(true);
@@ -130,6 +139,9 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         stage.draw();
         countdownLabel.setText(String.format("%03d", model.worldTimer));
         liveLabel.setText(model.currentLive.toString());
+        if (model.currentLive <= 0) {
+            deadLabel.setVisible(true);
+        }
     }
 
 }
