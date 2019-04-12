@@ -54,11 +54,10 @@ public class SurfaceListener implements EntityListenerInterface {
             ChainShape chain = (ChainShape) fixtureSurface.getShape();
 
             for (int i = 0; i < chain.getVertexCount(); i++) {
+
                 chain.getVertex(i, platfrom);
                 if (positionEntity.y < platfrom.y) {
                     return false;
-                } else {
-                    return true;
                 }
             }
 
