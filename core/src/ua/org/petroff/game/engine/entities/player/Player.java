@@ -39,14 +39,12 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private final int zIndex = 3;
     private final Assets asset;
     private Body body;
-    private Float currentVelocityX;
-    private Float maxVelocityX;
     private int currentLive;
 
     private static final float MAXMOVEVELOCITY = 5f;
     private static final float MAXJUMPVELOCITY = 5f;
-    private static final float JUMPVELOCITY = 10f;
-    private static final float MOVEVELOCITY = 1f;
+    private static final float JUMPVELOCITY = 8f;
+    private static final float MOVEVELOCITY = 0.5f;
     private GameResources gameResources;
     private final View view;
     private final ViewInterface graphic;
@@ -128,8 +126,6 @@ public class Player implements EntityInterface, MoveEntityInterface {
         isGround = true;
         isDie = false;
         isAction = false;
-        currentVelocityX = 0f;
-        maxVelocityX = MAXMOVEVELOCITY;
         playerSize = PlayerSize.NORMAL;
         vector = PlayerVector.STAY;
 
@@ -183,16 +179,12 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     @Override
     public void left() {
-        currentVelocityX = -Player.MOVEVELOCITY;
-        maxVelocityX = -Player.MAXMOVEVELOCITY;
         isMove = true;
         vector = PlayerVector.LEFT;
     }
 
     @Override
     public void right() {
-        currentVelocityX = Player.MOVEVELOCITY;
-        maxVelocityX = Player.MAXMOVEVELOCITY;
         isMove = true;
         vector = PlayerVector.RIGHT;
     }
@@ -203,7 +195,6 @@ public class Player implements EntityInterface, MoveEntityInterface {
         switch (action) {
             case MOVE:
                 vector = PlayerVector.STAY;
-                currentVelocityX = 0f;
                 isMove = false;
                 break;
 
@@ -236,9 +227,13 @@ public class Player implements EntityInterface, MoveEntityInterface {
             isGround = false;
         }
 
-        if (isMove && (body.getLinearVelocity().x > maxVelocityX || body.getLinearVelocity().x < maxVelocityX)) {
-            //body.setLinearVelocity(currentVelocityX, body.getLinearVelocity().y);
-            body.applyLinearImpulse(currentVelocityX, 0, body.getPosition().x, body.getPosition().y, true);
+        if (isMove) {
+            if (vector.equals(Player.PlayerVector.LEFT) && body.getLinearVelocity().x > -MAXMOVEVELOCITY) {
+                body.applyLinearImpulse(-MOVEVELOCITY, 0, body.getPosition().x, body.getPosition().y, true);
+            } else if (vector.equals(Player.PlayerVector.RIGHT) && body.getLinearVelocity().x < MAXMOVEVELOCITY) {
+                body.applyLinearImpulse(MOVEVELOCITY, 0, body.getPosition().x, body.getPosition().y, true);
+            }
+
         }
 
         calculateCameraPositionForPlayer();

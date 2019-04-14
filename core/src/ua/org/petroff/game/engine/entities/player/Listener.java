@@ -2,6 +2,7 @@ package ua.org.petroff.game.engine.entities.player;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import ua.org.petroff.game.engine.entities.BodyDescriber;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityListenerInterface;
@@ -16,11 +17,11 @@ public class Listener implements EntityListenerInterface {
 
     @Override
     public void beginContact(Contact contact) {
-        if (isBodyDescriber(contact.getFixtureA().getUserData())) {
+        if (isBodyDescriber(contact.getFixtureA().getUserData(), contact.getFixtureA())) {
             model.grounded();
         }
 
-        if (isBodyDescriber(contact.getFixtureB().getUserData())) {
+        if (isBodyDescriber(contact.getFixtureB().getUserData(), contact.getFixtureB())) {
             model.grounded();
         }
 
@@ -38,9 +39,10 @@ public class Listener implements EntityListenerInterface {
     public void postSolve(Contact contact, ContactImpulse impulse) {
     }
 
-    private boolean isBodyDescriber(Object userData) {
+    private boolean isBodyDescriber(Object userData, Fixture playerFixture) {
         return userData instanceof BodyDescriber && userData.toString().equals(Player.DESCRIPTOR)
-                && ((BodyDescriber) userData).getType().equals(BodyDescriber.BODY_FOOT);
+                && ((BodyDescriber) userData).getType().equals(BodyDescriber.BODY_FOOT)
+                && playerFixture.getBody().getLinearVelocity().y <= 0;
     }
 
 }
