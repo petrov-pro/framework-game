@@ -13,13 +13,15 @@ public class View implements QueueDrawInterface {
         MOVELEFT, MOVERIGHT, STAY, JUMPLEFT, JUMPRIGHT, STAYJUMP, DIED
     };
     public View.GraphicType graphicFrame;
-    public boolean isLoopAnimation = true;
-    public float speedAnimation = 1f;
+    private boolean isLoopAnimation = true;
+    private float speedAnimation = 1f;
     public GraphicResources graphicResources;
 
     private final Player model;
     private float stateTime = 0;
     private Graphic graphic;
+    private float sizeX = 2;
+    private float sizeY = 2;
 
     public View(Player model) {
         this.model = model;
@@ -35,18 +37,26 @@ public class View implements QueueDrawInterface {
 
         handlerGrpahicFrame();
         if (graphicFrame == GraphicType.STAY) {
-            graphicResources.getSpriteBatch().draw(graphic.player, model.getPosition().x, model.getPosition().y, 2, 2);
+            graphicResources.getSpriteBatch().draw(graphic.player, model.getPosition().x, model.getPosition().y, sizeX, sizeY);
         } else {
             stateTime += Gdx.graphics.getDeltaTime();
             Object graphic = this.graphic.graphics.get(graphicFrame);
             graphicResources.getSpriteBatch()
                     .draw((TextureRegion) ((Animation) graphic).getKeyFrame(stateTime * speedAnimation, isLoopAnimation),
-                            model.getPosition().x, model.getPosition().y, 2, 2);
+                            model.getPosition().x, model.getPosition().y, sizeX, sizeY);
         }
         ((CameraBound) graphicResources.getCamera()).positionSafe(model.getCameraNewPosition());
     }
 
     private void handlerGrpahicFrame() {
+
+        if (model.getPlayerSize().equals(Player.PlayerSize.NORMAL)) {
+            sizeX = 2f;
+            sizeY = 2f;
+        } else {
+            sizeX = 2.5f;
+            sizeY = 3f;
+        }
 
         if (model.isDie()) {
             graphicFrame = GraphicType.DIED;

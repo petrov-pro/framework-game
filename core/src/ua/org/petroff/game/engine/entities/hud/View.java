@@ -127,8 +127,11 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
 
         // add table to our stage
         stage.addActor(table);
-        table.setDebug(true);
 
+        if (Settings.IS_DEBUG) {
+            table.setDebug(true);
+        }
+        
         graphicResources.setViewportHud(viewport);
     }
 

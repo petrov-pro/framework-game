@@ -39,7 +39,8 @@ public class Listener implements EntityListenerInterface {
     }
 
     private boolean isBodyDescriber(Object userData) {
-        return userData instanceof BodyDescriber && userData.toString().equals(Player.DESCRIPTOR);
+        return userData instanceof BodyDescriber && userData.toString().equals(Player.DESCRIPTOR)
+                && ((BodyDescriber) userData).getType().equals(BodyDescriber.BODY_FOOT);
     }
 
 }

@@ -1,5 +1,6 @@
 package ua.org.petroff.game.engine.entities.surface;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.ChainShape;
@@ -8,10 +9,8 @@ import com.badlogic.gdx.physics.box2d.ContactFilter;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.utils.Array;
 import ua.org.petroff.game.engine.entities.BodyDescriber;
 import ua.org.petroff.game.engine.entities.GroupDescriber;
-import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityListenerInterface;
 import ua.org.petroff.game.engine.entities.TelegramDescriber;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
@@ -46,19 +45,17 @@ public class SurfaceListener implements EntityListenerInterface {
     }
 
     private boolean shouldContact(BodyDescriber surfaceData, Fixture fixtureSurface, Fixture fixtureEntity) {
-
-        if (surfaceData.getType().equals(Surface.PLATFORM_TYPE)) {
+        if (surfaceData.getType().equals(Surface.PLATFORM_TYPE)
+                && fixtureEntity.getUserData() instanceof BodyDescriber
+                && ((BodyDescriber) fixtureEntity.getUserData()).getType().equals(BodyDescriber.BODY)) {
             Vector2 positionEntity = fixtureEntity.getBody().getPosition();
 
-            //check collise platform
             ChainShape chain = (ChainShape) fixtureSurface.getShape();
-
-            for (int i = 0; i < chain.getVertexCount(); i++) {
-
-                chain.getVertex(i, platfrom);
-                if (positionEntity.y < platfrom.y) {
-                    return false;
-                }
+            chain.getVertex(1, platfrom);
+            if (positionEntity.y > platfrom.y) {
+                return true;
+            } else {
+                return false;
             }
 
         }

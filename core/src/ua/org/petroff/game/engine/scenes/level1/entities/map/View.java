@@ -68,7 +68,9 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             @Override
             public void draw() {
                 renderer.getBatch().end();
-                map.gameResources.debugPhysic(graphicResources.getCamera().combined);
+                if (Settings.IS_DEBUG) {
+                    map.gameResources.debugPhysic(graphicResources.getCamera().combined);
+                }
             }
 
         });

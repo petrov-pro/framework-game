@@ -3,7 +3,6 @@ package ua.org.petroff.game.engine.entities.hud;
 import com.badlogic.gdx.Gdx;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
-import ua.org.petroff.game.engine.entities.player.Player;
 import ua.org.petroff.game.engine.entities.player.PlayerTelegram;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.util.Assets;
@@ -17,12 +16,10 @@ public class HUD implements EntityInterface {
     public Integer currentLive;
 
     private final View view;
-    private final Assets asset;
     private final int zIndex = 4;
 
     public HUD(Assets asset) {
         view = new View(asset, this);
-        this.asset = asset;
     }
 
     @Override
@@ -62,7 +59,7 @@ public class HUD implements EntityInterface {
     public void playerDied() {
         currentLive = 0;
     }
-    
+
     public void updatePlayerStatus(PlayerTelegram playerTelegram) {
         currentLive = playerTelegram.getCurrentLive();
     }

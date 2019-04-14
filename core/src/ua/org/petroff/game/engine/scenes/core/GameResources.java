@@ -1,7 +1,5 @@
 package ua.org.petroff.game.engine.scenes.core;
 
-import com.badlogic.gdx.ai.msg.MessageDispatcher;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -68,7 +66,10 @@ public class GameResources {
     }
 
     public void debugPhysic(Matrix4 combined) {
-        fps.log();
+        //fps.log();
+        debugRenderer.setDrawVelocities(true);
+        debugRenderer.setDrawContacts(true);
+        debugRenderer.setDrawInactiveBodies(true);
         debugRenderer.render(world, combined);
     }
 

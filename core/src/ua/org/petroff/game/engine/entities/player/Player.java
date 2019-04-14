@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.BodyDescriber;
 import ua.org.petroff.game.engine.entities.GroupDescriber;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
@@ -28,22 +29,27 @@ public class Player implements EntityInterface, MoveEntityInterface {
         MOVE, JUMP, USE, HIT
     };
 
+    public enum PlayerVector {
+        LEFT, RIGHT, STAY
+    };
+
+    public enum PlayerSize {
+        NORMAL, GROWN
+    };
+
     private final int zIndex = 3;
     private final Assets asset;
     private Body body;
     private Float currentVelocityX;
     private int currentLive;
-    private static final float VELOCITYX = 3f;
-    private static final float JUMPVELOCITY = 800f;
+    private static float VELOCITYX = 3f;
+    private static float JUMPVELOCITY = 8f;
     private GameResources gameResources;
     private final View view;
     private final ViewInterface graphic;
     private final Vector3 cameraNewPosition = new Vector3();
     private Telegraph telegraph;
 
-    public enum PlayerVector {
-        LEFT, RIGHT, STAY
-    };
     private boolean isMove;
     private boolean isJump;
     private boolean isGround;
@@ -51,6 +57,12 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private boolean isAction;
 
     private PlayerVector vector;
+    private PlayerSize playerSize;
+
+    private float bodyWidth;
+    private float bodyHeight;
+    private Vector2 centerBody;
+    private Vector2 centerFoot;
 
     public Player(Assets asset) {
         view = new View(this);
@@ -72,6 +84,10 @@ public class Player implements EntityInterface, MoveEntityInterface {
     @Override
     public int getZIndex() {
         return zIndex;
+    }
+
+    public PlayerSize getPlayerSize() {
+        return playerSize;
     }
 
     public boolean isGround() {
@@ -107,11 +123,14 @@ public class Player implements EntityInterface, MoveEntityInterface {
         isDie = false;
         isAction = false;
         currentVelocityX = 0f;
+        playerSize = PlayerSize.NORMAL;
+        vector = PlayerVector.STAY;
 
         this.gameResources = gameResources;
         telegraph = new Telegraph(this, gameResources);
+
         gameResources.getMessageManger().addTelegraph(DESCRIPTOR, telegraph);
-        vector = PlayerVector.STAY;
+
         MapObject playerObject = ua.org.petroff.game.engine.util.MapResolver.findObject(asset.getMap(),
                 OBJECT_NAME);
         createBody(playerObject);
@@ -137,13 +156,15 @@ public class Player implements EntityInterface, MoveEntityInterface {
         bodyDef.fixedRotation = true;
         body = gameResources.getWorld().createBody(bodyDef);
         PolygonShape poly = new PolygonShape();
-        Vector2 center = new Vector2(width / 2, height / 2.2f);
-        poly.setAsBox(width / 4.5f, height / 2.5f, center, 0);
+        bodyWidth = 1;
+        bodyHeight = 2;
+        centerBody = new Vector2(width / 2, height / 2.2f);
+        poly.setAsBox(bodyWidth / 1f, bodyHeight / 2f);
         Fixture bodyPlayer = body.createFixture(poly, 1);
         bodyPlayer.setUserData(new BodyDescriber(DESCRIPTOR, BodyDescriber.BODY, GroupDescriber.ALIVE));
 
-        center.sub(0, 0.8f);
-        poly.setAsBox(width / 6f, 0.05f, center, 0);
+        centerFoot = centerBody.cpy();
+        poly.setAsBox(width / 5f, 0.05f, centerFoot.sub(1, 1.68f), 0);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = poly;
         fixtureDef.density = 1;
@@ -192,22 +213,24 @@ public class Player implements EntityInterface, MoveEntityInterface {
     }
 
     @Override
+    public void hit() {
+        playerGrow();
+    }
+
+    @Override
     public void update() {
 
         if (isDie) {
             return;
         }
 
-        if (isMove) {
-            Vector2 velocity = body.getLinearVelocity().cpy();
-            velocity.set(currentVelocityX, velocity.y);
-            body.setLinearVelocity(velocity);
+        if (isJump && isGround && body.getLinearVelocity().y < 1f) {
+            body.applyLinearImpulse(0, 10f, body.getPosition().x, body.getPosition().y, true);
+            isGround = false;
         }
 
-        if (isJump && isGround) {
-
-            body.applyForceToCenter(0, JUMPVELOCITY, true);
-            isGround = false;
+        if (isMove) {
+            body.setLinearVelocity(currentVelocityX, body.getLinearVelocity().y);
         }
 
         calculateCameraPositionForPlayer();
@@ -232,7 +255,23 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
         cameraNewPosition.x += (getPosition().x - cameraPosition.x) * lerp * deltaTime;
         cameraNewPosition.y += (getPosition().y - cameraPosition.y) * lerp * deltaTime;
+    }
 
+    private void playerGrow() {
+        body.setActive(true);
+        playerSize = PlayerSize.GROWN;
+        Vector2.Zero.x = centerBody.x * 1.25f;
+        Vector2.Zero.y = centerBody.y * 1.4f;
+        ((PolygonShape) body.getFixtureList().get(0).getShape()).setAsBox(bodyWidth * 1.3f, bodyHeight * 1.3f, Vector2.Zero, 0);
+
+        Vector2.Zero.x = centerFoot.x * 1.25f;
+        Vector2.Zero.y = centerFoot.y * 0.8f;
+        ((PolygonShape) body.getFixtureList().get(1).getShape()).setAsBox(bodyWidth * 1f, 0.05f, Vector2.Zero, 0);
+        //body.getFixtureList().get(1).setDensity(100);
+        body.resetMassData();
+        Vector2 newPosition = body.getTransform().getPosition();
+        body.setTransform(newPosition.add(0, 0.2f), 0);
+//        JUMPVELOCITY = 6f;
     }
 
 }

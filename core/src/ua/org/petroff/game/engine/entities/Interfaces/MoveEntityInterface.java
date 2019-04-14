@@ -12,4 +12,6 @@ public interface MoveEntityInterface {
 
     public void jump();
 
+    public void hit();
+
 }
