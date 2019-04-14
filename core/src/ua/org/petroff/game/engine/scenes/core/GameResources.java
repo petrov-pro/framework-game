@@ -67,6 +67,7 @@ public class GameResources {
 
     public void debugPhysic(Matrix4 combined) {
         //fps.log();
+        debugRenderer.setDrawAABBs(true);
         debugRenderer.setDrawVelocities(true);
         debugRenderer.setDrawContacts(true);
         debugRenderer.setDrawInactiveBodies(true);

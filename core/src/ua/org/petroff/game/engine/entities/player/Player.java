@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.BodyDescriber;
 import ua.org.petroff.game.engine.entities.GroupDescriber;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
@@ -41,9 +40,13 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private final Assets asset;
     private Body body;
     private Float currentVelocityX;
+    private Float maxVelocityX;
     private int currentLive;
-    private static float VELOCITYX = 3f;
-    private static float JUMPVELOCITY = 8f;
+
+    private static final float MAXMOVEVELOCITY = 5f;
+    private static final float MAXJUMPVELOCITY = 5f;
+    private static final float JUMPVELOCITY = 10f;
+    private static final float MOVEVELOCITY = 1f;
     private GameResources gameResources;
     private final View view;
     private final ViewInterface graphic;
@@ -107,7 +110,10 @@ public class Player implements EntityInterface, MoveEntityInterface {
     }
 
     public Vector2 getPosition() {
-        return body.getPosition();
+        Vector2 position = body.getPosition();
+        position.x = position.x - 1;
+        position.y = position.y - 0.8f;
+        return position;
     }
 
     public Vector3 getCameraNewPosition() {
@@ -123,6 +129,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
         isDie = false;
         isAction = false;
         currentVelocityX = 0f;
+        maxVelocityX = MAXMOVEVELOCITY;
         playerSize = PlayerSize.NORMAL;
         vector = PlayerVector.STAY;
 
@@ -133,7 +140,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
         MapObject playerObject = ua.org.petroff.game.engine.util.MapResolver.findObject(asset.getMap(),
                 OBJECT_NAME);
-        createBody(playerObject);
+        createBody();
         setStartPlayerPostion(playerObject);
     }
 
@@ -148,23 +155,21 @@ public class Player implements EntityInterface, MoveEntityInterface {
         body.setTransform(position, 0);
     }
 
-    private void createBody(MapObject playerObject) {
-        float width = MapResolver.coordinateToWorld(playerObject.getProperties().get("width", Float.class).intValue());
-        float height = MapResolver.coordinateToWorld(playerObject.getProperties().get("height", Float.class).intValue());
+    private void createBody() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         body = gameResources.getWorld().createBody(bodyDef);
         PolygonShape poly = new PolygonShape();
-        bodyWidth = 1;
-        bodyHeight = 2;
-        centerBody = new Vector2(width / 2, height / 2.2f);
-        poly.setAsBox(bodyWidth / 1f, bodyHeight / 2f);
+        bodyWidth = MapResolver.coordinateToWorld(32);
+        bodyHeight = MapResolver.coordinateToWorld(64);
+        centerBody = new Vector2(bodyWidth / 2, bodyHeight / 2.1f);
+        poly.setAsBox(bodyWidth / 2.2f, bodyHeight / 2.8f);
         Fixture bodyPlayer = body.createFixture(poly, 1);
         bodyPlayer.setUserData(new BodyDescriber(DESCRIPTOR, BodyDescriber.BODY, GroupDescriber.ALIVE));
 
-        centerFoot = centerBody.cpy();
-        poly.setAsBox(width / 5f, 0.05f, centerFoot.sub(1, 1.68f), 0);
+        centerFoot = bodyPlayer.getBody().getWorldCenter();
+        poly.setAsBox(bodyWidth / 2.5f, 0.05f, centerFoot.sub(0, 0.73f), 0);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = poly;
         fixtureDef.density = 1;
@@ -178,14 +183,16 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     @Override
     public void left() {
-        currentVelocityX = -Player.VELOCITYX;
+        currentVelocityX = -Player.MOVEVELOCITY;
+        maxVelocityX = -Player.MAXMOVEVELOCITY;
         isMove = true;
         vector = PlayerVector.LEFT;
     }
 
     @Override
     public void right() {
-        currentVelocityX = Player.VELOCITYX;
+        currentVelocityX = Player.MOVEVELOCITY;
+        maxVelocityX = Player.MAXMOVEVELOCITY;
         isMove = true;
         vector = PlayerVector.RIGHT;
     }
@@ -224,13 +231,14 @@ public class Player implements EntityInterface, MoveEntityInterface {
             return;
         }
 
-        if (isJump && isGround && body.getLinearVelocity().y < 1f) {
-            body.applyLinearImpulse(0, 10f, body.getPosition().x, body.getPosition().y, true);
+        if (isJump && isGround && body.getLinearVelocity().y < MAXJUMPVELOCITY) {
+            body.applyLinearImpulse(0, JUMPVELOCITY, body.getPosition().x, body.getPosition().y, true);
             isGround = false;
         }
 
-        if (isMove) {
-            body.setLinearVelocity(currentVelocityX, body.getLinearVelocity().y);
+        if (isMove && (body.getLinearVelocity().x > maxVelocityX || body.getLinearVelocity().x < maxVelocityX)) {
+            //body.setLinearVelocity(currentVelocityX, body.getLinearVelocity().y);
+            body.applyLinearImpulse(currentVelocityX, 0, body.getPosition().x, body.getPosition().y, true);
         }
 
         calculateCameraPositionForPlayer();
