@@ -9,17 +9,19 @@ import com.badlogic.gdx.physics.box2d.ContactFilter;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import ua.org.petroff.game.engine.entities.BodyDescriber;
 import ua.org.petroff.game.engine.entities.GroupDescriber;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityListenerInterface;
 import ua.org.petroff.game.engine.entities.TelegramDescriber;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 
-public class SurfaceListener implements EntityListenerInterface {
+public class SurfaceListener<T> implements EntityListenerInterface {
 
     private final GameResources gameResources;
     private final Surface surface;
-    private final Vector2 platfrom = new Vector2();
+    private final Vector2 platfromPosition = new Vector2();
+    private final Vector2 entityPosition = new Vector2();
 
     public SurfaceListener(GameResources gameResources, Surface surface) {
         this.gameResources = gameResources;
@@ -48,16 +50,23 @@ public class SurfaceListener implements EntityListenerInterface {
         if (surfaceData.getType().equals(Surface.PLATFORM_TYPE)
                 && fixtureEntity.getUserData() instanceof BodyDescriber
                 && ((BodyDescriber) fixtureEntity.getUserData()).getType().equals(BodyDescriber.BODY)) {
-            Vector2 positionEntity = fixtureEntity.getBody().getPosition();
 
             ChainShape chain = (ChainShape) fixtureSurface.getShape();
-            chain.getVertex(1, platfrom);
-            if (positionEntity.y > platfrom.y) {
+            chain.getVertex(0, platfromPosition);
+
+            if (!(fixtureEntity.getShape() instanceof PolygonShape)) {
+                throw new Error("Unsuported shape");
+            }
+            PolygonShape entityShape = (PolygonShape) fixtureEntity.getShape();
+            entityShape.getVertex(0, entityPosition);
+            Vector2 entityBottomPosition = fixtureEntity.getBody().getWorldPoint(entityPosition);
+
+            if (entityBottomPosition.y > platfromPosition.y) {
                 return true;
             } else {
+
                 return false;
             }
-
         }
         return true;
     }
@@ -100,11 +109,6 @@ public class SurfaceListener implements EntityListenerInterface {
                 Telegraph telegraph = gameResources.getMessageManger().getTelegraph(userData.toString());
                 if (telegraph != null) {
                     gameResources.getMessageManger().dispatchMessage(surface, telegraph, TelegramDescriber.DEAD, 100);
-                }
-            } else if (surfaceData.getType().equals(Surface.PLATFORM_TYPE)) {
-
-                Vector2 vector = fixtureObject.getBody().getLinearVelocity();
-                if (vector.y == 0) {
                 }
             }
         }

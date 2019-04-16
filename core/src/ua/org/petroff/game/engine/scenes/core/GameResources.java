@@ -1,6 +1,7 @@
 package ua.org.petroff.game.engine.scenes.core;
 
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -73,5 +74,7 @@ public class GameResources {
         debugRenderer.setDrawInactiveBodies(true);
         debugRenderer.render(world, combined);
     }
+
+   
 
 }

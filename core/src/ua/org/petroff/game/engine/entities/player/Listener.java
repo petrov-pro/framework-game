@@ -42,7 +42,7 @@ public class Listener implements EntityListenerInterface {
     private boolean isBodyDescriber(Object userData, Fixture playerFixture) {
         return userData instanceof BodyDescriber && userData.toString().equals(Player.DESCRIPTOR)
                 && ((BodyDescriber) userData).getType().equals(BodyDescriber.BODY_FOOT)
-                && playerFixture.getBody().getLinearVelocity().y <= 0;
+                && playerFixture.getBody().getLinearVelocity().y <= 0.5f;
     }
 
 }

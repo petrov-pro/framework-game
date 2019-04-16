@@ -43,8 +43,8 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     private static final float MAXMOVEVELOCITY = 5f;
     private static final float MAXJUMPVELOCITY = 5f;
-    private static final float JUMPVELOCITY = 8f;
-    private static final float MOVEVELOCITY = 0.5f;
+    private static final float JUMPVELOCITY = 10f;
+    private static final float MOVEVELOCITY = 0.8f;
     private GameResources gameResources;
     private final View view;
     private final ViewInterface graphic;
@@ -62,7 +62,6 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     private float bodyWidth;
     private float bodyHeight;
-    private Vector2 centerBody;
     private Vector2 centerFoot;
 
     public Player(Assets asset) {
@@ -156,16 +155,16 @@ public class Player implements EntityInterface, MoveEntityInterface {
         bodyDef.type = BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         body = gameResources.getWorld().createBody(bodyDef);
+
         PolygonShape poly = new PolygonShape();
-        bodyWidth = MapResolver.coordinateToWorld(32);
-        bodyHeight = MapResolver.coordinateToWorld(64);
-        centerBody = new Vector2(bodyWidth / 2, bodyHeight / 2.1f);
-        poly.setAsBox(bodyWidth / 2.2f, bodyHeight / 2.8f);
+        bodyWidth = (MapResolver.coordinateToWorld(32) / 2.2f);
+        bodyHeight = (MapResolver.coordinateToWorld(64) / 2.8f);
+        poly.setAsBox(bodyWidth, bodyHeight);
         Fixture bodyPlayer = body.createFixture(poly, 1);
         bodyPlayer.setUserData(new BodyDescriber(DESCRIPTOR, BodyDescriber.BODY, GroupDescriber.ALIVE));
 
         centerFoot = bodyPlayer.getBody().getWorldCenter();
-        poly.setAsBox(bodyWidth / 2.5f, 0.05f, centerFoot.sub(0, 0.73f), 0);
+        poly.setAsBox(bodyWidth / 1.3f, 0.05f, centerFoot.sub(0, 0.73f), 0);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = poly;
         fixtureDef.density = 1;
@@ -263,18 +262,15 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private void playerGrow() {
         body.setActive(true);
         playerSize = PlayerSize.GROWN;
-        Vector2.Zero.x = centerBody.x * 1.25f;
-        Vector2.Zero.y = centerBody.y * 1.4f;
-        ((PolygonShape) body.getFixtureList().get(0).getShape()).setAsBox(bodyWidth * 1.3f, bodyHeight * 1.3f, Vector2.Zero, 0);
+        Gdx.app.log("Mass after", " kg: " + body.getMass());
+        ((PolygonShape) body.getFixtureList().get(0).getShape()).setAsBox(bodyWidth * 1.3f, bodyHeight * 1.3f);
 
-        Vector2.Zero.x = centerFoot.x * 1.25f;
-        Vector2.Zero.y = centerFoot.y * 0.8f;
-        ((PolygonShape) body.getFixtureList().get(1).getShape()).setAsBox(bodyWidth * 1f, 0.05f, Vector2.Zero, 0);
-        //body.getFixtureList().get(1).setDensity(100);
+        ((PolygonShape) body.getFixtureList().get(1).getShape()).setAsBox(bodyWidth * 1.2f, 0.05f, centerFoot.cpy().sub(0, 0.23f), 0);
+        body.getFixtureList().get(0).setDensity(0.9f);
         body.resetMassData();
+        Gdx.app.log("Mass after", " kg: " + body.getMass());
         Vector2 newPosition = body.getTransform().getPosition();
         body.setTransform(newPosition.add(0, 0.2f), 0);
-//        JUMPVELOCITY = 6f;
     }
 
 }

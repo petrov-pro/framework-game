@@ -54,6 +54,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         queueDraw.put(QueueDraw.Z_INDEX_START, new QueueDrawInterface() {
             @Override
             public void draw() {
+                
                 viewport.apply();
                 renderer.setView((OrthographicCamera) graphicResources.getCamera());
                 graphicResources.getCamera().update();
@@ -69,6 +70,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             public void draw() {
                 renderer.getBatch().end();
                 if (Settings.IS_DEBUG) {
+                    graphicResources.debugView();
                     map.gameResources.debugPhysic(graphicResources.getCamera().combined);
                 }
             }
