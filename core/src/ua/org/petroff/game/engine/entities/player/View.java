@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.scenes.core.CameraBound;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
+import ua.org.petroff.game.engine.util.MapResolver;
 
 public class View implements QueueDrawInterface {
 
@@ -20,8 +21,8 @@ public class View implements QueueDrawInterface {
     private final Player model;
     private float stateTime = 0;
     private Graphic graphic;
-    private float sizeX = 2;
-    private float sizeY = 2;
+    private float sizeX = 2f;
+    private float sizeY = 2f;
 
     public View(Player model) {
         this.model = model;
@@ -37,7 +38,14 @@ public class View implements QueueDrawInterface {
 
         handlerGrpahicFrame();
         if (graphicFrame == GraphicType.STAY) {
-            graphicResources.getSpriteBatch().draw(graphic.player, model.getPosition().x, model.getPosition().y, sizeX, sizeY);
+     
+           // graphicResources.getSpriteBatch().draw(graphic.player, model.getPosition().x, model.getPosition().y, sizeX, sizeY);
+
+            graphic.playerTest.setSize(sizeX, sizeY);
+            graphic.playerTest.setOriginCenter();
+            graphic.playerTest.setCenter(model.getPosition().x, model.getPosition().y);
+            graphic.playerTest.draw(graphicResources.getSpriteBatch());
+            
         } else {
             stateTime += Gdx.graphics.getDeltaTime();
             Object graphic = this.graphic.graphics.get(graphicFrame);
@@ -51,8 +59,8 @@ public class View implements QueueDrawInterface {
     private void handlerGrpahicFrame() {
 
         if (model.getPlayerSize().equals(Player.PlayerSize.NORMAL)) {
-            sizeX = 2f;
-            sizeY = 2f;
+            sizeX = MapResolver.coordinateToWorld(32);
+            sizeY = MapResolver.coordinateToWorld(64);
         } else {
             sizeX = 2.5f;
             sizeY = 3f;

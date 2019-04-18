@@ -63,6 +63,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private float bodyWidth;
     private float bodyHeight;
     private Vector2 centerFoot;
+    private Vector2 position2;
 
     public Player(Assets asset) {
         view = new View(this);
@@ -107,10 +108,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     }
 
     public Vector2 getPosition() {
-        Vector2 position = body.getPosition();
-        position.x = position.x - 1;
-        position.y = position.y - 0.8f;
-        return position;
+        return body.getPosition();
     }
 
     public Vector3 getCameraNewPosition() {
@@ -147,6 +145,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
         int x = playerObject.getProperties().get("x", Float.class).intValue();
         int y = playerObject.getProperties().get("y", Float.class).intValue();
         Vector2 position = new Vector2(MapResolver.coordinateToWorld(x), MapResolver.coordinateToWorld(y));
+        position2 = position.cpy();
         body.setTransform(position, 0);
     }
 
@@ -157,8 +156,8 @@ public class Player implements EntityInterface, MoveEntityInterface {
         body = gameResources.getWorld().createBody(bodyDef);
 
         PolygonShape poly = new PolygonShape();
-        bodyWidth = (MapResolver.coordinateToWorld(32) / 2.2f);
-        bodyHeight = (MapResolver.coordinateToWorld(64) / 2.8f);
+        bodyWidth = (MapResolver.coordinateToWorld(32) / 2);
+        bodyHeight = (MapResolver.coordinateToWorld(64) / 2);
         poly.setAsBox(bodyWidth, bodyHeight);
         Fixture bodyPlayer = body.createFixture(poly, 1);
         bodyPlayer.setUserData(new BodyDescriber(DESCRIPTOR, BodyDescriber.BODY, GroupDescriber.ALIVE));
@@ -211,7 +210,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     @Override
     public void hit() {
-        playerGrow();
+        view.graphicResources.position = position2;
     }
 
     @Override
