@@ -13,6 +13,7 @@ import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.scenes.core.CameraBound;
+import ua.org.petroff.game.engine.scenes.core.DebugWorld;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 
 public class View implements ViewInterface, GraphicQueueMemberInterface {
@@ -54,7 +55,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         queueDraw.put(QueueDraw.Z_INDEX_START, new QueueDrawInterface() {
             @Override
             public void draw() {
-                
+
                 viewport.apply();
                 renderer.setView((OrthographicCamera) graphicResources.getCamera());
                 graphicResources.getCamera().update();
@@ -70,8 +71,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             public void draw() {
                 renderer.getBatch().end();
                 if (Settings.IS_DEBUG) {
-                    graphicResources.debugView();
-                    map.gameResources.debugPhysic(graphicResources.getCamera().combined);
+                    DebugWorld.run(map.gameResources.getWorld(), graphicResources.getViewport().getCamera().combined);
                 }
             }
 

@@ -1,9 +1,5 @@
 package ua.org.petroff.game.engine.scenes.core;
 
-import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import ua.org.petroff.game.engine.scenes.level1.entities.map.MessageManger;
 import ua.org.petroff.game.engine.scenes.level1.entities.map.WorldContactListener;
@@ -11,10 +7,9 @@ import ua.org.petroff.game.engine.scenes.level1.entities.map.WorldContactListene
 public class GameResources {
 
     private World world;
-    private Box2DDebugRenderer debugRenderer;
+
     private WorldContactListener worldContactListener;
     private MessageManger messageManger;
-    private FPSLogger fps = new FPSLogger();
     private int worldWidth;
     private int worldHeight;
 
@@ -50,14 +45,6 @@ public class GameResources {
         this.world = world;
     }
 
-    public Box2DDebugRenderer getDebugRenderer() {
-        return debugRenderer;
-    }
-
-    public void setDebugRenderer(Box2DDebugRenderer debugRenderer) {
-        this.debugRenderer = debugRenderer;
-    }
-
     public WorldContactListener getWorldContactListener() {
         return worldContactListener;
     }
@@ -65,16 +52,5 @@ public class GameResources {
     public void setWorldContactListener(WorldContactListener worldContactListener) {
         this.worldContactListener = worldContactListener;
     }
-
-    public void debugPhysic(Matrix4 combined) {
-        //fps.log();
-        debugRenderer.setDrawAABBs(true);
-        debugRenderer.setDrawVelocities(true);
-        debugRenderer.setDrawContacts(true);
-        debugRenderer.setDrawInactiveBodies(true);
-        debugRenderer.render(world, combined);
-    }
-
-   
 
 }

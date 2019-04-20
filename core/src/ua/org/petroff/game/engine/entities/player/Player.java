@@ -63,7 +63,6 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private float bodyWidth;
     private float bodyHeight;
     private Vector2 centerFoot;
-    private Vector2 position2;
 
     public Player(Assets asset) {
         view = new View(this);
@@ -125,6 +124,8 @@ public class Player implements EntityInterface, MoveEntityInterface {
         isAction = false;
         playerSize = PlayerSize.NORMAL;
         vector = PlayerVector.STAY;
+        bodyWidth = 1f;
+        bodyHeight = 1.45f;
 
         this.gameResources = gameResources;
         telegraph = new Telegraph(this, gameResources);
@@ -145,7 +146,6 @@ public class Player implements EntityInterface, MoveEntityInterface {
         int x = playerObject.getProperties().get("x", Float.class).intValue();
         int y = playerObject.getProperties().get("y", Float.class).intValue();
         Vector2 position = new Vector2(MapResolver.coordinateToWorld(x), MapResolver.coordinateToWorld(y));
-        position2 = position.cpy();
         body.setTransform(position, 0);
     }
 
@@ -156,14 +156,12 @@ public class Player implements EntityInterface, MoveEntityInterface {
         body = gameResources.getWorld().createBody(bodyDef);
 
         PolygonShape poly = new PolygonShape();
-        bodyWidth = (MapResolver.coordinateToWorld(32) / 2);
-        bodyHeight = (MapResolver.coordinateToWorld(64) / 2);
-        poly.setAsBox(bodyWidth, bodyHeight);
+        poly.setAsBox(bodyWidth / 2, bodyHeight / 2);
         Fixture bodyPlayer = body.createFixture(poly, 1);
         bodyPlayer.setUserData(new BodyDescriber(DESCRIPTOR, BodyDescriber.BODY, GroupDescriber.ALIVE));
 
         centerFoot = bodyPlayer.getBody().getWorldCenter();
-        poly.setAsBox(bodyWidth / 1.3f, 0.05f, centerFoot.sub(0, 0.73f), 0);
+        poly.setAsBox((bodyWidth / 2f) - 0.05f, 0.05f, centerFoot.sub(0, bodyHeight / 2), 0);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = poly;
         fixtureDef.density = 1;
@@ -185,6 +183,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     public void right() {
         isMove = true;
         vector = PlayerVector.RIGHT;
+        
     }
 
     @Override
@@ -210,7 +209,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     @Override
     public void hit() {
-        view.graphicResources.position = position2;
+        playerGrow();
     }
 
     @Override
@@ -248,6 +247,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     }
 
     private void calculateCameraPositionForPlayer() {
+        
         Vector3 cameraPosition = view.graphicResources.getCamera().position;
         Float deltaTime = Gdx.graphics.getDeltaTime();
         float lerp = 0.9f;
@@ -262,14 +262,18 @@ public class Player implements EntityInterface, MoveEntityInterface {
         body.setActive(true);
         playerSize = PlayerSize.GROWN;
         Gdx.app.log("Mass after", " kg: " + body.getMass());
-        ((PolygonShape) body.getFixtureList().get(0).getShape()).setAsBox(bodyWidth * 1.3f, bodyHeight * 1.3f);
 
-        ((PolygonShape) body.getFixtureList().get(1).getShape()).setAsBox(bodyWidth * 1.2f, 0.05f, centerFoot.cpy().sub(0, 0.23f), 0);
-        body.getFixtureList().get(0).setDensity(0.9f);
+        float bodyHeightGrow = (bodyHeight / 2) + 0.2f;
+        float bodyWidthGrow = (bodyWidth / 2) + 0.15f;
+        ((PolygonShape) body.getFixtureList().get(0).getShape()).setAsBox(bodyWidthGrow, bodyHeightGrow);
+
+        ((PolygonShape) body.getFixtureList().get(1).getShape()).setAsBox(bodyWidthGrow - 0.05f, 0.05f, centerFoot.cpy()
+                .sub(0, bodyHeightGrow - 0.7f), 0);
+        //body.getFixtureList().get(0).setDensity(0.9f);
         body.resetMassData();
         Gdx.app.log("Mass after", " kg: " + body.getMass());
         Vector2 newPosition = body.getTransform().getPosition();
-        body.setTransform(newPosition.add(0, 0.2f), 0);
+        body.setTransform(newPosition.add(0, 0.4f), 0);
     }
 
 }

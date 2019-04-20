@@ -2,7 +2,9 @@ package ua.org.petroff.game.engine.entities.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.scenes.core.CameraBound;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
@@ -21,8 +23,9 @@ public class View implements QueueDrawInterface {
     private final Player model;
     private float stateTime = 0;
     private Graphic graphic;
-    private float sizeX = 2f;
-    private float sizeY = 2f;
+    private float sizeX;
+    private float sizeY;
+    private Player.PlayerSize currentPlayerSize;
 
     public View(Player model) {
         this.model = model;
@@ -37,34 +40,37 @@ public class View implements QueueDrawInterface {
     public void draw() {
 
         handlerGrpahicFrame();
+        Object frame = graphic.graphics.get(graphicFrame);
         if (graphicFrame == GraphicType.STAY) {
-     
-           // graphicResources.getSpriteBatch().draw(graphic.player, model.getPosition().x, model.getPosition().y, sizeX, sizeY);
-
-            graphic.playerTest.setSize(sizeX, sizeY);
-            graphic.playerTest.setOriginCenter();
-            graphic.playerTest.setCenter(model.getPosition().x, model.getPosition().y);
-            graphic.playerTest.draw(graphicResources.getSpriteBatch());
-            
+            graphic.sprite.setRegion((TextureRegion) frame);
         } else {
             stateTime += Gdx.graphics.getDeltaTime();
-            Object graphic = this.graphic.graphics.get(graphicFrame);
-            graphicResources.getSpriteBatch()
-                    .draw((TextureRegion) ((Animation) graphic).getKeyFrame(stateTime * speedAnimation, isLoopAnimation),
-                            model.getPosition().x, model.getPosition().y, sizeX, sizeY);
+            TextureRegion frameAnimation = (TextureRegion) ((Animation) frame).getKeyFrame(stateTime * speedAnimation, isLoopAnimation);
+            graphic.sprite.setRegion(frameAnimation);
         }
+
+        graphic.sprite.setCenter(model.getPosition().x, model.getPosition().y);
+        graphic.sprite.draw(graphicResources.getSpriteBatch());
         ((CameraBound) graphicResources.getCamera()).positionSafe(model.getCameraNewPosition());
+    }
+
+    private void changeSize() {
+
+        if (currentPlayerSize != model.getPlayerSize()) {
+            if (model.getPlayerSize().equals(Player.PlayerSize.NORMAL)) {
+                graphic.sprite.setScale(Settings.SCALE);
+            } else {
+                graphic.sprite.setScale(Settings.SCALE + 0.011f);
+            }
+
+        }
+        currentPlayerSize = model.getPlayerSize();
+
     }
 
     private void handlerGrpahicFrame() {
 
-        if (model.getPlayerSize().equals(Player.PlayerSize.NORMAL)) {
-            sizeX = MapResolver.coordinateToWorld(32);
-            sizeY = MapResolver.coordinateToWorld(64);
-        } else {
-            sizeX = 2.5f;
-            sizeY = 3f;
-        }
+        changeSize();
 
         if (model.isDie()) {
             graphicFrame = GraphicType.DIED;
@@ -89,7 +95,7 @@ public class View implements QueueDrawInterface {
             }
         } else {
             isLoopAnimation = false;
-            speedAnimation = 0.3f;
+            speedAnimation = 0.6f;
             switch (model.getVector()) {
                 case RIGHT:
                     graphicFrame = GraphicType.JUMPRIGHT;

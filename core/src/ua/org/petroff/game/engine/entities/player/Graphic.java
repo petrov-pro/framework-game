@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.HashMap;
 import java.util.Map;
+import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterface;
@@ -17,9 +18,8 @@ import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 public class Graphic implements ViewInterface, GraphicQueueMemberInterface {
 
     public GraphicResources graphicResources;
-    public TextureRegion player;
-    public Sprite playerTest;
     public final HashMap<View.GraphicType, Object> graphics = new HashMap();
+    public Sprite sprite;
 
     private final int zIndex = 2;
     private final Assets asset;
@@ -43,6 +43,7 @@ public class Graphic implements ViewInterface, GraphicQueueMemberInterface {
     }
 
     private void loadAnimation() {
+
         Texture playerTexture = asset.get("player");
         TextureRegion[] playerRegionsRight = new TextureRegion[7];
         TextureRegion[] playerRegionsLeft = new TextureRegion[7];
@@ -51,37 +52,38 @@ public class Graphic implements ViewInterface, GraphicQueueMemberInterface {
         TextureRegion[] playerRegionsJumpStay = new TextureRegion[7];
         TextureRegion[] playerRegionsDied = new TextureRegion[5];
 
-        player = new TextureRegion(playerTexture, 0, 384, 64, 64);
-        
-        playerTest = new Sprite(playerTexture, 0, 384, 64, 64);
+        TextureRegion player = new TextureRegion(playerTexture, 0, 388, 64, 64);
+        sprite = new Sprite(player);
+        sprite.setScale(Settings.SCALE);
+        sprite.setOriginCenter();
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsRight[i] = new TextureRegion(playerTexture, 64 * i, 704, 64, 64);
+            playerRegionsRight[i] = new TextureRegion(playerTexture, 64 * i, 708, 64, 64);
         }
         Animation walkAnimationRight = new Animation(0.1f, (Object[]) playerRegionsRight);
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsLeft[i] = new TextureRegion(playerTexture, 64 * i, 576, 64, 64);
+            playerRegionsLeft[i] = new TextureRegion(playerTexture, 64 * i, 580, 64, 64);
         }
         Animation walkAnimationLeft = new Animation(0.1f, (Object[]) playerRegionsLeft);
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsJumpLeft[i] = new TextureRegion(playerTexture, 64 * i, 64, 64, 64);
+            playerRegionsJumpLeft[i] = new TextureRegion(playerTexture, 64 * i, 68, 64, 64);
         }
         Animation jumpAnimationLeft = new Animation(0.1f, (Object[]) playerRegionsJumpLeft);
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsJumpRight[i] = new TextureRegion(playerTexture, 64 * i, 192, 64, 64);
+            playerRegionsJumpRight[i] = new TextureRegion(playerTexture, 64 * i, 196, 64, 64);
         }
         Animation jumpAnimationRight = new Animation(0.1f, (Object[]) playerRegionsJumpRight);
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsJumpStay[i] = new TextureRegion(playerTexture, 64 * i, 128, 64, 64);
+            playerRegionsJumpStay[i] = new TextureRegion(playerTexture, 64 * i, 132, 64, 64);
         }
         Animation jumpAnimationStay = new Animation(0.1f, (Object[]) playerRegionsJumpStay);
 
         for (int i = 0; i < 5; i++) {
-            playerRegionsDied[i] = new TextureRegion(playerTexture, 64 * i, 1280, 64, 64);
+            playerRegionsDied[i] = new TextureRegion(playerTexture, 64 * i, 1284, 64, 64);
         }
         Animation diedAnimationStay = new Animation(0.1f, (Object[]) playerRegionsDied);
 

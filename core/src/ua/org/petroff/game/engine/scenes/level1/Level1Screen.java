@@ -36,9 +36,8 @@ public class Level1Screen extends ScreenAdapter {
     }
 
     private void clearScreen() {
-        GL20 gl = Gdx.gl;
-        gl.glClearColor(0, 0, 0, 1);
-        gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     private void handlerEntities() {

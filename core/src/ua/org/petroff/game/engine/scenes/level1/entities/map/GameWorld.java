@@ -70,12 +70,11 @@ public class GameWorld implements EntityInterface {
 
     private void createPhysicWorld(com.badlogic.gdx.maps.Map map) {
         World world = new World(new Vector2(0, GRAVITATION), true);
-        Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
+        
         WorldContactListener worldContactListener = new WorldContactListener();
         world.setContactListener(worldContactListener);
         gameResources.setWorld(world);
         gameResources.setWorldContactListener(worldContactListener);
-        gameResources.setDebugRenderer(debugRenderer);
 
         int width = map.getProperties().get("width", Integer.class);
         int height = map.getProperties().get("height", Integer.class);
