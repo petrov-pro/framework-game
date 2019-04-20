@@ -17,7 +17,6 @@ public class View implements QueueDrawInterface {
     };
     public View.GraphicType graphicFrame;
     private boolean isLoopAnimation = true;
-    private float speedAnimation = 1f;
     public GraphicResources graphicResources;
 
     private final Player model;
@@ -45,7 +44,7 @@ public class View implements QueueDrawInterface {
             graphic.sprite.setRegion((TextureRegion) frame);
         } else {
             stateTime += Gdx.graphics.getDeltaTime();
-            TextureRegion frameAnimation = (TextureRegion) ((Animation) frame).getKeyFrame(stateTime * speedAnimation, isLoopAnimation);
+            TextureRegion frameAnimation = (TextureRegion) ((Animation) frame).getKeyFrame(stateTime, isLoopAnimation);
             graphic.sprite.setRegion(frameAnimation);
         }
 
@@ -75,13 +74,11 @@ public class View implements QueueDrawInterface {
         if (model.isDie()) {
             graphicFrame = GraphicType.DIED;
             isLoopAnimation = false;
-            speedAnimation = 1f;
             return;
         }
 
         if (model.isGround()) {
             isLoopAnimation = true;
-            speedAnimation = 1f;
             switch (model.getVector()) {
                 case RIGHT:
                     graphicFrame = GraphicType.MOVERIGHT;
@@ -95,7 +92,6 @@ public class View implements QueueDrawInterface {
             }
         } else {
             isLoopAnimation = false;
-            speedAnimation = 0.6f;
             switch (model.getVector()) {
                 case RIGHT:
                     graphicFrame = GraphicType.JUMPRIGHT;

@@ -70,17 +70,17 @@ public class Graphic implements ViewInterface, GraphicQueueMemberInterface {
         for (int i = 0; i < 7; i++) {
             playerRegionsJumpLeft[i] = new TextureRegion(playerTexture, 64 * i, 68, 64, 64);
         }
-        Animation jumpAnimationLeft = new Animation(0.1f, (Object[]) playerRegionsJumpLeft);
+        Animation jumpAnimationLeft = new Animation(0.2f, (Object[]) playerRegionsJumpLeft);
 
         for (int i = 0; i < 7; i++) {
             playerRegionsJumpRight[i] = new TextureRegion(playerTexture, 64 * i, 196, 64, 64);
         }
-        Animation jumpAnimationRight = new Animation(0.1f, (Object[]) playerRegionsJumpRight);
+        Animation jumpAnimationRight = new Animation(0.2f, (Object[]) playerRegionsJumpRight);
 
         for (int i = 0; i < 7; i++) {
             playerRegionsJumpStay[i] = new TextureRegion(playerTexture, 64 * i, 132, 64, 64);
         }
-        Animation jumpAnimationStay = new Animation(0.1f, (Object[]) playerRegionsJumpStay);
+        Animation jumpAnimationStay = new Animation(0.2f, (Object[]) playerRegionsJumpStay);
 
         for (int i = 0; i < 5; i++) {
             playerRegionsDied[i] = new TextureRegion(playerTexture, 64 * i, 1284, 64, 64);

@@ -2,6 +2,7 @@ package ua.org.petroff.game.engine.entities.surface;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegraph;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -14,6 +15,7 @@ import ua.org.petroff.game.engine.entities.BodyDescriber;
 import ua.org.petroff.game.engine.entities.GroupDescriber;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityListenerInterface;
 import ua.org.petroff.game.engine.entities.TelegramDescriber;
+import ua.org.petroff.game.engine.scenes.core.DebugWorld;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 
 public class SurfaceListener<T> implements EntityListenerInterface {
@@ -21,6 +23,7 @@ public class SurfaceListener<T> implements EntityListenerInterface {
     private final GameResources gameResources;
     private final Surface surface;
     private final Vector2 platfromPosition = new Vector2();
+    private final Vector2 platfromPosition1 = new Vector2();
     private final Vector2 entityPosition = new Vector2();
 
     public SurfaceListener(GameResources gameResources, Surface surface) {
@@ -53,15 +56,17 @@ public class SurfaceListener<T> implements EntityListenerInterface {
 
             ChainShape chain = (ChainShape) fixtureSurface.getShape();
             chain.getVertex(0, platfromPosition);
-
+            chain.getVertex(1, platfromPosition1);
             if (!(fixtureEntity.getShape() instanceof PolygonShape)) {
                 throw new Error("Unsuported shape");
             }
             PolygonShape entityShape = (PolygonShape) fixtureEntity.getShape();
             entityShape.getVertex(0, entityPosition);
             Vector2 entityBottomPosition = fixtureEntity.getBody().getWorldPoint(entityPosition);
+            Vector2 entityCenter = fixtureEntity.getBody().getWorldCenter();
 
-            if (entityBottomPosition.y > platfromPosition.y) {
+            if (entityBottomPosition.y > platfromPosition.y && (platfromPosition.x <= entityCenter.x
+                    && entityCenter.x <= platfromPosition1.x)) {
                 return true;
             } else {
 
