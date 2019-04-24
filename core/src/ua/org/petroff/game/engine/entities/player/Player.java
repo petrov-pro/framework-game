@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Array;
 import ua.org.petroff.game.engine.entities.BodyDescriber;
 import ua.org.petroff.game.engine.entities.GroupDescriber;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
@@ -63,6 +64,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     private float bodyWidth;
     private float bodyHeight;
     private Vector2 centerFoot;
+    private Vector2 centerFootSize;
 
     public Player(Assets asset) {
         view = new View(this);
@@ -161,7 +163,8 @@ public class Player implements EntityInterface, MoveEntityInterface {
         bodyPlayer.setUserData(new BodyDescriber(DESCRIPTOR, BodyDescriber.BODY, GroupDescriber.ALIVE));
 
         centerFoot = bodyPlayer.getBody().getWorldCenter();
-        poly.setAsBox((bodyWidth / 2f) - 0.05f, 0.05f, centerFoot.sub(0, bodyHeight / 2), 0);
+        centerFootSize = centerFoot.cpy();
+        poly.setAsBox((bodyWidth / 2f) - 0.05f, 0.05f, centerFoot.cpy().sub(0, bodyHeight / 2), 0);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = poly;
         fixtureDef.density = 1;
@@ -183,7 +186,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     public void right() {
         isMove = true;
         vector = PlayerVector.RIGHT;
-        
+
     }
 
     @Override
@@ -209,7 +212,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     @Override
     public void hit() {
-        playerGrow();
+        playerResize();
     }
 
     @Override
@@ -221,7 +224,10 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
         if (isJump && isGround && body.getLinearVelocity().y < MAXJUMPVELOCITY) {
             body.applyLinearImpulse(0, JUMPVELOCITY, body.getPosition().x, body.getPosition().y, true);
-            isGround = false;
+            Gdx.app.log("jump", " " + body.getLinearVelocity().y);
+            if (body.getLinearVelocity().y > 1.60f) {
+                isGround = false;
+            }
         }
 
         if (isMove) {
@@ -247,7 +253,7 @@ public class Player implements EntityInterface, MoveEntityInterface {
     }
 
     private void calculateCameraPositionForPlayer() {
-        
+
         Vector3 cameraPosition = view.graphicResources.getCamera().position;
         Float deltaTime = Gdx.graphics.getDeltaTime();
         float lerp = 0.9f;
@@ -258,20 +264,36 @@ public class Player implements EntityInterface, MoveEntityInterface {
         cameraNewPosition.y += (getPosition().y - cameraPosition.y) * lerp * deltaTime;
     }
 
+    private void playerResize() {
+        if (playerSize.equals(PlayerSize.NORMAL)) {
+            playerGrow();
+        } else {
+            playerNormal();
+        }
+    }
+
     private void playerGrow() {
         body.setActive(true);
         playerSize = PlayerSize.GROWN;
-        Gdx.app.log("Mass after", " kg: " + body.getMass());
 
         float bodyHeightGrow = (bodyHeight / 2) + 0.2f;
         float bodyWidthGrow = (bodyWidth / 2) + 0.15f;
         ((PolygonShape) body.getFixtureList().get(0).getShape()).setAsBox(bodyWidthGrow, bodyHeightGrow);
 
-        ((PolygonShape) body.getFixtureList().get(1).getShape()).setAsBox(bodyWidthGrow - 0.05f, 0.05f, centerFoot.cpy()
-                .sub(0, bodyHeightGrow - 0.7f), 0);
-        //body.getFixtureList().get(0).setDensity(0.9f);
+        ((PolygonShape) body.getFixtureList().get(1).getShape()).setAsBox(bodyWidthGrow - 0.05f, 0.05f, centerFootSize.cpy()
+                .sub(0, bodyHeightGrow), 0);
         body.resetMassData();
-        Gdx.app.log("Mass after", " kg: " + body.getMass());
+        Vector2 newPosition = body.getTransform().getPosition();
+        body.setTransform(newPosition.add(0, 0.4f), 0);
+    }
+
+    private void playerNormal() {
+        body.setActive(true);
+        playerSize = PlayerSize.NORMAL;
+
+        ((PolygonShape) body.getFixtureList().get(0).getShape()).setAsBox(bodyWidth / 2, bodyHeight / 2);
+        ((PolygonShape) body.getFixtureList().get(1).getShape()).setAsBox((bodyWidth / 2f) - 0.05f, 0.05f, centerFootSize.cpy().sub(0, bodyHeight / 2), 0);
+        body.resetMassData();
         Vector2 newPosition = body.getTransform().getPosition();
         body.setTransform(newPosition.add(0, 0.4f), 0);
     }

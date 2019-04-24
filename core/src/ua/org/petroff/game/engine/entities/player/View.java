@@ -2,13 +2,11 @@ package ua.org.petroff.game.engine.entities.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.scenes.core.CameraBound;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
-import ua.org.petroff.game.engine.util.MapResolver;
 
 public class View implements QueueDrawInterface {
 
@@ -22,9 +20,9 @@ public class View implements QueueDrawInterface {
     private final Player model;
     private float stateTime = 0;
     private Graphic graphic;
-    private float sizeX;
-    private float sizeY;
     private Player.PlayerSize currentPlayerSize;
+
+    private boolean drawGroundEffect = false;
 
     public View(Player model) {
         this.model = model;
@@ -50,6 +48,7 @@ public class View implements QueueDrawInterface {
 
         graphic.sprite.setCenter(model.getPosition().x, model.getPosition().y);
         graphic.sprite.draw(graphicResources.getSpriteBatch());
+        groundedEffect();
         ((CameraBound) graphicResources.getCamera()).positionSafe(model.getCameraNewPosition());
     }
 
@@ -91,6 +90,7 @@ public class View implements QueueDrawInterface {
                     break;
             }
         } else {
+            drawGroundEffect = true;
             isLoopAnimation = false;
             switch (model.getVector()) {
                 case RIGHT:
@@ -108,6 +108,19 @@ public class View implements QueueDrawInterface {
 
     public void changeState() {
         stateTime = 0;
+    }
+
+    public void groundedEffect() {
+        if (model.isGround() && drawGroundEffect) {
+            graphic.effect.start();
+            float heidhtHalf = (graphic.sprite.getHeight() / 2) * Settings.SCALE;
+            graphic.effect.setPosition(model.getPosition().x, model.getPosition().y - heidhtHalf + 0.2f);
+            drawGroundEffect = false;
+            Gdx.app.log("start", "start");
+        }
+
+        graphic.effect.draw(graphicResources.getSpriteBatch(), Gdx.graphics.getDeltaTime());
+
     }
 
 }

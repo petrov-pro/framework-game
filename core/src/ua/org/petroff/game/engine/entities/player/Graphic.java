@@ -1,8 +1,11 @@
 package ua.org.petroff.game.engine.entities.player;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +23,7 @@ public class Graphic implements ViewInterface, GraphicQueueMemberInterface {
     public GraphicResources graphicResources;
     public final HashMap<View.GraphicType, Object> graphics = new HashMap();
     public Sprite sprite;
+    public ParticleEffect effect;
 
     private final int zIndex = 2;
     private final Assets asset;
@@ -40,6 +44,12 @@ public class Graphic implements ViewInterface, GraphicQueueMemberInterface {
         this.graphicResources = graphicResources;
         view.graphicResources = graphicResources;
         loadAnimation();
+
+        
+        TextureAtlas particleAtlas = new TextureAtlas(); //<-load some atlas with your particle assets in
+        particleAtlas.addRegion("particle",new TextureRegion(new Texture("particle.png")));
+        effect = new ParticleEffect();
+        effect.load(Gdx.files.internal("particles/dust.p"), particleAtlas);
     }
 
     private void loadAnimation() {
