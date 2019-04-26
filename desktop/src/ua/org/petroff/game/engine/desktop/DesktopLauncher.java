@@ -8,6 +8,8 @@ import ua.org.petroff.game.engine.Settings;
 public class DesktopLauncher {
 
     public static void main(String[] arg) {
+
+        
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = Settings.GAME_NAME;
         config.width = Settings.APP_WIDTH;

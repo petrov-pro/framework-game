@@ -12,7 +12,6 @@ buildscript {
     dependencies {
         classpath 'org.wisepersist:gwt-gradle-plugin:1.0.6'
         
-
     }
 }
 
@@ -48,7 +47,6 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-ai:1.8.1"
         
     }
 }
@@ -65,7 +63,7 @@ project(":html") {
         compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion:sources"
         compile "com.badlogicgames.gdx:gdx-box2d-gwt:$gdxVersion:sources"
-        compile "com.badlogicgames.gdx:gdx-ai:1.8.1"
+        compile "com.badlogicgames.gdx:gdx-ai:1.8.1:sources"
     }
 }
 
@@ -77,6 +75,7 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:1.8.1"
+        compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }
 

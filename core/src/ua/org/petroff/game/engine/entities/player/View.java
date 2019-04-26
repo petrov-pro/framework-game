@@ -3,6 +3,7 @@ package ua.org.petroff.game.engine.entities.player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.scenes.core.CameraBound;
@@ -35,7 +36,6 @@ public class View implements QueueDrawInterface {
 
     @Override
     public void draw() {
-
         handlerGrpahicFrame();
         Object frame = graphic.graphics.get(graphicFrame);
         if (graphicFrame == GraphicType.STAY) {
@@ -111,15 +111,15 @@ public class View implements QueueDrawInterface {
     }
 
     public void groundedEffect() {
-        if (model.isGround() && drawGroundEffect) {
+        if (model.isGround() && drawGroundEffect && currentPlayerSize.equals(Player.PlayerSize.GROWN)) {
             graphic.effect.start();
             float heidhtHalf = (graphic.sprite.getHeight() / 2) * Settings.SCALE;
             graphic.effect.setPosition(model.getPosition().x, model.getPosition().y - heidhtHalf + 0.2f);
             drawGroundEffect = false;
-            Gdx.app.log("start", "start");
         }
-
-        graphic.effect.draw(graphicResources.getSpriteBatch(), Gdx.graphics.getDeltaTime());
+        if (!graphic.effect.isComplete()) {
+            graphic.effect.draw(graphicResources.getSpriteBatch(), Gdx.graphics.getDeltaTime());
+        }
 
     }
 

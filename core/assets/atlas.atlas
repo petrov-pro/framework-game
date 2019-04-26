@@ -1,0 +1,60 @@
+
+atlas.png
+size: 512,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+badlogic
+  rotate: false
+  xy: 2, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+particle
+  rotate: false
+  xy: 2, 260
+  size: 320, 198
+  orig: 320, 198
+  offset: 0, 0
+  index: -1
+
+atlas2.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+images/backgroud-loading
+  rotate: false
+  xy: 2, 67
+  size: 1020, 764
+  orig: 1020, 764
+  offset: 0, 0
+  index: -1
+images/health
+  rotate: false
+  xy: 2, 2
+  size: 350, 63
+  orig: 350, 63
+  offset: 0, 0
+  index: -1
+
+atlas3.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+images/mainmenu-background
+  rotate: false
+  xy: 2, 289
+  size: 1020, 574
+  orig: 1020, 574
+  offset: 0, 0
+  index: -1
+images/test
+  rotate: false
+  xy: 2, 2
+  size: 499, 285
+  orig: 499, 285
+  offset: 0, 0
+  index: -1

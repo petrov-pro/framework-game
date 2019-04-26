@@ -11,11 +11,15 @@
       <display-name>run</display-name>
       <non-blocking>no</non-blocking>
       <task-names>
+        <name must-exist="no">texturePacker</name>
         <name must-exist="no">:desktop:run</name>
       </task-names>
       <task-args>
         <arg>-PcmdLineArgs=${cmd-line-args}</arg>
         <arg>-PjvmLineArgs=${jvm-line-args}</arg>
+        <arg>--info</arg>
+        <arg>--debug</arg>
+        <arg>--stacktrace</arg>
       </task-args>
       <task-jvm-args/>
     </task>
@@ -29,6 +33,15 @@
         <arg>-PcmdLineArgs=${cmd-line-args}</arg>
         <arg>-PjvmLineArgs=${jvm-line-args}</arg>
       </task-args>
+      <task-jvm-args/>
+    </task>
+    <task>
+      <display-name>build</display-name>
+      <non-blocking>yes</non-blocking>
+      <task-names>
+        <name must-exist="no">texturePacker</name>
+      </task-names>
+      <task-args/>
       <task-jvm-args/>
     </task>
   </built-in-tasks>

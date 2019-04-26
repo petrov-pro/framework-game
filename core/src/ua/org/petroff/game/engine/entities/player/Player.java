@@ -224,7 +224,6 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
         if (isJump && isGround && body.getLinearVelocity().y < MAXJUMPVELOCITY) {
             body.applyLinearImpulse(0, JUMPVELOCITY, body.getPosition().x, body.getPosition().y, true);
-            Gdx.app.log("jump", " " + body.getLinearVelocity().y);
             if (body.getLinearVelocity().y > 1.60f) {
                 isGround = false;
             }

@@ -9,3 +9,40 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 eclipse.project {
     name = appName + "-core"
 }
+
+
+
+buildscript {
+    
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        jcenter()
+        google()
+    }
+    
+    dependencies {
+        classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+    }
+}
+
+// Store the parameters you want to pass the texturePacker here...
+project.ext.texturePacker = [ buildFile.parent +"/assets/",  buildFile.parent +"/assets/", "atlas" ]
+
+
+// Import the texture packer
+import com.badlogic.gdx.tools.texturepacker.TexturePacker
+
+// Add a new task that packs the textures for you
+task texturePacker << {
+    if (project.ext.has('texturePacker')) {
+        logger.info "Calling TexturePacker: "+buildFile.parent
+//        def settings = new TexturePacker.Settings()
+//        settings.maxWidth = 1920
+//        settings.maxHeight = 1200
+        TexturePacker.process(texturePacker[0], texturePacker[1], texturePacker[2])
+    }
+  
+}

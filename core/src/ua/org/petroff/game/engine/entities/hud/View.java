@@ -82,8 +82,8 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         table.top(); // Will put it at the top of our stage
         table.setFillParent(true);
 
-        countdownLabel = new Label(String.format("%03d", model.worldTimer), skin);
-        scoreLabel = new Label(String.format("%06d", model.score), skin);
+        countdownLabel = new Label(model.worldTimer.toString(), skin);
+        scoreLabel = new Label(model.score.toString(), skin);
         timeLabel = new Label("TIME", skin);
         levelLabel = new Label("WASTE LAND", skin);
         worldLabel = new Label("ROUND 1", skin);
@@ -139,7 +139,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         stage.getViewport().apply();
         stage.act();
         stage.draw();
-        countdownLabel.setText(String.format("%03d", model.worldTimer));
+        countdownLabel.setText(model.worldTimer.toString());
         liveLabel.setText(model.currentLive.toString());
         if (model.currentLive <= 0) {
             deadLabel.setVisible(true);

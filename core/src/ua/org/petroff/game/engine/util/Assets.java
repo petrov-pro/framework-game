@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.maps.tiled.TideMapLoader;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
 import java.util.HashMap;
 
 public class Assets {
@@ -51,6 +52,7 @@ public class Assets {
             return null;
         }
         AssetDescriptor assetDescriptor = store.get(alias);
+        
         return (T) assetDescriptor.type.cast(manager.get(assetDescriptor));
     }
 
