@@ -36,7 +36,7 @@ public class Graphic implements ViewInterface, GraphicQueueMemberInterface {
 
     @Override
     public void loadResources() {
-        this.asset.loadTexture("player", Assets.IMAGE_ENTITIES_PATH + "/player/player.png");
+        asset.loadAtlas();
     }
 
     @Override
@@ -45,16 +45,15 @@ public class Graphic implements ViewInterface, GraphicQueueMemberInterface {
         view.graphicResources = graphicResources;
         loadAnimation();
 
-        
         TextureAtlas particleAtlas = new TextureAtlas(); //<-load some atlas with your particle assets in
-        particleAtlas.addRegion("particle",new TextureRegion(new Texture("particle.png")));
+        particleAtlas.addRegion("dust", new TextureRegion(new Texture(Assets.PATH + "particles/dust.png")));
         effect = new ParticleEffect();
-        effect.load(Gdx.files.internal("particles/dust.p"), particleAtlas);
+        effect.load(Gdx.files.internal(Assets.PATH + "particles/dust.p"), particleAtlas);
     }
 
     private void loadAnimation() {
 
-        Texture playerTexture = asset.get("player");
+        TextureAtlas atlas = asset.getAtlas();
         TextureRegion[] playerRegionsRight = new TextureRegion[7];
         TextureRegion[] playerRegionsLeft = new TextureRegion[7];
         TextureRegion[] playerRegionsJumpLeft = new TextureRegion[7];
@@ -62,38 +61,39 @@ public class Graphic implements ViewInterface, GraphicQueueMemberInterface {
         TextureRegion[] playerRegionsJumpStay = new TextureRegion[7];
         TextureRegion[] playerRegionsDied = new TextureRegion[5];
 
-        TextureRegion player = new TextureRegion(playerTexture, 0, 388, 64, 64);
+        TextureAtlas.AtlasRegion playerTexture = atlas.findRegion("player");
+        TextureRegion player = new TextureRegion(playerTexture, 0, 68, 64, 64);
         sprite = new Sprite(player);
         sprite.setScale(Settings.SCALE);
         sprite.setOriginCenter();
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsRight[i] = new TextureRegion(playerTexture, 64 * i, 708, 64, 64);
+            playerRegionsRight[i] = new TextureRegion(playerTexture, 64 * i, 324, 64, 64);
         }
         Animation walkAnimationRight = new Animation(0.1f, (Object[]) playerRegionsRight);
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsLeft[i] = new TextureRegion(playerTexture, 64 * i, 580, 64, 64);
+            playerRegionsLeft[i] = new TextureRegion(playerTexture, 64 * i, 452, 64, 64);
         }
         Animation walkAnimationLeft = new Animation(0.1f, (Object[]) playerRegionsLeft);
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsJumpLeft[i] = new TextureRegion(playerTexture, 64 * i, 68, 64, 64);
+            playerRegionsJumpLeft[i] = new TextureRegion(playerTexture, 64 * i, 4, 64, 64);
         }
         Animation jumpAnimationLeft = new Animation(0.2f, (Object[]) playerRegionsJumpLeft);
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsJumpRight[i] = new TextureRegion(playerTexture, 64 * i, 196, 64, 64);
+            playerRegionsJumpRight[i] = new TextureRegion(playerTexture, 64 * i, 132, 64, 64);
         }
         Animation jumpAnimationRight = new Animation(0.2f, (Object[]) playerRegionsJumpRight);
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsJumpStay[i] = new TextureRegion(playerTexture, 64 * i, 132, 64, 64);
+            playerRegionsJumpStay[i] = new TextureRegion(playerTexture, 64 * i, 68, 64, 64);
         }
         Animation jumpAnimationStay = new Animation(0.2f, (Object[]) playerRegionsJumpStay);
 
         for (int i = 0; i < 5; i++) {
-            playerRegionsDied[i] = new TextureRegion(playerTexture, 64 * i, 1284, 64, 64);
+            playerRegionsDied[i] = new TextureRegion(playerTexture, 64 * i, 770, 64, 64);
         }
         Animation diedAnimationStay = new Animation(0.1f, (Object[]) playerRegionsDied);
 

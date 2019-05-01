@@ -39,7 +39,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     @Override
     public void init(GraphicResources graphicResources) {
         this.graphicResources = graphicResources;
-        renderer = new OrthogonalTiledMapRenderer(((TiledMap) assets.get("map-level1")), Settings.SCALE, new SpriteBatch());
+        renderer = new OrthogonalTiledMapRenderer(((TiledMap) assets.getMap()), Settings.SCALE, new SpriteBatch());
         CameraBound camera = new CameraBound();
         camera.position.set(map.getCameraPosition(), 0);
         camera.setWorldBounds(map.gameResources.getWorldWidth(), map.gameResources.getWorldHeight());

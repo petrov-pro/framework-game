@@ -29,7 +29,7 @@ buildscript {
 }
 
 // Store the parameters you want to pass the texturePacker here...
-project.ext.texturePacker = [ buildFile.parent +"/assets/",  buildFile.parent +"/assets/", "atlas" ]
+project.ext.texturePacker = [ buildFile.parent +"/assets/data",  buildFile.parent +"/assets/atlas/", "general" ]
 
 
 // Import the texture packer
@@ -39,10 +39,9 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker
 task texturePacker << {
     if (project.ext.has('texturePacker')) {
         logger.info "Calling TexturePacker: "+buildFile.parent
-//        def settings = new TexturePacker.Settings()
-//        settings.maxWidth = 1920
-//        settings.maxHeight = 1200
-        TexturePacker.process(texturePacker[0], texturePacker[1], texturePacker[2])
+        def settings = new TexturePacker.Settings()
+        settings.flattenPaths = true
+        TexturePacker.process(settings, texturePacker[0], texturePacker[1], texturePacker[2])
     }
   
 }

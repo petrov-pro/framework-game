@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -24,7 +25,6 @@ public class MainMenuScreen extends ScreenAdapter implements ScreenLoadResourceI
     private final static int PADDING_BOTTOM_BUTTON = 5;
 
     private Viewport viewport;
-    private Texture textureBackground;
     private final Assets assets;
     private Stage stage;
     private Table table;
@@ -39,7 +39,7 @@ public class MainMenuScreen extends ScreenAdapter implements ScreenLoadResourceI
     @Override
     public void load() {
         viewport = new FillViewport(Settings.APP_WIDTH, Settings.APP_HEIGHT);
-        assets.loadTexture("background", Assets.IMAGE_PATH + "mainmenu-background.png");
+        assets.loadAtlas();
         stage = new Stage(viewport);
 
         Skin skin = new Skin(assets.loadSkin("uiskin.json"));
@@ -55,7 +55,7 @@ public class MainMenuScreen extends ScreenAdapter implements ScreenLoadResourceI
     @Override
     public void init() {
     }
-    
+
     public Stage getStage() {
         return stage;
     }
@@ -69,9 +69,11 @@ public class MainMenuScreen extends ScreenAdapter implements ScreenLoadResourceI
     }
 
     private void composited() {
-        textureBackground = assets.get("background");
+        TextureAtlas atlas = assets.getAtlas();
+        TextureAtlas.AtlasRegion textureBackground = atlas.findRegion("mainmenu-background");
+
         background.setDrawable(new TextureRegionDrawable(new TextureRegion(textureBackground)));
-        background.setSize(textureBackground.getWidth(), textureBackground.getHeight());
+        background.setSize(textureBackground.getTexture().getWidth(), textureBackground.getTexture().getHeight());
         stage.addActor(background);
         stage.addActor(table);
         table.row().width(MainMenuScreen.WIDTH_BUTTON).height(MainMenuScreen.HEIGHT_BUTTON)

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
@@ -54,15 +55,16 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
 
     @Override
     public void loadResources() {
-        this.asset.loadTexture("health", Assets.IMAGE_PATH + "/health.png");
+        asset.loadAtlas();
     }
 
     private void loadAnimation() {
-        Texture playerTexture = asset.get("health");
+        TextureAtlas atlas = asset.getAtlas();
+        TextureAtlas.AtlasRegion playerTextureHealth = atlas.findRegion("health");
         TextureRegion[] playerRegionsHealth = new TextureRegion[7];
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsHealth[i] = new TextureRegion(playerTexture, 50 * i, 0, 50, 63);
+            playerRegionsHealth[i] = new TextureRegion(playerTextureHealth, 50 * i, 0, 50, 63);
         }
         healthAnimation = new Animation(0.1f, (Object[]) playerRegionsHealth);
 
@@ -130,7 +132,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         if (Settings.IS_DEBUG) {
             table.setDebug(true);
         }
-        
+
         graphicResources.setViewportHud(viewport);
     }
 

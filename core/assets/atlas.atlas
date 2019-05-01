@@ -24,18 +24,11 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-images/backgroud-loading
-  rotate: false
-  xy: 2, 67
-  size: 1020, 764
-  orig: 1020, 764
-  offset: 0, 0
-  index: -1
-images/health
+gdx-skins-master/terra-mother/preview
   rotate: false
   xy: 2, 2
-  size: 350, 63
-  orig: 350, 63
+  size: 602, 832
+  orig: 602, 832
   offset: 0, 0
   index: -1
 
@@ -44,17 +37,10 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-images/mainmenu-background
-  rotate: false
-  xy: 2, 289
-  size: 1020, 574
-  orig: 1020, 574
-  offset: 0, 0
-  index: -1
-images/test
+gdx-skins-master/terra-mother/skin/terra-mother-ui
   rotate: false
   xy: 2, 2
-  size: 499, 285
-  orig: 499, 285
+  size: 512, 512
+  orig: 512, 512
   offset: 0, 0
   index: -1

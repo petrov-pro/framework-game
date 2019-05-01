@@ -111,16 +111,19 @@ public class View implements QueueDrawInterface {
     }
 
     public void groundedEffect() {
-        if (model.isGround() && drawGroundEffect && currentPlayerSize.equals(Player.PlayerSize.GROWN)) {
-            graphic.effect.start();
-            float heidhtHalf = (graphic.sprite.getHeight() / 2) * Settings.SCALE;
-            graphic.effect.setPosition(model.getPosition().x, model.getPosition().y - heidhtHalf + 0.2f);
-            drawGroundEffect = false;
-        }
-        if (!graphic.effect.isComplete()) {
-            graphic.effect.draw(graphicResources.getSpriteBatch(), Gdx.graphics.getDeltaTime());
+
+        if (currentPlayerSize.equals(Player.PlayerSize.GROWN)) {
+            if (model.isGround() && drawGroundEffect) {
+                graphic.effect.start();
+                float heidhtHalf = (graphic.sprite.getHeight() / 2) * Settings.SCALE;
+                graphic.effect.setPosition(model.getPosition().x, model.getPosition().y - heidhtHalf + 0.2f);
+                drawGroundEffect = false;
+            }
+            if (!graphic.effect.isComplete()) {
+                graphic.effect.draw(graphicResources.getSpriteBatch(), Gdx.graphics.getDeltaTime());
+            }
+
         }
 
     }
-
 }

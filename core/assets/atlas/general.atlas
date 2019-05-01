@@ -1,0 +1,98 @@
+
+general.png
+size: 512,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+dust
+  rotate: false
+  xy: 2, 2
+  size: 320, 198
+  orig: 320, 198
+  offset: 0, 0
+  index: -1
+
+general2.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+backgroud-loading
+  rotate: false
+  xy: 2, 67
+  size: 1020, 764
+  orig: 1020, 764
+  offset: 0, 0
+  index: -1
+health
+  rotate: false
+  xy: 2, 2
+  size: 350, 63
+  orig: 350, 63
+  offset: 0, 0
+  index: -1
+
+general3.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+mainmenu-background
+  rotate: false
+  xy: 2, 2
+  size: 1020, 574
+  orig: 1020, 574
+  offset: 0, 0
+  index: -1
+
+general4.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+player
+  rotate: false
+  xy: 2, 2
+  size: 832, 832
+  orig: 832, 832
+  offset: 0, 0
+  index: -1
+
+general5.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+BackgroundGradient
+  rotate: false
+  xy: 2, 2
+  size: 887, 1020
+  orig: 887, 1020
+  offset: 0, 0
+  index: -1
+
+general6.png
+size: 256,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+flame
+  rotate: false
+  xy: 2, 2
+  size: 160, 32
+  orig: 160, 32
+  offset: 0, 0
+  index: -1
+
+general7.png
+size: 512,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Tiles_32x32
+  rotate: false
+  xy: 2, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1

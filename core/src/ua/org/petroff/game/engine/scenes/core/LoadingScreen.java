@@ -8,11 +8,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import ua.org.petroff.game.engine.util.Assets;
 
 public class LoadingScreen extends ScreenAdapter {
 
-    private final Texture backGround;
+    private final TextureAtlas.AtlasRegion backGround;
     private final GlyphLayout layout = new GlyphLayout();
     private String message;
     private ContainerInterface returnScene;
@@ -24,9 +25,10 @@ public class LoadingScreen extends ScreenAdapter {
     public LoadingScreen(ManagerScenes managerScenes) {
         this.managerScenes = managerScenes;
         Assets assets = new Assets();
-        assets.loadTexture("backGroundLoading", Assets.IMAGE_PATH + "backgroud-loading.jpg");
+        assets.loadAtlas();
         assets.getManager().finishLoading();
-        backGround = assets.get("backGroundLoading");
+        TextureAtlas atlas = assets.getAtlas();
+        backGround = atlas.findRegion("backgroud-loading");
     }
 
     public void setReturnScene(ContainerInterface returnScene) {

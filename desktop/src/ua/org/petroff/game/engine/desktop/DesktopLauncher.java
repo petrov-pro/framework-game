@@ -14,6 +14,7 @@ public class DesktopLauncher {
         config.title = Settings.GAME_NAME;
         config.width = Settings.APP_WIDTH;
         config.height = Settings.APP_HEIGHT;
+        config.fullscreen = Settings.IS_FULLSCREEN;
         new LwjglApplication(new GameEngine(), config);
     }
 }
