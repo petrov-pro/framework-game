@@ -1,6 +1,5 @@
 package ua.org.petroff.game.engine.scenes.core;
 
-import ua.org.petroff.game.engine.scenes.Interface.ScreenLoadResourceInterface;
 import ua.org.petroff.game.engine.scenes.Interface.ContainerInterface;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;

@@ -1,5 +1,6 @@
 package ua.org.petroff.game.engine.entities.player;
 
+import ua.org.petroff.game.engine.entities.Interfaces.ActionInterface;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
@@ -7,104 +8,103 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.utils.Array;
 import ua.org.petroff.game.engine.entities.BodyDescriber;
 import ua.org.petroff.game.engine.entities.GroupDescriber;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.EntityNotifierInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
+import ua.org.petroff.game.engine.entities.TelegramDescriber;
+import ua.org.petroff.game.engine.entities.guns.arrow.Telegram;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
+import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.util.MapResolver;
 
-public class Player implements EntityInterface, MoveEntityInterface {
+public class Player implements EntityInterface, MoveEntityInterface, EntityNotifierInterface, ActionInterface {
 
     public static final String OBJECT_NAME = "start player";
     public static final String DESCRIPTOR = "Player";
-
-    public enum Actions {
-        MOVE, JUMP, USE, HIT
-    };
-
-    public enum PlayerVector {
-        LEFT, RIGHT, STAY
-    };
+    public static final float FIRE_SPEED = 0.035f;
+    public static final float FIRE_FORCE = 50f;
+    public Body arrow;
 
     public enum PlayerSize {
         NORMAL, GROWN
     };
 
-    private final int zIndex = 3;
-    private final Assets asset;
+    private final GameResources gameResources;
+
     private Body body;
-    private int currentLive;
+    private final int currentLive = 100;
 
     private static final float MAXMOVEVELOCITY = 5f;
     private static final float MAXJUMPVELOCITY = 5f;
     private static final float JUMPVELOCITY = 10f;
     private static final float MOVEVELOCITY = 0.8f;
-    private GameResources gameResources;
     private final View view;
-    private final ViewInterface graphic;
     private final Vector3 cameraNewPosition = new Vector3();
-    private Telegraph telegraph;
 
-    private boolean isMove;
-    private boolean isJump;
-    private boolean isGround;
-    private boolean isDie;
-    private boolean isAction;
+    private boolean isMove = false;
+    private boolean isJump = false;
+    private boolean isGround = true;
+    private boolean isDie = false;
+    private boolean isHit = false;
 
-    private PlayerVector vector;
-    private PlayerSize playerSize;
+    private WorldInterface.Vector vector = WorldInterface.Vector.STAY;
+    private PlayerSize playerSize = PlayerSize.NORMAL;
+    private ActionInterface.Type action = ActionInterface.Type.MOVE;
 
-    private float bodyWidth;
-    private float bodyHeight;
+    private final float bodyWidth = 1f;
+    private final float bodyHeight = 1.45f;
     private Vector2 centerFoot;
     private Vector2 centerFootSize;
 
-    public Player(Assets asset) {
-        view = new View(this);
-        graphic = new Graphic(asset, view);
-        view.setGraphic((Graphic) graphic);
-        this.asset = asset;
+    public Player(Assets asset, GameResources gameResources, GraphicResources graphicResources) {
+        this.gameResources = gameResources;
+
+        view = new View(asset, graphicResources, this);
+        createBody();
+        setStartPlayerPostion(asset);
+        new Telegraph(this, gameResources);
+        gameResources.getMessageManger().dispatchMessage(TelegramDescriber.PLAYER_STATUS, new PlayerTelegram(currentLive));
     }
 
     @Override
     public ViewInterface getView() {
-        return graphic;
-    }
-
-    @Override
-    public EntityInterface prepareModel() {
-        return this;
-    }
-
-    @Override
-    public int getZIndex() {
-        return zIndex;
+        return view;
     }
 
     public PlayerSize getPlayerSize() {
         return playerSize;
     }
 
+    @Override
     public boolean isGround() {
         return isGround;
     }
 
-    public boolean isAction() {
-        return isAction;
-    }
-
+    @Override
     public boolean isDie() {
         return isDie;
     }
 
-    public PlayerVector getVector() {
+    @Override
+    public boolean isHit() {
+        return isHit;
+    }
+
+    @Override
+    public boolean isMove() {
+        return isMove;
+    }
+
+    public WorldInterface.Vector getVector() {
         return vector;
     }
 
@@ -116,35 +116,13 @@ public class Player implements EntityInterface, MoveEntityInterface {
         return cameraNewPosition;
     }
 
-    @Override
-    public void init(GameResources gameResources) {
-        currentLive = 100;
-        isMove = false;
-        isJump = false;
-        isGround = true;
-        isDie = false;
-        isAction = false;
-        playerSize = PlayerSize.NORMAL;
-        vector = PlayerVector.STAY;
-        bodyWidth = 1f;
-        bodyHeight = 1.45f;
-
-        this.gameResources = gameResources;
-        telegraph = new Telegraph(this, gameResources);
-
-        gameResources.getMessageManger().addTelegraph(DESCRIPTOR, telegraph);
-
-        MapObject playerObject = ua.org.petroff.game.engine.util.MapResolver.findObject(asset.getMap(),
-                OBJECT_NAME);
-        createBody();
-        setStartPlayerPostion(playerObject);
-    }
-
     public int getCurrentLive() {
         return currentLive;
     }
 
-    public void setStartPlayerPostion(MapObject playerObject) {
+    private void setStartPlayerPostion(Assets asset) {
+        MapObject playerObject = ua.org.petroff.game.engine.util.MapResolver.findObject(asset.getMap(),
+                OBJECT_NAME);
         int x = playerObject.getProperties().get("x", Float.class).intValue();
         int y = playerObject.getProperties().get("y", Float.class).intValue();
         Vector2 position = new Vector2(MapResolver.coordinateToWorld(x), MapResolver.coordinateToWorld(y));
@@ -156,6 +134,11 @@ public class Player implements EntityInterface, MoveEntityInterface {
         bodyDef.type = BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         body = gameResources.getWorld().createBody(bodyDef);
+
+        Filter filterLight = new Filter();
+        filterLight.categoryBits = (short) 1;
+        filterLight.groupIndex = (short) 0;
+        filterLight.maskBits = (short) 0;
 
         PolygonShape poly = new PolygonShape();
         poly.setAsBox(bodyWidth / 2, bodyHeight / 2);
@@ -170,49 +153,58 @@ public class Player implements EntityInterface, MoveEntityInterface {
         fixtureDef.density = 1;
         fixtureDef.isSensor = true;
         Fixture footSensorFixture = body.createFixture(fixtureDef);
-        footSensorFixture.setUserData(new BodyDescriber(DESCRIPTOR, BodyDescriber.BODY_FOOT, GroupDescriber.ALIVE));
+        footSensorFixture.setFilterData(filterLight);
+        footSensorFixture.setUserData(new BodyDescriber(DESCRIPTOR, BodyDescriber.BODY_FOOT, GroupDescriber.ALIVE, this));
         poly.dispose();
 
         gameResources.getWorldContactListener().addListener(new Listener(this));
     }
 
     @Override
-    public void left() {
-        isMove = true;
-        vector = PlayerVector.LEFT;
-    }
-
-    @Override
-    public void right() {
-        isMove = true;
-        vector = PlayerVector.RIGHT;
-
-    }
-
-    @Override
-    public void stop(Player.Actions action) {
-
-        switch (action) {
-            case MOVE:
-                vector = PlayerVector.STAY;
-                isMove = false;
-                break;
-
-            case JUMP:
-                isJump = false;
-                break;
+    public void left(boolean active) {
+        isMove = active;
+        action = ActionInterface.Type.MOVE;
+        if (!active) {
+            vector = WorldInterface.Vector.STAY;
+            return;
         }
 
+        vector = WorldInterface.Vector.LEFT;
     }
 
     @Override
-    public void jump() {
-        isJump = true;
+    public void right(boolean active) {
+        isMove = active;
+        action = ActionInterface.Type.MOVE;
+        if (!active) {
+            vector = WorldInterface.Vector.STAY;
+            return;
+        }
+        vector = WorldInterface.Vector.RIGHT;
+
     }
 
     @Override
-    public void hit() {
-        playerResize();
+    public void jump(boolean active) {
+        action = ActionInterface.Type.JUMP;
+        isJump = active;
+    }
+
+    @Override
+    public void hit(boolean active) {
+        isHit = active;
+
+        if (!active) {
+            view.resetState(ActionInterface.Type.FIRE);
+        }
+        action = ActionInterface.Type.FIRE;
+    }
+
+    @Override
+    public void ability(boolean active) {
+        if (active) {
+            playerResize();
+        }
     }
 
     @Override
@@ -222,6 +214,26 @@ public class Player implements EntityInterface, MoveEntityInterface {
             return;
         }
 
+        if (isHit && view.isFinishAction(ActionInterface.Type.FIRE)) {
+            float x = body.getPosition().x;
+            float y = body.getPosition().y;
+            float forceX;
+            if (vector.equals(WorldInterface.Vector.RIGHT)) {
+                x += 0.5f;
+                forceX = +FIRE_FORCE;
+            } else {
+                x -= 0.5f;
+                forceX = -FIRE_FORCE;
+            }
+            isHit = false;
+            gameResources.getMessageManger().dispatchMessage(TelegramDescriber.FIRE, new Telegram(x, y, forceX));
+
+            return;
+        } else if (isHit) {
+            return;
+        }
+
+        //if action jump and player stay on the ground
         if (isJump && isGround && body.getLinearVelocity().y < MAXJUMPVELOCITY) {
             body.applyLinearImpulse(0, JUMPVELOCITY, body.getPosition().x, body.getPosition().y, true);
             if (body.getLinearVelocity().y > 1.60f) {
@@ -230,9 +242,10 @@ public class Player implements EntityInterface, MoveEntityInterface {
         }
 
         if (isMove) {
-            if (vector.equals(Player.PlayerVector.LEFT) && body.getLinearVelocity().x > -MAXMOVEVELOCITY) {
+            Gdx.app.log("info", "move");
+            if (vector.equals(WorldInterface.Vector.LEFT) && body.getLinearVelocity().x > -MAXMOVEVELOCITY) {
                 body.applyLinearImpulse(-MOVEVELOCITY, 0, body.getPosition().x, body.getPosition().y, true);
-            } else if (vector.equals(Player.PlayerVector.RIGHT) && body.getLinearVelocity().x < MAXMOVEVELOCITY) {
+            } else if (vector.equals(WorldInterface.Vector.RIGHT) && body.getLinearVelocity().x < MAXMOVEVELOCITY) {
                 body.applyLinearImpulse(MOVEVELOCITY, 0, body.getPosition().x, body.getPosition().y, true);
             }
 
@@ -243,12 +256,23 @@ public class Player implements EntityInterface, MoveEntityInterface {
 
     public void grounded() {
         isGround = true;
-        view.changeState();
+        view.resetState(ActionInterface.Type.JUMP);
     }
 
+    @Override
     public void died() {
+        gameResources.getMessageManger().dispatchMessage(TelegramDescriber.PLAYER_DEAD);
         isDie = true;
-        view.changeState();
+        action = ActionInterface.Type.DIED;
+        vector = WorldInterface.Vector.STAY;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public ActionInterface.Type getAction() {
+        return action;
     }
 
     private void calculateCameraPositionForPlayer() {

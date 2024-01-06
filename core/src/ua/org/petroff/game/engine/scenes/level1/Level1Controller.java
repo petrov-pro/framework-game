@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
-import ua.org.petroff.game.engine.entities.player.Player;
 import ua.org.petroff.game.engine.scenes.Interface.ControllerInterface;
 import ua.org.petroff.game.engine.scenes.core.ManagerScenes;
 
@@ -27,51 +26,40 @@ public class Level1Controller extends InputAdapter implements ControllerInterfac
 
     @Override
     public boolean keyDown(int keycode) {
-
-        switch (keycode) {
-
-            case Keys.RIGHT:
-                entity.right();
-                break;
-
-            case Keys.LEFT:
-                entity.left();
-                break;
-
-            case Keys.SPACE:
-                entity.jump();
-                break;
-
-            case Keys.CONTROL_LEFT:
-                entity.hit();
-                break;
-
-        }
+        handlerAction(keycode, true);
         return super.keyDown(keycode);
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        handlerAction(keycode, false);
+        return super.keyUp(keycode);
+    }
+
+    private void handlerAction(int keycode, boolean active) {
         switch (keycode) {
+
             case Keys.RIGHT:
-                entity.stop(Player.Actions.MOVE);
+                entity.right(active);
                 break;
 
             case Keys.LEFT:
-                entity.stop(Player.Actions.MOVE);
+                entity.left(active);
                 break;
 
             case Keys.SPACE:
-                entity.stop(Player.Actions.JUMP);
+                entity.jump(active);
                 break;
 
             case Keys.CONTROL_LEFT:
-                entity.stop(Player.Actions.HIT);
+                entity.hit(active);
+                break;
+
+            case Keys.ALT_LEFT:
+                entity.ability(active);
                 break;
 
         }
-
-        return super.keyUp(keycode);
     }
 
 }

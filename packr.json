@@ -1,0 +1,16 @@
+{
+    "platform": "windows64",
+    "jdk": "/usr/lib/jvm/java-8-openjdk-amd64",
+    "executable": "game",
+    "classpath": [
+        "desktop/build/libs/desktop-1.0.jar"
+    ],
+    "mainclass": "ua.org.petroff.game.engine.desktop.DesktopLauncher",
+    "vmargs": [
+       "Xmx1G"
+    ],
+    "resources": [
+        "core/assets"
+    ],
+    "output": "exec"
+}

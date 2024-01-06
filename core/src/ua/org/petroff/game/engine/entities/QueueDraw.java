@@ -25,4 +25,8 @@ public class QueueDraw<Integer, QueueDrawInterface> extends TreeMap {
         throw new IndexOutOfBoundsException("zIndex incorrect");
     }
 
+    public QueueDrawInterface putLast(QueueDrawInterface draw) throws IndexOutOfBoundsException {
+        return putSafe(1, draw);
+    }
+
 }

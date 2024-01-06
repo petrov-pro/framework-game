@@ -1,5 +1,7 @@
 package ua.org.petroff.game.engine.entities.player;
 
+import ua.org.petroff.game.engine.entities.Interfaces.ActionInterface;
+import box2dLight.PointLight;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -7,48 +9,58 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import java.util.HashMap;
-import java.util.Map;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.Filter;
 import ua.org.petroff.game.engine.Settings;
-import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 import ua.org.petroff.game.engine.util.Assets;
-import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterface;
-import ua.org.petroff.game.engine.entities.QueueDraw;
-import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
-import ua.org.petroff.game.engine.entities.player.View.GraphicType;
+import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
+import ua.org.petroff.game.engine.entities.characters.base.Static;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 
-public class Graphic implements ViewInterface, GraphicQueueMemberInterface {
+public class Graphic extends ua.org.petroff.game.engine.entities.characters.base.Graphic {
 
-    public GraphicResources graphicResources;
-    public final HashMap<View.GraphicType, Object> graphics = new HashMap();
-    public Sprite sprite;
+    static final int RAYS_PER = 128;
+    static final float LIGHT_DISTANCE = 16f;
+    static final float RADIUS = 1950f;
+
     public ParticleEffect effect;
 
-    private final int zIndex = 2;
-    private final Assets asset;
-    private final View view;
+    private final Player model;
+    private PointLight light;
+    private Filter filterLight;
+    public TextureRegion arrowSprite;
 
-    public Graphic(Assets asset, View view) {
-        this.asset = asset;
-        this.view = view;
+    public Graphic(Assets asset, GraphicResources graphicResources, Player model) {
+        super(asset, graphicResources);
+        this.model = model;
+        init();
     }
 
-    @Override
-    public void loadResources() {
-        asset.loadAtlas();
-    }
-
-    @Override
-    public void init(GraphicResources graphicResources) {
-        this.graphicResources = graphicResources;
-        view.graphicResources = graphicResources;
+    private void init() {
         loadAnimation();
 
         TextureAtlas particleAtlas = new TextureAtlas(); //<-load some atlas with your particle assets in
         particleAtlas.addRegion("dust", new TextureRegion(new Texture(Assets.PATH + "particles/dust.png")));
         effect = new ParticleEffect();
         effect.load(Gdx.files.internal(Assets.PATH + "particles/dust.p"), particleAtlas);
+        initLight();
+    }
+
+    private void initLight() {
+        light = new PointLight(
+                graphicResources.getRayHandler(), RAYS_PER, null, LIGHT_DISTANCE, 0f, 0f);
+        light.attachToBody(model.getBody(), 0f, 0f);
+        filterLight = new Filter();
+        filterLight.categoryBits = (short) 1;
+        filterLight.groupIndex = (short) 1;
+        filterLight.maskBits = (short) 1;
+        light.setContactFilter(filterLight);
+        light.setColor(
+                MathUtils.random(),
+                MathUtils.random(),
+                MathUtils.random(),
+                1f);
+        light.setActive(false);
     }
 
     private void loadAnimation() {
@@ -60,6 +72,8 @@ public class Graphic implements ViewInterface, GraphicQueueMemberInterface {
         TextureRegion[] playerRegionsJumpRight = new TextureRegion[7];
         TextureRegion[] playerRegionsJumpStay = new TextureRegion[7];
         TextureRegion[] playerRegionsDied = new TextureRegion[5];
+        TextureRegion[] playerRegionsFireRight = new TextureRegion[13];
+        TextureRegion[] playerRegionsFireLeft = new TextureRegion[13];
 
         TextureAtlas.AtlasRegion playerTexture = atlas.findRegion("player");
         TextureRegion player = new TextureRegion(playerTexture, 0, 68, 64, 64);
@@ -97,18 +111,34 @@ public class Graphic implements ViewInterface, GraphicQueueMemberInterface {
         }
         Animation diedAnimationStay = new Animation(0.1f, (Object[]) playerRegionsDied);
 
-        graphics.put(GraphicType.STAY, player);
-        graphics.put(GraphicType.MOVERIGHT, walkAnimationRight);
-        graphics.put(GraphicType.MOVELEFT, walkAnimationLeft);
-        graphics.put(GraphicType.JUMPLEFT, jumpAnimationLeft);
-        graphics.put(GraphicType.JUMPRIGHT, jumpAnimationRight);
-        graphics.put(GraphicType.STAYJUMP, jumpAnimationStay);
-        graphics.put(GraphicType.DIED, diedAnimationStay);
-    }
+        for (int i = 0; i < 13; i++) {
+            playerRegionsFireRight[i] = new TextureRegion(playerTexture, 64 * i, 706, 64, 64);
+        }
+        Animation fireAnimationRight = new Animation(0.1f, (Object[]) playerRegionsFireRight);
 
-    @Override
-    public void prepareDraw(Map<Integer, QueueDrawInterface> queueDraw) {
-        ((QueueDraw) queueDraw).putSafe(zIndex, view);
+        for (int i = 0; i < 13; i++) {
+            playerRegionsFireLeft[i] = new TextureRegion(playerTexture, 64 * i, 642, 64, 64);
+        }
+        Animation fireAnimationLeft = new Animation(0.1f, (Object[]) playerRegionsFireLeft);
+
+        graphics.put(View.getFrameName(ActionInterface.Type.MOVE, WorldInterface.Vector.STAY),
+                new Static(player, ActionInterface.Type.MOVE, WorldInterface.Vector.STAY));
+        graphics.put(View.getFrameName(ActionInterface.Type.MOVE, WorldInterface.Vector.RIGHT),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(walkAnimationRight, ActionInterface.Type.MOVE, WorldInterface.Vector.RIGHT, true));
+        graphics.put(View.getFrameName(ActionInterface.Type.MOVE, WorldInterface.Vector.LEFT),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(walkAnimationLeft, ActionInterface.Type.MOVE, WorldInterface.Vector.LEFT, true));
+        graphics.put(View.getFrameName(ActionInterface.Type.JUMP, WorldInterface.Vector.LEFT),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(jumpAnimationLeft, ActionInterface.Type.JUMP, WorldInterface.Vector.LEFT, false));
+        graphics.put(View.getFrameName(ActionInterface.Type.JUMP, WorldInterface.Vector.RIGHT),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(jumpAnimationRight, ActionInterface.Type.JUMP, WorldInterface.Vector.RIGHT, false));
+        graphics.put(View.getFrameName(ActionInterface.Type.JUMP, WorldInterface.Vector.STAY),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(jumpAnimationStay, ActionInterface.Type.JUMP, WorldInterface.Vector.STAY, false));
+        graphics.put(View.getFrameName(ActionInterface.Type.DIED, WorldInterface.Vector.STAY),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(diedAnimationStay, ActionInterface.Type.DIED, false));
+        graphics.put(View.getFrameName(ActionInterface.Type.FIRE, WorldInterface.Vector.RIGHT),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(fireAnimationRight, ActionInterface.Type.FIRE, WorldInterface.Vector.RIGHT, false, Player.FIRE_SPEED));
+        graphics.put(View.getFrameName(ActionInterface.Type.FIRE, WorldInterface.Vector.LEFT),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(fireAnimationLeft, ActionInterface.Type.FIRE, WorldInterface.Vector.LEFT, false, Player.FIRE_SPEED));
     }
 
 }

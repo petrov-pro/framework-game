@@ -1,4 +1,4 @@
-package ua.org.petroff.game.engine.entities.surface;
+package ua.org.petroff.game.engine.scenes.level1.entities.map.surface;
 
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import ua.org.petroff.game.engine.entities.BodyDescriber;
 import ua.org.petroff.game.engine.entities.GroupDescriber;
+import ua.org.petroff.game.engine.entities.Interfaces.ActionInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityListenerInterface;
 import ua.org.petroff.game.engine.entities.TelegramDescriber;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
@@ -108,9 +109,8 @@ public class SurfaceListener<T> implements EntityListenerInterface {
                 && ((BodyDescriber) userData).getGroup().equals(GroupDescriber.ALIVE)) {
 
             if (surfaceData.getType().equals(Surface.DEAD_TYPE)) {
-                Telegraph telegraph = gameResources.getMessageManger().getTelegraph(userData.toString());
-                if (telegraph != null) {
-                    gameResources.getMessageManger().dispatchMessage(surface, telegraph, TelegramDescriber.DEAD, 100);
+                if (((BodyDescriber) userData).getModel() != null && ((BodyDescriber) userData).getModel() instanceof ActionInterface) {
+                    ((BodyDescriber) userData).getModel().died();
                 }
             }
         }

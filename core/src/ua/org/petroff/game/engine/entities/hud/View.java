@@ -2,7 +2,6 @@ package ua.org.petroff.game.engine.entities.hud;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -38,14 +37,15 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
     private Label deadLabel;
 
     private final Assets asset;
-    private final int zIndex = 2;
-    private GraphicResources graphicResources;
+    private final GraphicResources graphicResources;
     private final HUD model;
     private Animation healthAnimation;
 
-    public View(Assets asset, HUD model) {
+    public View(Assets asset, GraphicResources graphicResources, HUD model) {
         this.asset = asset;
         this.model = model;
+        this.graphicResources = graphicResources;
+        init();
     }
 
     @Override
@@ -54,8 +54,15 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
     }
 
     @Override
-    public void loadResources() {
-        asset.loadAtlas();
+    public void draw() {
+        stage.getViewport().apply();
+        stage.act();
+        stage.draw();
+        countdownLabel.setText(model.worldTimer.toString());
+        liveLabel.setText(model.currentLive.toString());
+        if (model.currentLive <= 0) {
+            deadLabel.setVisible(true);
+        }
     }
 
     private void loadAnimation() {
@@ -70,9 +77,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
 
     }
 
-    @Override
-    public void init(GraphicResources graphicResources) {
-        this.graphicResources = graphicResources;
+    private void init() {
         loadAnimation();
 
         viewport = new ExtendViewport(Settings.APP_WIDTH, Settings.APP_HEIGHT, new OrthographicCamera());
@@ -134,18 +139,6 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         }
 
         graphicResources.setViewportHud(viewport);
-    }
-
-    @Override
-    public void draw() {
-        stage.getViewport().apply();
-        stage.act();
-        stage.draw();
-        countdownLabel.setText(model.worldTimer.toString());
-        liveLabel.setText(model.currentLive.toString());
-        if (model.currentLive <= 0) {
-            deadLabel.setVisible(true);
-        }
     }
 
 }

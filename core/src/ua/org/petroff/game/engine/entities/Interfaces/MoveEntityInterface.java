@@ -1,17 +1,15 @@
 package ua.org.petroff.game.engine.entities.Interfaces;
 
-import ua.org.petroff.game.engine.entities.player.Player;
-
 public interface MoveEntityInterface {
 
-    public void left();
+    public void left(boolean active);
 
-    public void right();
+    public void right(boolean active);
 
-    public void stop(Player.Actions action);
+    public void jump(boolean active);
 
-    public void jump();
+    public void hit(boolean active);
 
-    public void hit();
+    public void ability(boolean active);
 
 }

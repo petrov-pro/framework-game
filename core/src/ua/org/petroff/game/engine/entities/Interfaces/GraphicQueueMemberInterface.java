@@ -6,5 +6,4 @@ public interface GraphicQueueMemberInterface {
 
     public void prepareDraw(Map<Integer, QueueDrawInterface> queueDraw);
 
-
 }

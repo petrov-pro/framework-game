@@ -1,6 +1,7 @@
 package ua.org.petroff.game.engine.entities;
 
 import java.util.HashMap;
+import ua.org.petroff.game.engine.entities.Interfaces.ActionInterface;
 
 public class BodyDescriber<T> {
     
@@ -11,6 +12,7 @@ public class BodyDescriber<T> {
     private String type;
     private String group;
     private final HashMap<String, T> data = new HashMap();
+    private ActionInterface model;
 
     public BodyDescriber(String name, String type) {
         this.name = name;
@@ -21,6 +23,13 @@ public class BodyDescriber<T> {
         this.name = name;
         this.type = type;
         this.group = group;
+    }
+    
+    public BodyDescriber(String name, String type, String group, ActionInterface model) {
+        this.name = name;
+        this.type = type;
+        this.group = group;
+        this.model = model;
     }
 
     public String getGroup() {
@@ -58,6 +67,10 @@ public class BodyDescriber<T> {
 
     public T getData(String key) {
         return data.get(key);
+    }
+
+    public ActionInterface getModel() {
+        return model;
     }
 
 }

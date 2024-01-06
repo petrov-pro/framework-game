@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ua.org.petroff.game.engine.util.Assets;
 
 public class LoadingScreen extends ScreenAdapter {
@@ -35,21 +38,17 @@ public class LoadingScreen extends ScreenAdapter {
         this.returnScene = returnScene;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     @Override
     public void show() {
         super.show();
         message = returnScene.getSceneName();
-        returnScene.load();
+        returnScene.loadShareResources();
     }
 
     @Override
     public void render(float delta) {
         if (returnScene.getAssets().isUploaded()) {
-            returnScene.init();
+            returnScene.start();
             managerScenes.setScreen(returnScene.getView());
         } else {
             progress = returnScene.getAssets().getManager().getProgress();

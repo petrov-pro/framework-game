@@ -1,6 +1,7 @@
 package ua.org.petroff.game.engine.scenes.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -19,11 +20,11 @@ public class DebugWorld {
     public static DebugWorld instance;
 
     //debug
-    public static Vector2 position = new Vector2(18, 51);
+    public static Vector2 position = new Vector2(0, 0);
     public static Color color = Color.RED;
     public static Color colorCurrent = color;
-    public static float width = 0.05f;
-    public static float height = 0.05f;
+    public static float width = 0.1f;
+    public static float height = 1f;
     private static final ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     public static void run(World world, Matrix4 combined) {
@@ -36,6 +37,7 @@ public class DebugWorld {
             debugRenderer.setDrawInactiveBodies(true);
             debugRenderer.render(world, combined);
             debugView(combined);
+            MessageManager.getInstance().setDebugEnabled(true);
         }
     }
 
@@ -51,7 +53,9 @@ public class DebugWorld {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.rect(position.x, position.y, width, height);
         shapeRenderer.end();
-        //Gdx.app.log("debug", " x: " + position.x + " y: " + position.y);
+        if (!position.isZero()) {
+            Gdx.app.log("debug", " x: " + position.x + " y: " + position.y);
+        }
     }
 
 }

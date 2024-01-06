@@ -1,38 +1,32 @@
 
 general.png
-size: 512,256
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-dust
-  rotate: false
-  xy: 2, 2
-  size: 320, 198
-  orig: 320, 198
-  offset: 0, 0
-  index: -1
-
-general2.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+arrow
+  rotate: false
+  xy: 2, 2
+  size: 32, 3
+  orig: 32, 3
+  offset: 0, 0
+  index: -1
 backgroud-loading
   rotate: false
-  xy: 2, 67
+  xy: 2, 72
   size: 1020, 764
   orig: 1020, 764
   offset: 0, 0
   index: -1
 health
   rotate: false
-  xy: 2, 2
+  xy: 2, 7
   size: 350, 63
   orig: 350, 63
   offset: 0, 0
   index: -1
 
-general3.png
+general2.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -45,7 +39,7 @@ mainmenu-background
   offset: 0, 0
   index: -1
 
-general4.png
+general3.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -58,7 +52,46 @@ player
   offset: 0, 0
   index: -1
 
+general4.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Skeleton
+  rotate: false
+  xy: 2, 2
+  size: 832, 832
+  orig: 832, 832
+  offset: 0, 0
+  index: -1
+
 general5.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+dirt_man
+  rotate: false
+  xy: 2, 2
+  size: 860, 581
+  orig: 860, 581
+  offset: 0, 0
+  index: 2
+
+general6.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+dirt_man
+  rotate: false
+  xy: 2, 2
+  size: 590, 789
+  orig: 590, 789
+  offset: 0, 0
+  index: 1
+
+general7.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -71,7 +104,7 @@ BackgroundGradient
   offset: 0, 0
   index: -1
 
-general6.png
+general8.png
 size: 256,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -84,7 +117,7 @@ flame
   offset: 0, 0
   index: -1
 
-general7.png
+general9.png
 size: 512,512
 format: RGBA8888
 filter: Nearest,Nearest
@@ -94,5 +127,18 @@ Tiles_32x32
   xy: 2, 2
   size: 256, 256
   orig: 256, 256
+  offset: 0, 0
+  index: -1
+
+general10.png
+size: 512,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+dust
+  rotate: false
+  xy: 2, 2
+  size: 320, 198
+  orig: 320, 198
   offset: 0, 0
   index: -1

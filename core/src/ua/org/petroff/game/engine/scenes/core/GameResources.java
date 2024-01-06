@@ -1,7 +1,9 @@
 package ua.org.petroff.game.engine.scenes.core;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.physics.box2d.World;
-import ua.org.petroff.game.engine.scenes.level1.entities.map.MessageManger;
+import com.badlogic.gdx.utils.Array;
+import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
 import ua.org.petroff.game.engine.scenes.level1.entities.map.WorldContactListener;
 
 public class GameResources {
@@ -9,15 +11,16 @@ public class GameResources {
     private World world;
 
     private WorldContactListener worldContactListener;
-    private MessageManger messageManger;
+    private MessageManager messageManger;
     private int worldWidth;
     private int worldHeight;
+    private Array<EntityInterface> models;
 
-    public MessageManger getMessageManger() {
+    public MessageManager getMessageManger() {
         return messageManger;
     }
 
-    public void setMessageManger(MessageManger messageManger) {
+    public void setMessageManger(MessageManager messageManger) {
         this.messageManger = messageManger;
     }
 
@@ -51,6 +54,23 @@ public class GameResources {
 
     public void setWorldContactListener(WorldContactListener worldContactListener) {
         this.worldContactListener = worldContactListener;
+    }
+
+    public Array<EntityInterface> getModels() {
+        return models;
+    }
+
+    public void setModels(Array<EntityInterface> models) {
+        this.models = models;
+    }
+
+    public EntityInterface findModel(Class modelE) {
+        for (EntityInterface model : models) {
+            if (modelE.isInstance(model)) {
+                return model;
+            }
+        }
+        throw new Error("Cant find model: " + modelE.getName());
     }
 
 }

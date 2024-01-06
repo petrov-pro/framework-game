@@ -35,10 +35,10 @@ project.ext.texturePacker = [ buildFile.parent +"/assets/data",  buildFile.paren
 // Import the texture packer
 import com.badlogic.gdx.tools.texturepacker.TexturePacker
 
-// Add a new task that packs the textures for you
+// Add a new task that packs the textures for you. Properties -> compile command -> add custom texturePacker
 task texturePacker << {
     if (project.ext.has('texturePacker')) {
-        logger.info "Calling TexturePacker: "+buildFile.parent
+        logger.quiet "Calling TexturePacker: "+buildFile.parent
         def settings = new TexturePacker.Settings()
         settings.flattenPaths = true
         TexturePacker.process(settings, texturePacker[0], texturePacker[1], texturePacker[2])

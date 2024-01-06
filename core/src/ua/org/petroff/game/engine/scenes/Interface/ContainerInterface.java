@@ -5,14 +5,14 @@ import ua.org.petroff.game.engine.util.Assets;
 
 public interface ContainerInterface {
 
-    public void load();
-
-    public void init();
+    public void start();
 
     public Screen getView();
 
     public Assets getAssets();
 
     public String getSceneName();
+    
+    public void loadShareResources();
 
 }
