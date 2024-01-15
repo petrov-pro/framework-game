@@ -13,10 +13,15 @@ public class Graphic {
     protected Assets asset;
     protected GraphicResources graphicResources;
     protected String regionName;
+    protected Static defaultActionFrame;
 
     public Graphic(Assets asset, GraphicResources graphicResources) {
         this.asset = asset;
         this.graphicResources = graphicResources;
+    }
+
+    public Static getDefaultActionFrame() {
+        return defaultActionFrame;
     }
 
 }

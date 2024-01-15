@@ -1,6 +1,5 @@
 package ua.org.petroff.game.engine.scenes.level1;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
 import java.util.Map;
@@ -10,7 +9,7 @@ import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.entities.characters.enemies.skeleton.Skeleton;
-import ua.org.petroff.game.engine.entities.guns.arrow.Arrow;
+import ua.org.petroff.game.engine.entities.guns.arrow.ArrowFactory;
 import ua.org.petroff.game.engine.entities.hud.HUD;
 import ua.org.petroff.game.engine.entities.player.Player;
 import ua.org.petroff.game.engine.scenes.Interface.ContainerInterface;
@@ -22,7 +21,7 @@ import ua.org.petroff.game.engine.util.Assets;
 
 public class Level1Container implements ContainerInterface {
 
-    public static final String DESCRIPTOR = "Level1";
+    public static final String DESCRIPTOR = "level1";
 
     private Level1Screen screen;
     private final ManagerScenes manageScene;
@@ -74,9 +73,8 @@ public class Level1Container implements ContainerInterface {
         entities.add(new GameWorld(asset, gameResources, graphicResources));
         entities.add(new HUD(asset, gameResources, graphicResources));
         entities.add(new Player(asset, gameResources, graphicResources));
-        entities.add(new Arrow(asset, gameResources, graphicResources));
-//        entities.add(new Skeleton(asset, gameResources, graphicResources));
-
+        entities.add(new ArrowFactory(asset, gameResources, graphicResources));
+        entities.add(new Skeleton(asset, gameResources, graphicResources));
     }
 
     public void prepareDraw() {

@@ -8,7 +8,7 @@ import ua.org.petroff.game.engine.util.Assets;
 
 public class MainMenuContainer implements ContainerInterface {
 
-    public static final String DESCRIPTOR = "MainMenu";
+    public static final String DESCRIPTOR = "mainmenu";
 
     private final MainMenuScreen screen;
     private final Assets assets;

@@ -10,7 +10,7 @@ import ua.org.petroff.game.engine.util.Assets;
 
 public class HUD implements EntityInterface {
 
-    public static final String DESCRIPTOR = "HUD";
+    public static final String DESCRIPTOR = "hud";
     public Integer worldTimer = 0;
     public float timeCount = 0;
     public Integer score = 0;
@@ -34,6 +34,10 @@ public class HUD implements EntityInterface {
         if (timeCount >= 1) {
             worldTimer++;
             timeCount = 0;
+        }
+
+        if (currentLive < 0) {
+            currentLive = 0;
         }
     }
 

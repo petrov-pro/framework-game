@@ -2,7 +2,6 @@ package ua.org.petroff.game.engine.entities.guns.arrow;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.physics.box2d.Body;
 import java.util.Map;
 import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterface;
@@ -13,20 +12,15 @@ import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 
-public class View implements ViewInterface, GraphicQueueMemberInterface {
+public class View extends ua.org.petroff.game.engine.entities.characters.base.View implements ViewInterface, GraphicQueueMemberInterface {
 
-    public String graphicFrame;
-    public GraphicResources graphicResources;
-
-    private final Arrow model;
-    private final Assets asset;
+    private final ArrowFactory model;
     private Sprite arrowRightSprite;
     private Sprite arrowLeftSprite;
 
-    public View(Assets asset, GraphicResources graphicResources, Arrow model) {
-        this.asset = asset;
+    public View(Assets asset, GraphicResources graphicResources, ArrowFactory model) {
+        super(asset, graphicResources);
         this.model = model;
-        this.graphicResources = graphicResources;
         init();
     }
 
@@ -49,14 +43,14 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             public void draw() {
                 if (!model.getArrows().isEmpty()) {
                     Sprite sprite;
-                    for (Body body : model.getArrows()) {
-                        if ((WorldInterface.Vector) body.getUserData() == WorldInterface.Vector.RIGHT) {
+                    for (Arrow arrow : model.getArrows()) {
+                        if (arrow.getVector() == WorldInterface.Vector.RIGHT) {
                             sprite = arrowRightSprite;
                         } else {
                             sprite = arrowLeftSprite;
                         }
-                        sprite.setCenter(body.getPosition().x, body.getPosition().y);
-                        sprite.setRotation((float) Math.toDegrees(body.getAngle()));
+                        sprite.setCenter(arrow.getBody().getPosition().x, arrow.getBody().getPosition().y);
+                        sprite.setRotation((float) Math.toDegrees(arrow.getBody().getAngle()));
                         sprite.draw(graphicResources.getSpriteBatch());
                     }
                 }

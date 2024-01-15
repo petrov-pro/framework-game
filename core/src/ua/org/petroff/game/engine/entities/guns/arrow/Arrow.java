@@ -1,81 +1,112 @@
 package ua.org.petroff.game.engine.entities.guns.arrow;
 
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import java.util.ArrayList;
-import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
-import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.GroundedInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
+import ua.org.petroff.game.engine.entities.guns.GunInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
-import ua.org.petroff.game.engine.scenes.core.GraphicResources;
-import ua.org.petroff.game.engine.util.Assets;
 
-public class Arrow implements EntityInterface {
+public class Arrow implements GunInterface, GroundedInterface, com.badlogic.gdx.ai.msg.Telegraph {
 
-    public static final String DESCRIPTOR = "Arrow";
-    public static final int MAX = 50;
-
-    public Body body;
-    private final View view;
     private final GameResources gameResources;
-    private final Telegraph telegraph;
-    private final ArrayList<Body> arrows = new ArrayList<>();
 
-    public Arrow(Assets asset, GameResources gameResources, GraphicResources graphicResources)  {
-        view = new View(asset, graphicResources, this);
+    private Body bodyArrow;
+
+    private final float velocityThreshold = 0.1f;
+    private final float bodyWidth = 0.46f;
+    private final float bodyHeight = 0.05f;
+    private WorldInterface.Vector vector;
+    private final int damage = 10;
+    private boolean grounded = false;
+
+    public Arrow(GameResources gameResources, float x, float y, float angular, float forceX, float forceY) {
         this.gameResources = gameResources;
-        telegraph = new Telegraph(this, gameResources);// is need this?
-
+        initArrow(x, y, angular, forceX, forceY);
     }
 
     @Override
-    public ViewInterface getView() {
-        return view;
+    public void grounded() {
+        this.grounded = true;
     }
 
     @Override
-    public void update() {
+    public int getDamage() {
+        return damage;
     }
 
-    public void shoot(float x, float y, float angular, float forceX, float forceY) {
-        body = initArrow(x, y);
-        body.setAngularVelocity(angular);
-        body.applyForceToCenter(forceX, forceY, true);
-        if (forceX < 0) {
-            body.setUserData(WorldInterface.Vector.LEFT);
-        } else {
-            body.setUserData(WorldInterface.Vector.RIGHT);
+    @Override
+    public Vector2 getPlaceHit() {
+        return bodyArrow.getPosition();
+    }
+
+    public WorldInterface.Vector getVector() {
+        return vector;
+    }
+
+    public Body getBody() {
+        return bodyArrow;
+    }
+
+    public void handleActive() {
+        if (bodyArrow.isActive() && grounded && bodyArrow.getLinearVelocity().len() <= velocityThreshold) {
+            bodyArrow.setActive(false);
+        }
+    }
+
+    public void destroy() {
+        gameResources.getWorld().destroyBody(bodyArrow);
+    }
+
+    @Override
+    public boolean handleMessage(Telegram msg) {
+        if (StateInterface.State.GROUND.telegramNumber == msg.message) {
+            grounded();
         }
 
-        arrows.add(body);
-        if (arrows.size() > MAX) {
-            Body bodyRemove = arrows.get(0);
-            arrows.remove(0);
-            gameResources.getWorld().destroyBody(bodyRemove);
-        }
+        return true;
     }
 
-    public ArrayList<Body> getArrows() {
-        return arrows;
-    }
-
-    private Body initArrow(float x, float y) {
+    private void initArrow(float x, float y, float angular, float forceX, float forceY) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = false;
-        Body bodyArrow = gameResources.getWorld().createBody(bodyDef);
+
+        bodyArrow = gameResources.getWorld().createBody(bodyDef);
 
         PolygonShape poly = new PolygonShape();
-        poly.setAsBox(0.46f, 0.05f);
+        poly.setAsBox(bodyWidth, bodyHeight);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = poly;
         fixtureDef.density = 1;
         bodyArrow.createFixture(fixtureDef);
-        poly.dispose();
         bodyArrow.setTransform(x, y, 0);
-        return bodyArrow;
+        bodyArrow.setUserData(this);
+
+        Vector2 centerArrow = bodyArrow.getLocalCenter().cpy();
+        if (forceX < 0) {
+            centerArrow = centerArrow.sub(bodyWidth, 0);
+            vector = WorldInterface.Vector.LEFT;
+        } else {
+            centerArrow = centerArrow.add(bodyWidth, 0);
+            vector = WorldInterface.Vector.RIGHT;
+        }
+
+        poly.setAsBox(bodyWidth / 20, bodyHeight, centerArrow, 0);
+        FixtureDef fixtureSensorDef = new FixtureDef();
+        fixtureSensorDef.shape = poly;
+        fixtureSensorDef.density = 1;
+        fixtureSensorDef.isSensor = true;
+        bodyArrow.createFixture(fixtureSensorDef);
+        poly.dispose();
+
+        bodyArrow.setAngularVelocity(angular);
+        bodyArrow.applyForceToCenter(forceX, forceY, true);
     }
 
 }

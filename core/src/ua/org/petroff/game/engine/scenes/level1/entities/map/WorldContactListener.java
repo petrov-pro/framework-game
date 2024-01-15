@@ -5,41 +5,40 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import java.util.ArrayList;
-import ua.org.petroff.game.engine.entities.Interfaces.EntityListenerInterface;
 
 public class WorldContactListener implements ContactListener {
 
-    private final ArrayList<EntityListenerInterface> contactHandlers = new ArrayList();
+    private final ArrayList<ContactListener> contactHandlers = new ArrayList();
 
     @Override
     public void beginContact(Contact contact) {
-        for (EntityListenerInterface contactHandler : contactHandlers) {
+        for (ContactListener contactHandler : contactHandlers) {
             contactHandler.beginContact(contact);
         }
     }
 
     @Override
     public void endContact(Contact contact) {
-        for (EntityListenerInterface contactHandler : contactHandlers) {
+        for (ContactListener contactHandler : contactHandlers) {
             contactHandler.endContact(contact);
         }
     }
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-        for (EntityListenerInterface contactHandler : contactHandlers) {
+        for (ContactListener contactHandler : contactHandlers) {
             contactHandler.preSolve(contact, oldManifold);
         }
     }
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
-        for (EntityListenerInterface contactHandler : contactHandlers) {
+        for (ContactListener contactHandler : contactHandlers) {
             contactHandler.postSolve(contact, impulse);
         }
     }
 
-    public void addListener(EntityListenerInterface contactHandler) {
+    public void addListener(ContactListener contactHandler) {
         contactHandlers.add(contactHandler);
     }
 

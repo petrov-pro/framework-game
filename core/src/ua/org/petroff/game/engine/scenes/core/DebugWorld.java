@@ -29,15 +29,15 @@ public class DebugWorld {
 
     public static void run(World world, Matrix4 combined) {
         if (Settings.IS_DEBUG) {
-            fps.log();
-            //Gdx.app.log("fps", " " + Gdx.graphics.getFramesPerSecond());
+//            fps.log();
+//            MessageManager.getInstance().setDebugEnabled(true);
             debugRenderer.setDrawAABBs(true);
             debugRenderer.setDrawVelocities(true);
             debugRenderer.setDrawContacts(true);
             debugRenderer.setDrawInactiveBodies(true);
             debugRenderer.render(world, combined);
             debugView(combined);
-            MessageManager.getInstance().setDebugEnabled(true);
+            
         }
     }
 

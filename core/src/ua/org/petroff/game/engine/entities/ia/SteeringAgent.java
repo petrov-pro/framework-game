@@ -12,12 +12,10 @@ public class SteeringAgent extends SteerableAdapter<Vector2> {
 
     private final SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<>(new Vector2());
 
-    private Body body;
+    private final Body body;
 
     private float maxLinearSpeed;
     private float maxLinearAcceleration;
-    private float maxAngularSpeed;
-    private float maxAngularAcceleration;
 
     public SteeringAgent(Body body) {
         this.body = body;

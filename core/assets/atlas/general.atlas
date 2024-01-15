@@ -4,23 +4,16 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-arrow
-  rotate: false
-  xy: 2, 2
-  size: 32, 3
-  orig: 32, 3
-  offset: 0, 0
-  index: -1
 backgroud-loading
   rotate: false
-  xy: 2, 72
+  xy: 2, 67
   size: 1020, 764
   orig: 1020, 764
   offset: 0, 0
   index: -1
 health
   rotate: false
-  xy: 2, 7
+  xy: 2, 2
   size: 350, 63
   orig: 350, 63
   offset: 0, 0
@@ -40,6 +33,19 @@ mainmenu-background
   index: -1
 
 general3.png
+size: 64,16
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+arrow
+  rotate: false
+  xy: 2, 2
+  size: 32, 3
+  orig: 32, 3
+  offset: 0, 0
+  index: -1
+
+general4.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -52,12 +58,12 @@ player
   offset: 0, 0
   index: -1
 
-general4.png
+general5.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Skeleton
+skeleton
   rotate: false
   xy: 2, 2
   size: 832, 832
@@ -65,7 +71,7 @@ Skeleton
   offset: 0, 0
   index: -1
 
-general5.png
+general6.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -78,7 +84,7 @@ dirt_man
   offset: 0, 0
   index: 2
 
-general6.png
+general7.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -91,7 +97,7 @@ dirt_man
   offset: 0, 0
   index: 1
 
-general7.png
+general8.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -104,7 +110,7 @@ BackgroundGradient
   offset: 0, 0
   index: -1
 
-general8.png
+general9.png
 size: 256,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -117,7 +123,7 @@ flame
   offset: 0, 0
   index: -1
 
-general9.png
+general10.png
 size: 512,512
 format: RGBA8888
 filter: Nearest,Nearest
@@ -130,7 +136,7 @@ Tiles_32x32
   offset: 0, 0
   index: -1
 
-general10.png
+general11.png
 size: 512,256
 format: RGBA8888
 filter: Nearest,Nearest
@@ -140,5 +146,32 @@ dust
   xy: 2, 2
   size: 320, 198
   orig: 320, 198
+  offset: 0, 0
+  index: -1
+
+general12.png
+size: 64,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+pp_blob
+  rotate: false
+  xy: 2, 2
+  size: 27, 41
+  orig: 27, 41
+  offset: 0, 0
+  index: -1
+pp_circle1
+  rotate: false
+  xy: 2, 45
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+pp_gore
+  rotate: false
+  xy: 2, 107
+  size: 59, 71
+  orig: 59, 71
   offset: 0, 0
   index: -1
