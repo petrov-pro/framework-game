@@ -4,17 +4,18 @@ import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
-import ua.org.petroff.game.engine.entities.Listener;
+import ua.org.petroff.game.engine.entities.LocalListener;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 
-public class CreatureListener extends Listener {
+public class CreatureListener extends LocalListener<Creature> {
 
-    public CreatureListener(GameResources gameResources) {
-        super(gameResources);
+    public CreatureListener(GameResources gameResources, Creature entity) {
+        super(gameResources, entity);
     }
 
     @Override
     public void beginContact(Contact contact) {
+        super.beginContact(contact);
         Object userDataA = contact.getFixtureA().getBody().getUserData();
         Object userDataB = contact.getFixtureB().getBody().getUserData();
 
@@ -29,23 +30,22 @@ public class CreatureListener extends Listener {
         }
     }
 
-    private boolean shouldContact(Fixture creature, Fixture victim) {
-        return creature.getBody().getUserData() instanceof CreatureInterface
-                && victim.getBody().getUserData() instanceof CreatureInterface
-                && victim.isSensor();
-
+    @Override
+    protected boolean shouldContact(Fixture entityA, Fixture entityB) {
+        return entityA.getBody().getUserData() instanceof CreatureInterface
+                && !entityA.isSensor()
+                && entityB.isSensor()
+                && entityB.getUserData() instanceof CreatureInterface;
     }
 
     private void handleContact(Object creatureData, Object entityData) {
-        if (entityData instanceof CreatureInterface) {
-            gameResources.getMessageManger().dispatchMessage(
-                    this,
-                    (Telegraph) entityData,
-                    StateInterface.State.CREATURE_COLLISION.telegramNumber,
-                    creatureData,
-                    false
-            );
-        }
+        gameResources.getMessageManger().dispatchMessage(
+                this,
+                (Telegraph) entityData,
+                StateInterface.State.CREATURE_COLLISION.telegramNumber,
+                creatureData,
+                false
+        );
     }
 
 }

@@ -1,8 +1,5 @@
 package ua.org.petroff.game.engine.entities.characters.base.creature;
 
-import com.badlogic.gdx.ai.fsm.StateMachine;
-import com.badlogic.gdx.ai.msg.Telegram;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -12,11 +9,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
-import ua.org.petroff.game.engine.entities.Interfaces.EntityNotifierInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
-import ua.org.petroff.game.engine.entities.characters.enemies.skeleton.Skeleton;
-import ua.org.petroff.game.engine.entities.characters.enemies.skeleton.CreatureState;
 import ua.org.petroff.game.engine.entities.ia.Box2dLocation;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
@@ -24,11 +18,9 @@ import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.util.MapResolver;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 
-abstract public class Creature implements EntityInterface, EntityNotifierInterface, StateInterface, CreatureInterface {
+abstract public class Creature implements EntityInterface, StateInterface, CreatureInterface {
 
-    protected StateMachine<Skeleton, CreatureState> stateMachine;
-
-    protected int zIndex;
+    public static final String SENSOR_FOOT = "foot";
 
     protected Body body;
     protected int currentLive = 100;
@@ -36,9 +28,9 @@ abstract public class Creature implements EntityInterface, EntityNotifierInterfa
     protected Assets asset;
     protected GameResources gameResources;
     protected GraphicResources graphicResources;
-    protected View view;
+    protected ua.org.petroff.game.engine.entities.characters.base.View view;
 
-    protected boolean isGround = true;
+    protected boolean onGround = true;
 
     protected WorldInterface.Vector vector = WorldInterface.Vector.STAY;
 
@@ -49,22 +41,15 @@ abstract public class Creature implements EntityInterface, EntityNotifierInterfa
 
     protected Box2dLocation target;
 
-    public Creature(String objectName, Assets asset, GameResources gameResources, GraphicResources graphicResources) {
+    public Creature(int x, int y, String objectName, Assets asset, GameResources gameResources, GraphicResources graphicResources) {
         this.asset = asset;
         this.gameResources = gameResources;
         this.graphicResources = graphicResources;
 
         createBody(gameResources);
-        setStartCreaturePostion(objectName);
-    }
-
-    public StateMachine<Skeleton, CreatureState> getStateMachine() {
-        return stateMachine;
-    }
-
-    @Override
-    public boolean handleMessage(Telegram msg) {
-        return stateMachine.handleMessage(msg);
+        setStartCreaturePostion(x, y);
+        gameResources.getWorldContactListener().addListener(new CreatureListener(gameResources, this));
+        gameResources.getWorldContactListener().addListener(new GroundListener(gameResources, this));
     }
 
     @Override
@@ -74,7 +59,7 @@ abstract public class Creature implements EntityInterface, EntityNotifierInterfa
 
     @Override
     public boolean isGrounded() {
-        return isGround;
+        return onGround;
     }
 
     @Override
@@ -101,13 +86,18 @@ abstract public class Creature implements EntityInterface, EntityNotifierInterfa
     }
 
     @Override
-    public void grounded() {
-        isGround = true;
-        view.resetState(StateInterface.State.JUMP);
+    public void ground(boolean isGround) {
+        onGround = isGround;
+        if (isGround) {
+            view.resetState(StateInterface.State.JUMP);
+        }
+
     }
 
     @Override
     public void died() {
+        vector = WorldInterface.Vector.STAY;
+        currentLive = 0;
     }
 
     public Body getBody() {
@@ -117,13 +107,6 @@ abstract public class Creature implements EntityInterface, EntityNotifierInterfa
     //+
     public boolean isShow() {
         return graphicResources.getCamera().frustum.pointInFrustum(body.getPosition().x, body.getPosition().y, 0);
-    }
-
-    @Override
-    public StateInterface.State getState() {
-        State action = State.valueOf(stateMachine.getCurrentState().toString());
-        return action;
-
     }
 
     protected void createBody(GameResources gameResources) {
@@ -144,20 +127,16 @@ abstract public class Creature implements EntityInterface, EntityNotifierInterfa
         Fixture bodyPlayer = body.createFixture(poly, 1);
 
         centerFoot = bodyPlayer.getBody().getWorldCenter();
-        poly.setAsBox((bodyWidth / 2f) - 0.05f, 0.05f, centerFoot.cpy().sub(0, bodyHeight / 2), 0);
+        poly.setAsBox((bodyWidth / 2f) - 0.2f, 0.15f, centerFoot.cpy().sub(0, bodyHeight / 1.8f), 0);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = poly;
-        fixtureDef.density = 1;
         fixtureDef.isSensor = true;
-        body.createFixture(fixtureDef);
+        Fixture bodyFootPlayer = body.createFixture(fixtureDef);
+        bodyFootPlayer.setUserData(this);
         poly.dispose();
     }
 
-    protected void setStartCreaturePostion(String objectName) {
-        MapObject playerObject = ua.org.petroff.game.engine.util.MapResolver.findObject(asset.getMap(),
-                objectName);
-        int x = playerObject.getProperties().get("x", Float.class).intValue();
-        int y = playerObject.getProperties().get("y", Float.class).intValue();
+    protected void setStartCreaturePostion(int x, int y) {
         Vector2 position = new Vector2(MapResolver.coordinateToWorld(x), MapResolver.coordinateToWorld(y));
         body.setTransform(position, 0);
     }

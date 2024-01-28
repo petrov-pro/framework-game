@@ -17,11 +17,29 @@ public class MapResolver {
         }
         MapObjects objects = map.getLayers().get(objecLayerName).getObjects();
 
-        ArrayList<MapObject> findedObject = new ArrayList();
+        for (MapObject object : objects) {
+            if (objectName.equals(object.getName())) {
+                return (T) object;
+            }
+        }
+
+        throw new Error("Map is incorrect, cant find object: " + objectName);
+
+    }
+
+    public static <T> ArrayList<T> findObjects(com.badlogic.gdx.maps.Map map, String objectName) {
+
+        String objecLayerName = map.getProperties().get(OBJECT_LAYER_NAME, String.class);
+        if (objecLayerName == null) {
+            throw new Error("Map is incorrect, cant find base element: " + OBJECT_LAYER_NAME);
+        }
+        MapObjects objects = map.getLayers().get(objecLayerName).getObjects();
+
+        ArrayList<T> findedObject = new ArrayList();
 
         for (MapObject object : objects) {
             if (objectName.equals(object.getName())) {
-                findedObject.add(object);
+                findedObject.add((T) object);
             }
         }
 
@@ -29,11 +47,7 @@ public class MapResolver {
             throw new Error("Map is incorrect, cant find object: " + objectName);
         }
 
-        if (findedObject.size() == 1) {
-            return (T) findedObject.get(0);
-        } else {
-            return (T) findedObject;
-        }
+        return findedObject;
 
     }
 

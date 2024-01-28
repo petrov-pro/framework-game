@@ -1,14 +1,17 @@
 package ua.org.petroff.game.engine.entities.guns.arrow;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import ua.org.petroff.game.engine.entities.Interfaces.GroundedInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
+import ua.org.petroff.game.engine.entities.characters.base.creature.Creature;
 import ua.org.petroff.game.engine.entities.guns.GunInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 
@@ -18,7 +21,7 @@ public class Arrow implements GunInterface, GroundedInterface, com.badlogic.gdx.
 
     private Body bodyArrow;
 
-    private final float velocityThreshold = 0.1f;
+    private final float velocityThreshold = 0f;
     private final float bodyWidth = 0.46f;
     private final float bodyHeight = 0.05f;
     private WorldInterface.Vector vector;
@@ -31,8 +34,8 @@ public class Arrow implements GunInterface, GroundedInterface, com.badlogic.gdx.
     }
 
     @Override
-    public void grounded() {
-        this.grounded = true;
+    public void ground(boolean isGround) {
+        this.grounded = isGround;
     }
 
     @Override
@@ -66,7 +69,7 @@ public class Arrow implements GunInterface, GroundedInterface, com.badlogic.gdx.
     @Override
     public boolean handleMessage(Telegram msg) {
         if (StateInterface.State.GROUND.telegramNumber == msg.message) {
-            grounded();
+            ground((boolean) msg.extraInfo);
         }
 
         return true;
@@ -83,7 +86,7 @@ public class Arrow implements GunInterface, GroundedInterface, com.badlogic.gdx.
         poly.setAsBox(bodyWidth, bodyHeight);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = poly;
-        fixtureDef.density = 1;
+        fixtureDef.density = 0.1f;
         bodyArrow.createFixture(fixtureDef);
         bodyArrow.setTransform(x, y, 0);
         bodyArrow.setUserData(this);
@@ -100,9 +103,9 @@ public class Arrow implements GunInterface, GroundedInterface, com.badlogic.gdx.
         poly.setAsBox(bodyWidth / 20, bodyHeight, centerArrow, 0);
         FixtureDef fixtureSensorDef = new FixtureDef();
         fixtureSensorDef.shape = poly;
-        fixtureSensorDef.density = 1;
         fixtureSensorDef.isSensor = true;
-        bodyArrow.createFixture(fixtureSensorDef);
+        Fixture bodyArrowSensor = bodyArrow.createFixture(fixtureSensorDef);
+        bodyArrowSensor.setUserData(this);
         poly.dispose();
 
         bodyArrow.setAngularVelocity(angular);

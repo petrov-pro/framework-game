@@ -19,13 +19,18 @@ public class DebugWorld {
 
     public static DebugWorld instance;
 
+    public static final ShapeRenderer shapeRenderer = new ShapeRenderer();
+
     //debug
     public static Vector2 position = new Vector2(0, 0);
+    public static Vector2 startPositionLine = new Vector2(0, 0);
+    public static Vector2 endPositionLine = new Vector2(0, 0);
+    public static Vector2 positionCircle = new Vector2(0, 0);
     public static Color color = Color.RED;
     public static Color colorCurrent = color;
     public static float width = 0.1f;
     public static float height = 1f;
-    private static final ShapeRenderer shapeRenderer = new ShapeRenderer();
+    public static float radius = 0.2f;
 
     public static void run(World world, Matrix4 combined) {
         if (Settings.IS_DEBUG) {
@@ -36,8 +41,9 @@ public class DebugWorld {
             debugRenderer.setDrawContacts(true);
             debugRenderer.setDrawInactiveBodies(true);
             debugRenderer.render(world, combined);
+
             debugView(combined);
-            
+
         }
     }
 
@@ -50,8 +56,10 @@ public class DebugWorld {
 
         shapeRenderer.setProjectionMatrix(combined);
         shapeRenderer.setColor(colorCurrent);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.rect(position.x, position.y, width, height);
+        shapeRenderer.circle(positionCircle.x, positionCircle.y, radius);
+        shapeRenderer.line(startPositionLine, endPositionLine);
         shapeRenderer.end();
         if (!position.isZero()) {
             Gdx.app.log("debug", " x: " + position.x + " y: " + position.y);

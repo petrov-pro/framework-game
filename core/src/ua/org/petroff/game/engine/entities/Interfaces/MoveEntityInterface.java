@@ -8,7 +8,7 @@ public interface MoveEntityInterface {
 
     public void jump(boolean active);
 
-    public void hit(boolean active);
+    public void fire(boolean active);
 
     public void ability(boolean active);
 

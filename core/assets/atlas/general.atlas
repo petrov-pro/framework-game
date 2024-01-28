@@ -53,8 +53,8 @@ repeat: none
 player
   rotate: false
   xy: 2, 2
-  size: 832, 832
-  orig: 832, 832
+  size: 833, 930
+  orig: 833, 930
   offset: 0, 0
   index: -1
 
@@ -63,11 +63,11 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-skeleton
+dirty_man_two
   rotate: false
   xy: 2, 2
-  size: 832, 832
-  orig: 832, 832
+  size: 1000, 955
+  orig: 1000, 955
   offset: 0, 0
   index: -1
 
@@ -76,28 +76,15 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-dirt_man
+dirty_man
   rotate: false
   xy: 2, 2
-  size: 860, 581
-  orig: 860, 581
+  size: 1000, 901
+  orig: 1000, 901
   offset: 0, 0
-  index: 2
+  index: -1
 
 general7.png
-size: 1024,1024
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-dirt_man
-  rotate: false
-  xy: 2, 2
-  size: 590, 789
-  orig: 590, 789
-  offset: 0, 0
-  index: 1
-
-general8.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -110,7 +97,7 @@ BackgroundGradient
   offset: 0, 0
   index: -1
 
-general9.png
+general8.png
 size: 256,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -123,7 +110,7 @@ flame
   offset: 0, 0
   index: -1
 
-general10.png
+general9.png
 size: 512,512
 format: RGBA8888
 filter: Nearest,Nearest
@@ -136,7 +123,7 @@ Tiles_32x32
   offset: 0, 0
   index: -1
 
-general11.png
+general10.png
 size: 512,256
 format: RGBA8888
 filter: Nearest,Nearest
@@ -149,7 +136,7 @@ dust
   offset: 0, 0
   index: -1
 
-general12.png
+general11.png
 size: 64,256
 format: RGBA8888
 filter: Nearest,Nearest

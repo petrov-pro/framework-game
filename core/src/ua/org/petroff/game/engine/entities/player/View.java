@@ -11,10 +11,12 @@ import ua.org.petroff.game.engine.scenes.core.CameraBound;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
+import ua.org.petroff.game.engine.entities.characters.base.visual.effects.Blood;
 
 public class View extends ua.org.petroff.game.engine.entities.characters.base.View implements ViewInterface, QueueDrawInterface, GraphicQueueMemberInterface {
 
     private final Player model;
+    private final Blood blood;
     private Player.PlayerSize currentPlayerSize;
     private final int zIndex = 2;
 
@@ -24,6 +26,7 @@ public class View extends ua.org.petroff.game.engine.entities.characters.base.Vi
         super(asset, graphicResources);
         this.model = model;
         graphic = new Graphic(asset, graphicResources, model);
+        this.blood = new Blood(asset, graphicResources);
     }
 
     @Override
@@ -42,6 +45,7 @@ public class View extends ua.org.petroff.game.engine.entities.characters.base.Vi
         graphic.sprite.setCenter(model.getPosition().x, model.getPosition().y);
         graphic.sprite.draw(graphicResources.getSpriteBatch());
 
+        blood.drawHit((model.getState() == StateInterface.State.HIT), model.getPlaceHit());
         groundedEffect();
         ((CameraBound) graphicResources.getCamera()).positionSafe(model.getCameraNewPosition());
     }
@@ -65,7 +69,7 @@ public class View extends ua.org.petroff.game.engine.entities.characters.base.Vi
             return;
         }
 
-        if (model.getState() == StateInterface.State.JUMP) {
+        if (model.getState() == StateInterface.State.JUMP && ((Graphic) graphic).effect.isComplete()) {
             canDrawGroundEffect = true;
 
             return;

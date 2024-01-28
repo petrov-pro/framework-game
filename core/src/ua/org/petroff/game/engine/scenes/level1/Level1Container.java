@@ -8,7 +8,7 @@ import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterfac
 import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.entities.QueueDraw;
-import ua.org.petroff.game.engine.entities.characters.enemies.skeleton.Skeleton;
+import ua.org.petroff.game.engine.entities.characters.base.creature.EnemyFactory;
 import ua.org.petroff.game.engine.entities.guns.arrow.ArrowFactory;
 import ua.org.petroff.game.engine.entities.hud.HUD;
 import ua.org.petroff.game.engine.entities.player.Player;
@@ -72,9 +72,9 @@ public class Level1Container implements ContainerInterface {
         gameResources.setModels(entities);
         entities.add(new GameWorld(asset, gameResources, graphicResources));
         entities.add(new HUD(asset, gameResources, graphicResources));
-        entities.add(new Player(asset, gameResources, graphicResources));
+        entities.add(Player.getInstance(asset, gameResources, graphicResources));
         entities.add(new ArrowFactory(asset, gameResources, graphicResources));
-        entities.add(new Skeleton(asset, gameResources, graphicResources));
+        EnemyFactory.addEnemy(entities, asset, gameResources, graphicResources);
     }
 
     public void prepareDraw() {

@@ -67,58 +67,64 @@ public class Graphic extends ua.org.petroff.game.engine.entities.characters.base
     private void loadAnimation() {
 
         TextureAtlas atlas = asset.getAtlas();
-        TextureRegion[] playerRegionsRight = new TextureRegion[7];
-        TextureRegion[] playerRegionsLeft = new TextureRegion[7];
+        TextureRegion[] playerRegionsRight = new TextureRegion[8];
+        TextureRegion[] playerRegionsLeft = new TextureRegion[8];
         TextureRegion[] playerRegionsJumpLeft = new TextureRegion[7];
         TextureRegion[] playerRegionsJumpRight = new TextureRegion[7];
         TextureRegion[] playerRegionsJumpStay = new TextureRegion[7];
         TextureRegion[] playerRegionsDied = new TextureRegion[5];
+        TextureRegion[] playerRegionsHit = new TextureRegion[3];
         TextureRegion[] playerRegionsFireRight = new TextureRegion[13];
         TextureRegion[] playerRegionsFireLeft = new TextureRegion[13];
 
         TextureAtlas.AtlasRegion playerTexture = atlas.findRegion("player");
-        TextureRegion player = new TextureRegion(playerTexture, 0, 68, 64, 64);
+        TextureRegion player = new TextureRegion(playerTexture, 0, 62, 64, 64);
         sprite = new Sprite(player);
         sprite.setScale(Settings.SCALE);
         sprite.setOriginCenter();
 
-        for (int i = 0; i < 7; i++) {
-            playerRegionsRight[i] = new TextureRegion(playerTexture, 64 * i, 324, 64, 64);
+        for (int i = 0; i < 8; i++) {
+            playerRegionsRight[i] = new TextureRegion(playerTexture, 64 * i, 462, 64, 64);
         }
         Animation walkAnimationRight = new Animation(0.1f, (Object[]) playerRegionsRight);
 
-        for (int i = 0; i < 7; i++) {
-            playerRegionsLeft[i] = new TextureRegion(playerTexture, 64 * i, 452, 64, 64);
+        for (int i = 0; i < 8; i++) {
+            playerRegionsLeft[i] = new TextureRegion(playerTexture, 64 * i, 389, 64, 64);
         }
         Animation walkAnimationLeft = new Animation(0.1f, (Object[]) playerRegionsLeft);
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsJumpLeft[i] = new TextureRegion(playerTexture, 64 * i, 4, 64, 64);
+            playerRegionsJumpLeft[i] = new TextureRegion(playerTexture, 64 * i, -3, 64, 64);
         }
         Animation jumpAnimationLeft = new Animation(0.2f, (Object[]) playerRegionsJumpLeft);
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsJumpRight[i] = new TextureRegion(playerTexture, 64 * i, 132, 64, 64);
+            playerRegionsJumpRight[i] = new TextureRegion(playerTexture, 64 * i, 125, 64, 64);
         }
         Animation jumpAnimationRight = new Animation(0.2f, (Object[]) playerRegionsJumpRight);
 
         for (int i = 0; i < 7; i++) {
-            playerRegionsJumpStay[i] = new TextureRegion(playerTexture, 64 * i, 68, 64, 64);
+            playerRegionsJumpStay[i] = new TextureRegion(playerTexture, 64 * i, 62, 64, 64);
         }
         Animation jumpAnimationStay = new Animation(0.2f, (Object[]) playerRegionsJumpStay);
 
         for (int i = 0; i < 5; i++) {
-            playerRegionsDied[i] = new TextureRegion(playerTexture, 64 * i, 770, 64, 64);
+            playerRegionsDied[i] = new TextureRegion(playerTexture, (64 * i) + 2, 861, 64, 64);
         }
         Animation diedAnimationStay = new Animation(0.1f, (Object[]) playerRegionsDied);
 
+        for (int i = 0; i < 3; i++) {
+            playerRegionsHit[i] = new TextureRegion(playerTexture, (64 * i) + 2, 861, 64, 64);
+        }
+        Animation hitAnimationStay = new Animation(0.1f, (Object[]) playerRegionsHit);
+
         for (int i = 0; i < 13; i++) {
-            playerRegionsFireRight[i] = new TextureRegion(playerTexture, 64 * i, 706, 64, 64);
+            playerRegionsFireRight[i] = new TextureRegion(playerTexture, 64 * i, 799, 64, 64);
         }
         Animation fireAnimationRight = new Animation(0.1f, (Object[]) playerRegionsFireRight);
 
         for (int i = 0; i < 13; i++) {
-            playerRegionsFireLeft[i] = new TextureRegion(playerTexture, 64 * i, 642, 64, 64);
+            playerRegionsFireLeft[i] = new TextureRegion(playerTexture, 64 * i, 731, 64, 64);
         }
         Animation fireAnimationLeft = new Animation(0.1f, (Object[]) playerRegionsFireLeft);
 
@@ -141,6 +147,9 @@ public class Graphic extends ua.org.petroff.game.engine.entities.characters.base
                 new ua.org.petroff.game.engine.entities.player.graphics.Animation(fireAnimationRight, StateInterface.State.FIRE, WorldInterface.Vector.RIGHT, false, Player.FIRE_SPEED));
         graphics.put(View.getFrameName(StateInterface.State.FIRE, WorldInterface.Vector.LEFT),
                 new ua.org.petroff.game.engine.entities.player.graphics.Animation(fireAnimationLeft, StateInterface.State.FIRE, WorldInterface.Vector.LEFT, false, Player.FIRE_SPEED));
+        graphics.put(View.getFrameName(StateInterface.State.HIT, WorldInterface.Vector.STAY),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(hitAnimationStay, StateInterface.State.HIT, false));
+
     }
 
 }

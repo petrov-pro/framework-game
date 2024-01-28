@@ -1,14 +1,14 @@
 package ua.org.petroff.game.engine.entities.characters.base;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewNotifierInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 
-public class View implements ViewNotifierInterface {
+public class View implements ViewInterface, ViewNotifierInterface {
 
     public GraphicResources graphicResources;
     protected Assets asset;
@@ -33,7 +33,7 @@ public class View implements ViewNotifierInterface {
     }
 
     public boolean isFinishAction(StateInterface.State action) {
-        return !frame.isLoop() && frame.isFinish() && frame.getActionType() == action;
+        return frame != null && !frame.isLoop() && frame.isFinish() && frame.getActionType() == action;
     }
 
     public static String getFrameName(StateInterface.State graphicType, WorldInterface.Vector vector) {

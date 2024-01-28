@@ -52,7 +52,7 @@ public class Level1Controller extends InputAdapter implements ControllerInterfac
                 break;
 
             case Keys.CONTROL_LEFT:
-                entity.hit(active);
+                entity.fire(active);
                 break;
 
             case Keys.ALT_LEFT:

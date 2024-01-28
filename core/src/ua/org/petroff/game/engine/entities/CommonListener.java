@@ -1,19 +1,21 @@
 package ua.org.petroff.game.engine.entities;
 
 import com.badlogic.gdx.ai.msg.Telegram;
-import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 
-abstract public class Listener<T> implements ContactListener, Telegraph {
+abstract public class CommonListener<T> extends Listener {
 
-    protected final GameResources gameResources;
+    private Map<T, ArrayList<Fixture>> toucheFixtures = new HashMap<>();
 
-    public Listener(GameResources gameResources) {
-        this.gameResources = gameResources;
+    public CommonListener(GameResources gameResources) {
+        super(gameResources);
     }
 
     @Override
