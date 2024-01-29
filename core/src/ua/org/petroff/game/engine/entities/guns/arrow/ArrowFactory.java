@@ -39,9 +39,7 @@ public class ArrowFactory implements EntityInterface {
     public void shoot(float x, float y, float angular, float forceX, float forceY) {
         arrows.add(new Arrow(gameResources, x, y, angular, forceX, forceY));
         if (arrows.size() > MAX) {
-            (arrows.get(0)).destroy();
-            arrows.remove(0);
-
+            arrows.remove(0).destroy();
         }
     }
 

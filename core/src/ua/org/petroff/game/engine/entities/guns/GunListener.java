@@ -7,6 +7,7 @@ import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.Listener;
 import ua.org.petroff.game.engine.entities.characters.base.creature.CreatureInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
+import ua.org.petroff.game.engine.entities.map.Surface;
 
 public class GunListener extends Listener {
 
@@ -43,6 +44,14 @@ public class GunListener extends Listener {
                     (Telegraph) entityData,
                     StateInterface.State.HIT.telegramNumber,
                     gunData,
+                    false
+            );
+        } else if (entityData instanceof Surface) {
+            gameResources.getMessageManger().dispatchMessage(
+                    this,
+                    (Telegraph) gunData,
+                    StateInterface.State.GROUND.telegramNumber,
+                    true,
                     false
             );
         }

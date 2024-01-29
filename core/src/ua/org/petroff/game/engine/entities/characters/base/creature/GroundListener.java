@@ -7,11 +7,11 @@ import ua.org.petroff.game.engine.entities.Interfaces.GroundedInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.LocalListener;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
-import ua.org.petroff.game.engine.scenes.level1.entities.map.surface.Surface;
+import ua.org.petroff.game.engine.entities.map.Surface;
 
-public class GroundListener extends LocalListener<Creature> {
+public class GroundListener extends LocalListener<GroundedInterface> {
 
-    public GroundListener(GameResources gameResources, Creature entity) {
+    public GroundListener(GameResources gameResources, GroundedInterface entity) {
         super(gameResources, entity);
     }
 

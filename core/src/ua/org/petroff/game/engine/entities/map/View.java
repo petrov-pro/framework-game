@@ -1,4 +1,4 @@
-package ua.org.petroff.game.engine.scenes.level1.entities.map;
+package ua.org.petroff.game.engine.entities.map;
 
 import box2dLight.DirectionalLight;
 import box2dLight.RayHandler;

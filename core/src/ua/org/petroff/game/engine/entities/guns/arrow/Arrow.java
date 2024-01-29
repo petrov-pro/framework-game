@@ -1,6 +1,5 @@
 package ua.org.petroff.game.engine.entities.guns.arrow;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import ua.org.petroff.game.engine.entities.Interfaces.GroundedInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
-import ua.org.petroff.game.engine.entities.characters.base.creature.Creature;
 import ua.org.petroff.game.engine.entities.guns.GunInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 

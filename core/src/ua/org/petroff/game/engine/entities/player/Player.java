@@ -195,7 +195,7 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
             }
         }
 
-//        //handler if body have vertical velocity
+//      handler if body have vertical velocity
         if (action != StateInterface.State.JUMP && !onGround && body.getLinearVelocity().y <= -3f) {
             action = StateInterface.State.JUMP;
         }
@@ -203,7 +203,7 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
         if (action == StateInterface.State.JUMP && onGround && body.getLinearVelocity().y < MAXJUMPVELOCITY) {
             body.applyLinearImpulse(0, JUMPVELOCITY, body.getPosition().x, body.getPosition().y, true);
             //for force
-//            onGround = false;
+            onGround = false;
         }
 
         if (vector.equals(WorldInterface.Vector.LEFT) && body.getLinearVelocity().x > -MAXMOVEVELOCITY) {

@@ -1,4 +1,4 @@
-package ua.org.petroff.game.engine.scenes.level1.entities.map.surface;
+package ua.org.petroff.game.engine.entities.map;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.ChainShape;

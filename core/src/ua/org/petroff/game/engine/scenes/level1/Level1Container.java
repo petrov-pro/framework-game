@@ -16,7 +16,7 @@ import ua.org.petroff.game.engine.scenes.Interface.ContainerInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.scenes.core.ManagerScenes;
-import ua.org.petroff.game.engine.scenes.level1.entities.map.GameWorld;
+import ua.org.petroff.game.engine.entities.map.GameWorld;
 import ua.org.petroff.game.engine.util.Assets;
 
 public class Level1Container implements ContainerInterface {

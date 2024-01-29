@@ -1,4 +1,4 @@
-package ua.org.petroff.game.engine.scenes.level1.entities.map;
+package ua.org.petroff.game.engine.entities.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.GdxAI;
@@ -10,7 +10,6 @@ import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
-import ua.org.petroff.game.engine.scenes.level1.entities.map.surface.Surface;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.util.MapResolver;
 

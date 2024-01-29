@@ -19,8 +19,6 @@ import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 
 public class Enemy extends Creature {
 
-    public static final String SENSOR_GAP = "gap";
-
     protected float maxMoveVelocity = 3f;
     protected float maxMoveAccVelocity = 20f;
     protected float maxJumpVelocity = 5f;

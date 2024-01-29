@@ -4,7 +4,7 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
-import ua.org.petroff.game.engine.scenes.level1.entities.map.WorldContactListener;
+import ua.org.petroff.game.engine.entities.map.WorldContactListener;
 
 public class GameResources {
 

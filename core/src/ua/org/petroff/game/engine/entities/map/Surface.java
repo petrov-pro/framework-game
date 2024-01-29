@@ -1,4 +1,4 @@
-package ua.org.petroff.game.engine.scenes.level1.entities.map.surface;
+package ua.org.petroff.game.engine.entities.map;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;

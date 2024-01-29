@@ -20,8 +20,6 @@ import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 
 abstract public class Creature implements EntityInterface, StateInterface, CreatureInterface {
 
-    public static final String SENSOR_FOOT = "foot";
-
     protected Body body;
     protected int currentLive = 100;
 
