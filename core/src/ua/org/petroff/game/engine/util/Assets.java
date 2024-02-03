@@ -17,7 +17,7 @@ public class Assets {
     public static final String PATH = "data/";
     public static final String IMAGE_PATH = "images/";
     public static final String IMAGE_ENTITIES_PATH = "images/entities/";
-    public static final String MAP_PATH = "";
+    public static final String MAP_PATH = "map/";
     public static final String SKIN_PATH = "gdx-skins-master/default/skin/";
 
     private final AssetManager manager = new AssetManager();
@@ -64,7 +64,7 @@ public class Assets {
     public void loadMap(String alias, String path) {
         aliasMap = alias;
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-        load(alias, Assets.PATH + path, TiledMap.class);
+        load(alias, Assets.MAP_PATH + path, TiledMap.class);
     }
 
     private void load(String alias, String path, Class entityDescriptor) {

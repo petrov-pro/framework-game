@@ -49,6 +49,7 @@ public class GroundListener extends LocalListener<GroundedInterface> {
     private void handlerContact(Fixture ground, Fixture creature) {
         if (ground.getUserData().equals(Surface.DEAD_TYPE)) {
             gameResources.getMessageManger().dispatchMessage(
+                    0.1f,
                     this,
                     (Telegraph) creature.getBody().getUserData(),
                     StateInterface.State.DIED.telegramNumber,

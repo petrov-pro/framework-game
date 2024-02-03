@@ -111,45 +111,6 @@ dirty_man_sword
   index: -1
 
 general9.png
-size: 1024,1024
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-BackgroundGradient
-  rotate: false
-  xy: 2, 2
-  size: 887, 1020
-  orig: 887, 1020
-  offset: 0, 0
-  index: -1
-
-general10.png
-size: 256,64
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-flame
-  rotate: false
-  xy: 2, 2
-  size: 160, 32
-  orig: 160, 32
-  offset: 0, 0
-  index: -1
-
-general11.png
-size: 512,512
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-Tiles_32x32
-  rotate: false
-  xy: 2, 2
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: -1
-
-general12.png
 size: 512,256
 format: RGBA8888
 filter: Nearest,Nearest
@@ -162,7 +123,7 @@ dust
   offset: 0, 0
   index: -1
 
-general13.png
+general10.png
 size: 64,256
 format: RGBA8888
 filter: Nearest,Nearest

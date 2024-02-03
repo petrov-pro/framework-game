@@ -108,7 +108,6 @@ abstract public class Creature implements EntityInterface, StateInterface, Creat
         vector = WorldInterface.Vector.STAY;
         currentLive = 0;
 
-        body.setActive(true);
         ((PolygonShape) body.getFixtureList().get(0).getShape()).setAsBox(bodyWidth / 2, bodyHeight / 5);
         body.resetMassData();
         Vector2 newPosition = body.getTransform().getPosition();
