@@ -9,8 +9,8 @@ import ua.org.petroff.game.engine.entities.characters.base.creature.CreatureInte
 
 public class GroundedFilter implements ContactFilter {
 
-    private final Vector2 platfromPosition = new Vector2();
-    private final Vector2 platfromPosition1 = new Vector2();
+    private final Vector2 platformPosition = new Vector2();
+    private final Vector2 platformPosition1 = new Vector2();
     private final Vector2 entityPosition = new Vector2();
 
     @Override
@@ -36,22 +36,20 @@ public class GroundedFilter implements ContactFilter {
                 && fixtureEntity.getBody().getUserData() instanceof CreatureInterface) {
 
             ChainShape chain = (ChainShape) fixtureSurface.getShape();
-            chain.getVertex(0, platfromPosition);
-            chain.getVertex(1, platfromPosition1);
+            chain.getVertex(0, platformPosition);
+            chain.getVertex(1, platformPosition1);
+
             if (!(fixtureEntity.getShape() instanceof PolygonShape)) {
-                throw new Error("Unsuported shape");
+                throw new UnsupportedOperationException("Unsupported shape for entity");
             }
+
             PolygonShape entityShape = (PolygonShape) fixtureEntity.getShape();
             entityShape.getVertex(0, entityPosition);
-            Vector2 entityBottomPosition = fixtureEntity.getBody().getWorldPoint(entityPosition);
             Vector2 entityCenter = fixtureEntity.getBody().getWorldCenter();
+            Vector2 entityBottomPosition = fixtureEntity.getBody().getWorldPoint(entityPosition);
 
-            if (entityBottomPosition.y > platfromPosition.y && (platfromPosition.x <= entityCenter.x
-                    && entityCenter.x <= platfromPosition1.x)) {
-                return true;
-            } else {
-                return false;
-            }
+            return entityBottomPosition.y > platformPosition.y && (platformPosition.x <= entityCenter.x
+                    && entityCenter.x <= platformPosition1.x);
         }
         return true;
     }

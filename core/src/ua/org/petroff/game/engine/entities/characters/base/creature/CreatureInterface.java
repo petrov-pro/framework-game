@@ -7,6 +7,8 @@ import ua.org.petroff.game.engine.entities.Interfaces.GroundedInterface;
 public interface CreatureInterface extends Telegraph, GroundedInterface {
 
     public void decreaseLive(int amount, Vector2 placeHit);
+    
+    public void decreaseLive(int amount, Vector2 placeHit, Vector2 directionHit);
 
     public void died();
 

@@ -7,6 +7,11 @@ import ua.org.petroff.game.engine.util.Assets;
 
 public class Graphic {
 
+    /*
+    900x1000 = bow
+    900-1100x1000 = sword
+    
+    */
     public final HashMap<String, BaseGraphic> graphics = new HashMap();
     public Sprite sprite;
 

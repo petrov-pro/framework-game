@@ -49,11 +49,11 @@ public enum EnemyState implements State<Enemy>, StateTelegramInterface {
                 return;
             }
 
-//            if (model.canFire()) {
-//                model.changeState(FIRE);
-//
-//                return;
-//            }
+            if (model.withinReachFire()) {
+                model.changeState(FIRE);
+
+                return;
+            }
             model.move();
 
         }
@@ -122,7 +122,11 @@ public enum EnemyState implements State<Enemy>, StateTelegramInterface {
         @Override
         public void enter(Enemy model) {
             if (model.getCurrentLive() > 0) {
-                model.decreaseLive(((GunInterface) telegram.extraInfo).getDamage(), ((GunInterface) telegram.extraInfo).getPlaceHit());
+                model.decreaseLive(
+                        ((GunInterface) telegram.extraInfo).getDamage(),
+                        ((GunInterface) telegram.extraInfo).getPlaceHit(),
+                        ((GunInterface) telegram.extraInfo).getDirectionHit()
+                );
             } else {
                 model.changeState(DIED);
             }
@@ -130,13 +134,13 @@ public enum EnemyState implements State<Enemy>, StateTelegramInterface {
 
         @Override
         public void update(Enemy model) {
-            if (model.getCurrentLive() <= 0 && Timer.run("dead", 0.5f)) {
+            if (model.getCurrentLive() <= 0 && Timer.run(model.toString() + "dead", 0.5f)) {
                 model.changeState(DIED);
 
                 return;
             }
 
-            if (Timer.run("move_after_hit", 0.5f)) {
+            if (Timer.run(model.toString() + "after_hit", 0.5f)) {
                 model.changeState(MOVE);
             }
 

@@ -41,6 +41,7 @@ public class Animation extends BaseGraphic {
         if (!isLoop) {
             isFinish = animation.isAnimationFinished(stateTime);
         }
+        
         return (TextureRegion) animation.getKeyFrame(stateTime, isLoop);
     }
 

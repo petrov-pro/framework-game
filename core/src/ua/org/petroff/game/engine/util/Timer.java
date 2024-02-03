@@ -8,11 +8,11 @@ public class Timer {
 
     private static final Map<String, Float> elapsedTime = new HashMap<>();
 
-    public static boolean run(String nameTimer, float $targetSec) {
+    public static boolean run(String nameTimer, float targetSec) {
         float currentTime = elapsedTime.getOrDefault(nameTimer, 0f);
         currentTime += Gdx.graphics.getDeltaTime();
         elapsedTime.put(nameTimer, currentTime);
-        if (currentTime >= $targetSec) {
+        if (currentTime >= targetSec) {
             reset(nameTimer);
 
             return true;

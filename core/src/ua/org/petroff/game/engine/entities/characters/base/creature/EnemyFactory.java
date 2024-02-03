@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
 import ua.org.petroff.game.engine.entities.characters.enemies.simple.DirtyMan;
+import ua.org.petroff.game.engine.entities.characters.enemies.simple.DirtyManSword;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
@@ -26,6 +27,10 @@ public class EnemyFactory {
 
                 case DirtyMan.DESCRIPTOR:
                     entities.add(new DirtyMan(x, y, asset, gameResources, graphicResources));
+                    break;
+
+                case DirtyManSword.DESCRIPTOR:
+                    entities.add(new DirtyManSword(x, y, asset, gameResources, graphicResources));
                     break;
 
             }

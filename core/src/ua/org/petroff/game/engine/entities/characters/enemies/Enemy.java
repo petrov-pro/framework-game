@@ -7,11 +7,9 @@ import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.math.Vector2;
 import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
 import ua.org.petroff.game.engine.entities.characters.base.creature.Creature;
-import ua.org.petroff.game.engine.entities.guns.arrow.Telegram;
 import ua.org.petroff.game.engine.entities.ia.Box2dLocation;
 import ua.org.petroff.game.engine.entities.ia.SteeringAgent;
 import ua.org.petroff.game.engine.entities.player.Player;
-import static ua.org.petroff.game.engine.entities.player.Player.FIRE_FORCE;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
@@ -26,6 +24,7 @@ public class Enemy extends Creature {
     protected float stuckThresholdTime = 1f;
     protected float epsilonThreshold = 0.0001f;
     protected float stuckTime = 0f;
+    protected float hitRange = 5;
 
     protected SteeringAgent creatureAI;
     protected StateMachine<Enemy, EnemyState> stateMachine;
@@ -37,7 +36,6 @@ public class Enemy extends Creature {
         super(x, y, descriptor, asset, gameResources, graphicResources);
         initAI(gameResources);
         gapRay = new GapRay(gameResources);
-
     }
 
     public void move() {
@@ -62,9 +60,9 @@ public class Enemy extends Creature {
         vector = WorldInterface.Vector.STAY;
     }
 
-    public boolean canFire() {
+    public boolean withinReachFire() {
         float range = target.getPosition().x - body.getPosition().x;
-        return (range >= -5 && range <= 5);
+        return (range >= -hitRange && range <= hitRange);
     }
 
     public boolean isStuck() {
@@ -95,21 +93,13 @@ public class Enemy extends Creature {
     }
 
     public boolean fire() {
-        float x = body.getPosition().x;
-        float y = body.getPosition().y;
-        float forceX;
         if (creatureAI.getSteeringOutput().linear.x > 0) {
             vector = WorldInterface.Vector.RIGHT;
-            x += 0.5f;
-            forceX = +FIRE_FORCE;
         } else {
             vector = WorldInterface.Vector.LEFT;
-            x -= 0.5f;
-            forceX = -FIRE_FORCE;
         }
 
         if (view.isFinishAction(State.FIRE)) {
-            gameResources.getMessageManger().dispatchMessage(StateInterface.State.FIRE.telegramNumber, new Telegram(x, y, forceX));
             view.resetState(StateInterface.State.FIRE);
 
             return true;
@@ -121,7 +111,7 @@ public class Enemy extends Creature {
     public void jump() {
         if (onGround && body.getLinearVelocity().y < maxJumpVelocity) {
             float xMinimal = 5f * (creatureAI.getSteeringOutput().linear.x > 0 ? 1 : -1);
-            float x = (Math.abs(body.getLinearVelocity().x) <= 0.1f) ? xMinimal : 0f;
+            float x = (Math.abs(body.getLinearVelocity().x) <= 0.2f) ? xMinimal : 0f;
 
             vector = (creatureAI.getSteeringOutput().linear.x > 0) ? WorldInterface.Vector.RIGHT : WorldInterface.Vector.LEFT;
 

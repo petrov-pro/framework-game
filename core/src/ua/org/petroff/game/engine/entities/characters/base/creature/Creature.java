@@ -34,7 +34,6 @@ abstract public class Creature implements EntityInterface, StateInterface, Creat
 
     protected float bodyWidth = 1f;
     protected float bodyHeight = 1.45f;
-    protected Vector2 centerFoot;
     protected Vector2 placeHit;
 
     protected Box2dLocation target;
@@ -61,9 +60,21 @@ abstract public class Creature implements EntityInterface, StateInterface, Creat
     }
 
     @Override
-    public void decreaseLive(int amount, Vector2 position) {
+    public void decreaseLive(int amount, Vector2 placeHit, Vector2 directionHit) {
+        float force = amount * 10;
+        body.applyForceToCenter(
+                new Vector2(
+                        (directionHit.x > 0) ? -force : force,
+                        0f),
+                true
+        );
+        decreaseLive(amount, placeHit);
+    }
+
+    @Override
+    public void decreaseLive(int amount, Vector2 placeHit) {
         currentLive = currentLive - amount;
-        placeHit = position;
+        this.placeHit = placeHit == null ? body.getPosition() : placeHit;
     }
 
     public Vector2 getPlaceHit() {
@@ -96,6 +107,12 @@ abstract public class Creature implements EntityInterface, StateInterface, Creat
     public void died() {
         vector = WorldInterface.Vector.STAY;
         currentLive = 0;
+
+        body.setActive(true);
+        ((PolygonShape) body.getFixtureList().get(0).getShape()).setAsBox(bodyWidth / 2, bodyHeight / 5);
+        body.resetMassData();
+        Vector2 newPosition = body.getTransform().getPosition();
+        body.setTransform(newPosition, 0);
     }
 
     public Body getBody() {
@@ -124,8 +141,8 @@ abstract public class Creature implements EntityInterface, StateInterface, Creat
 
         Fixture bodyPlayer = body.createFixture(poly, 1);
 
-        centerFoot = bodyPlayer.getBody().getWorldCenter();
-        poly.setAsBox((bodyWidth / 2f) - 0.2f, 0.15f, centerFoot.cpy().sub(0, bodyHeight / 1.8f), 0);
+        Vector2 centerFoot = bodyPlayer.getBody().getLocalCenter();
+        poly.setAsBox((bodyWidth / 2f) - 0.08f, 0.1f, centerFoot.cpy().sub(0, bodyHeight / 1.8f), 0);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = poly;
         fixtureDef.isSensor = true;

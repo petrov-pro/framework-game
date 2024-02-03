@@ -33,7 +33,6 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
     private static final float JUMPVELOCITY = 10f;
     private static final float MOVEVELOCITY = 0.8f;
     private final Vector3 cameraNewPosition = new Vector3();
-    private Vector2 centerFootSize;
 
     private PlayerSize playerSize = PlayerSize.NORMAL;
     private StateInterface.State action = StateInterface.State.MOVE;
@@ -61,7 +60,11 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
         switch (StateInterface.State.getStateBy(msg.message)) {
 
             case HIT:
-                decreaseLive(((GunInterface) msg.extraInfo).getDamage(), ((GunInterface) msg.extraInfo).getPlaceHit());
+                decreaseLive(
+                        ((GunInterface) msg.extraInfo).getDamage(),
+                        ((GunInterface) msg.extraInfo).getPlaceHit(),
+                        ((GunInterface) msg.extraInfo).getDirectionHit()
+                );
                 action = State.HIT;
                 vector = WorldInterface.Vector.STAY;
                 break;
@@ -95,8 +98,8 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
     }
 
     @Override
-    public void decreaseLive(int amount, Vector2 placeHit) {
-        super.decreaseLive(amount, placeHit);
+    public void decreaseLive(int amount, Vector2 placeHit, Vector2 directionHit) {
+        super.decreaseLive(amount, placeHit, directionHit);
         sendPlayerStatus();
     }
 
@@ -253,7 +256,7 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
         float bodyWidthGrow = (bodyWidth / 2) + 0.15f;
         ((PolygonShape) body.getFixtureList().get(0).getShape()).setAsBox(bodyWidthGrow, bodyHeightGrow);
 
-        ((PolygonShape) body.getFixtureList().get(1).getShape()).setAsBox(bodyWidthGrow - 0.05f, 0.05f, centerFootSize.cpy()
+        ((PolygonShape) body.getFixtureList().get(1).getShape()).setAsBox(bodyWidthGrow - 0.05f, 0.05f, body.getLocalCenter().cpy()
                 .sub(0, bodyHeightGrow), 0);
         body.resetMassData();
         Vector2 newPosition = body.getTransform().getPosition();
@@ -265,7 +268,7 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
         playerSize = PlayerSize.NORMAL;
 
         ((PolygonShape) body.getFixtureList().get(0).getShape()).setAsBox(bodyWidth / 2, bodyHeight / 2);
-        ((PolygonShape) body.getFixtureList().get(1).getShape()).setAsBox((bodyWidth / 2f) - 0.05f, 0.05f, centerFootSize.cpy().sub(0, bodyHeight / 2), 0);
+        ((PolygonShape) body.getFixtureList().get(1).getShape()).setAsBox((bodyWidth / 2f) - 0.05f, 0.05f, body.getLocalCenter().cpy().sub(0, bodyHeight / 2), 0);
         body.resetMassData();
         Vector2 newPosition = body.getTransform().getPosition();
         body.setTransform(newPosition.add(0, 0.4f), 0);
@@ -274,7 +277,6 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
     @Override
     protected void createBody(GameResources gameResources) {
         super.createBody(gameResources);
-        centerFootSize = centerFoot.cpy();
     }
 
     private void sendPlayerStatus() {

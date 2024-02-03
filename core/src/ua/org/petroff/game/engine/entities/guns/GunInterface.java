@@ -7,6 +7,9 @@ public interface GunInterface {
     public int getDamage();
 
     public Vector2 getPlaceHit();
-    
-    
+
+    public GunInterface setDirectionHit(Vector2 vectorHit);
+
+    public Vector2 getDirectionHit();
+
 }

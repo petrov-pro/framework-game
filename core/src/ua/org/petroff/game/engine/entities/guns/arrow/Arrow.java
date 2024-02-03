@@ -25,6 +25,7 @@ public class Arrow implements GunInterface, GroundedInterface, com.badlogic.gdx.
     private WorldInterface.Vector vector;
     private final int damage = 10;
     private boolean grounded = false;
+    private Vector2 vectorHit;
 
     public Arrow(GameResources gameResources, float x, float y, float angular, float forceX, float forceY) {
         this.gameResources = gameResources;
@@ -44,6 +45,18 @@ public class Arrow implements GunInterface, GroundedInterface, com.badlogic.gdx.
     @Override
     public Vector2 getPlaceHit() {
         return bodyArrow.getPosition();
+    }
+
+    @Override
+    public GunInterface setDirectionHit(Vector2 vectorHit) {
+        this.vectorHit = vectorHit;
+
+        return this;
+    }
+
+    @Override
+    public Vector2 getDirectionHit() {
+        return vectorHit;
     }
 
     public WorldInterface.Vector getVector() {
