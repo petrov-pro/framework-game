@@ -34,6 +34,7 @@ public class DirtyManSword extends Enemy {
 
         if (swordHit != null && Timer.run(this.toString(), 0.1f)) {
             body.destroyFixture(swordHit);
+            Timer.reset(this.toString());
             swordHit = null;
 
         }
@@ -51,7 +52,6 @@ public class DirtyManSword extends Enemy {
             fixtureDef.shape = poly;
             fixtureDef.isSensor = true;
 
-
             swordHit = body.createFixture(fixtureDef);
             swordHit.setUserData(sword);
             poly.dispose();
@@ -59,4 +59,13 @@ public class DirtyManSword extends Enemy {
 
         return canFire;
     }
+
+    @Override
+    public boolean withinReachFire() {
+        if (!Timer.runReset(this.toString() + "fire", 1)) {
+            return false;
+        }
+        return super.withinReachFire();
+    }
+
 }

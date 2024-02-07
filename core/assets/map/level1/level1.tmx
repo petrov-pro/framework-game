@@ -23,7 +23,7 @@
    </animation>
   </tile>
  </tileset>
- <imagelayer id="20" name="sky" repeatx="1">
+ <imagelayer id="20" name="sky" visible="0" repeatx="1">
   <image source="BackgroundGradient.png" width="887" height="1020"/>
  </imagelayer>
  <layer id="19" name="cloud" width="60" height="60">
@@ -155,7 +155,7 @@
 </data>
  </layer>
  <objectgroup id="4" name="objects">
-  <object id="3" name="player" x="414" y="250" width="32.3333" height="31.6667"/>
+  <object id="3" name="player" x="427.333" y="248.667" width="32.3333" height="31.6667"/>
   <object id="14" name="start camera position" x="831" y="163" width="33" height="29"/>
   <object id="32" name="surface" x="1" y="322">
    <polyline points="0,0 507,1 575,-33 608,-65 733.955,-64.7841"/>
@@ -204,7 +204,7 @@
     <property name="type" value="dirty_man_sword"/>
    </properties>
   </object>
-  <object id="79" name="enemy" gid="52" x="892.502" y="246.832" width="32.33" height="31.67">
+  <object id="79" name="enemy" gid="52" x="967.169" y="413.499" width="32.33" height="35.67">
    <properties>
     <property name="type" value="dirty_man"/>
    </properties>

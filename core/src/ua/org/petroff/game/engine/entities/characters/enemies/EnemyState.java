@@ -134,13 +134,13 @@ public enum EnemyState implements State<Enemy>, StateTelegramInterface {
 
         @Override
         public void update(Enemy model) {
-            if (model.getCurrentLive() <= 0 && Timer.run(model.toString() + "dead", 0.5f)) {
+            if (model.getCurrentLive() <= 0 && Timer.runReset(model.toString() + "dead", 0.5f)) {
                 model.changeState(DIED);
 
                 return;
             }
 
-            if (Timer.run(model.toString() + "after_hit", 0.5f)) {
+            if (Timer.runReset(model.toString() + "after_hit", 0.5f)) {
                 model.changeState(MOVE);
             }
 

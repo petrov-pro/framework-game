@@ -13,11 +13,20 @@ public class Timer {
         currentTime += Gdx.graphics.getDeltaTime();
         elapsedTime.put(nameTimer, currentTime);
         if (currentTime >= targetSec) {
-            reset(nameTimer);
 
             return true;
         }
         return false;
+    }
+    
+    public static boolean runReset(String nameTimer, float targetSec) {
+        boolean result = run(nameTimer, targetSec);
+        
+        if(result){
+            reset(nameTimer);
+        }
+        
+        return result;
     }
 
     public static float getElapsedTime(String nameTimer) {

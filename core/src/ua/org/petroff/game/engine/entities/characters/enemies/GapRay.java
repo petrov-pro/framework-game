@@ -22,7 +22,6 @@ public class GapRay implements RayCastCallback {
     @Override
     public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
         if (fraction > stopLenght) {
-            DebugWorld.positionCircle = point.cpy();
             isGap = true;
         } else {
             isGap = false;
