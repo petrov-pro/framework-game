@@ -46,6 +46,33 @@ arrow
   index: -1
 
 general4.png
+size: 1024,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+cloud
+  rotate: false
+  xy: 2, 2
+  size: 256, 114
+  orig: 256, 114
+  offset: 0, 0
+  index: 2
+cloud
+  rotate: false
+  xy: 260, 17
+  size: 256, 99
+  orig: 256, 99
+  offset: 0, 0
+  index: 3
+cloud
+  rotate: false
+  xy: 518, 21
+  size: 256, 95
+  orig: 256, 95
+  offset: 0, 0
+  index: 1
+
+general5.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -58,7 +85,7 @@ player
   offset: 0, 0
   index: -1
 
-general5.png
+general6.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -71,7 +98,7 @@ dirty_man_sword_two
   offset: 0, 0
   index: -1
 
-general6.png
+general7.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -84,7 +111,7 @@ dirty_man_two
   offset: 0, 0
   index: -1
 
-general7.png
+general8.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -97,7 +124,7 @@ dirty_man
   offset: 0, 0
   index: -1
 
-general8.png
+general9.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -110,7 +137,7 @@ dirty_man_sword
   offset: 0, 0
   index: -1
 
-general9.png
+general10.png
 size: 512,256
 format: RGBA8888
 filter: Nearest,Nearest
@@ -123,7 +150,7 @@ dust
   offset: 0, 0
   index: -1
 
-general10.png
+general11.png
 size: 64,256
 format: RGBA8888
 filter: Nearest,Nearest

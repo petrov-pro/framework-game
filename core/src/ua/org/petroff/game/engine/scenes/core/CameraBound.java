@@ -8,6 +8,7 @@ public class CameraBound extends OrthographicCamera {
 
     private BoundingBox left, right, top, bottom = null;
     private final Vector3 lastPosition = new Vector3();
+    
 
     public void setWorldBounds(int width, int height) {
 

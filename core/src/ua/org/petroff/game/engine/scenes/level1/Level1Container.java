@@ -9,6 +9,7 @@ import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.entities.characters.base.creature.EnemyFactory;
+import ua.org.petroff.game.engine.entities.cloud.CloudFactory;
 import ua.org.petroff.game.engine.entities.guns.arrow.ArrowFactory;
 import ua.org.petroff.game.engine.entities.hud.HUD;
 import ua.org.petroff.game.engine.entities.player.Player;
@@ -65,6 +66,11 @@ public class Level1Container implements ContainerInterface {
     public void loadShareResources() {
         asset.loadMap("map-level1", "level1/level1.tmx");
         asset.loadAtlas();
+        asset.loadBackground(0, "level1/background/layer07_Sky.png");
+        asset.loadBackground(1, "level1/background/layer04_Clouds.png");
+        asset.loadBackground(2, "level1/background/layer06_Rocks.png");
+        asset.loadBackground(3, "level1/background/layer05_Hills.png");
+
     }
 
     private void loadEntities() {
@@ -74,6 +80,7 @@ public class Level1Container implements ContainerInterface {
         entities.add(new HUD(asset, gameResources, graphicResources));
         entities.add(Player.getInstance(asset, gameResources, graphicResources));
         entities.add(new ArrowFactory(asset, gameResources, graphicResources));
+        entities.add(new CloudFactory(asset, gameResources, graphicResources));
         EnemyFactory.addEnemy(entities, asset, gameResources, graphicResources);
     }
 

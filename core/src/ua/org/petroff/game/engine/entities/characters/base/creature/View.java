@@ -43,6 +43,6 @@ public class View extends ua.org.petroff.game.engine.entities.characters.base.Vi
 
     @Override
     public void prepareDraw(Map<Integer, QueueDrawInterface> queueDraw) {
-        ((QueueDraw) queueDraw).putLast(this);
+        ((QueueDraw) queueDraw).putSafe(ua.org.petroff.game.engine.entities.player.View.zIndex + 1, this);
     }
 }

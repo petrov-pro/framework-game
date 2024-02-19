@@ -17,6 +17,7 @@ public class View extends ua.org.petroff.game.engine.entities.characters.base.Vi
     private final ArrowFactory model;
     private Sprite arrowRightSprite;
     private Sprite arrowLeftSprite;
+    private Sprite sprite;
 
     public View(Assets asset, GraphicResources graphicResources, ArrowFactory model) {
         super(asset, graphicResources);
@@ -42,7 +43,6 @@ public class View extends ua.org.petroff.game.engine.entities.characters.base.Vi
             @Override
             public void draw() {
                 if (!model.getArrows().isEmpty()) {
-                    Sprite sprite;
                     for (Arrow arrow : model.getArrows()) {
                         if (arrow.getVector() == WorldInterface.Vector.RIGHT) {
                             sprite = arrowRightSprite;

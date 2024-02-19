@@ -245,7 +245,7 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
         cameraNewPosition.y = view.graphicResources.getCamera().position.y;
 
         cameraNewPosition.x += (getPosition().x - view.graphicResources.getCamera().position.x) * 0.9f * Gdx.graphics.getDeltaTime();
-        cameraNewPosition.y += (getPosition().y - view.graphicResources.getCamera().position.y) * 0.9f * Gdx.graphics.getDeltaTime();
+        cameraNewPosition.y += (getPosition().y - view.graphicResources.getCamera().position.y + 3) * 0.9f * Gdx.graphics.getDeltaTime();
     }
 
     private void playerGrow() {

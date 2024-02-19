@@ -3,6 +3,7 @@ package ua.org.petroff.game.engine.entities.map;
 import box2dLight.DirectionalLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterface;
@@ -25,13 +26,14 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
     private final Assets assets;
     private OrthogonalTiledMapRenderer renderer;
-    private final int[] backgroundLayers = {0, 2};
+    private final int[] mapLayers = {0};
     private final int[] foregroundLayers = {1};
     private Viewport viewport;
     private final GameWorld map;
     private final GraphicResources graphicResources;
     private DirectionalLight sun;
     private float sunDirection = 250f;
+    private BackGround background;
 
     public View(Assets assets, GraphicResources graphicResources, GameWorld map) {
         this.assets = assets;
@@ -50,6 +52,8 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         share(graphicResources);
         initLight();
         initSun();
+
+        background = new BackGround(camera, assets, 4, 10f);
     }
 
     private void initLight() {
@@ -75,16 +79,15 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             @Override
             public void draw() {
 
-                viewport.apply();
-                graphicResources.getRayHandler().setCombinedMatrix(graphicResources.getCamera());
-                renderer.setView((OrthographicCamera) graphicResources.getCamera());
                 graphicResources.getCamera().update();
                 renderer.getBatch().setProjectionMatrix(graphicResources.getCamera().combined);
-                renderer.render(backgroundLayers);
-                renderer.render(foregroundLayers);
-                graphicResources.getRayHandler().updateAndRender();
-                renderer.getBatch().begin();
+                renderer.setView((OrthographicCamera) graphicResources.getCamera());
 
+                background.drawBackground((SpriteBatch) renderer.getBatch());
+                renderer.render(mapLayers);
+
+                graphicResources.getRayHandler().setCombinedMatrix(graphicResources.getCamera());
+                graphicResources.getRayHandler().updateAndRender();
                 if (sunDirection < 200f) {
                     directionForward = true;
                 } else if (sunDirection > 340f) {
@@ -97,6 +100,8 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
                     sunDirection -= Gdx.graphics.getDeltaTime() * 1f;
                 }
                 sun.setDirection(sunDirection);
+
+                renderer.getBatch().begin();
             }
 
         });
@@ -104,6 +109,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             @Override
             public void draw() {
                 renderer.getBatch().end();
+                renderer.render(foregroundLayers);
                 if (Settings.IS_DEBUG) {
                     DebugWorld.run(map.gameResources.getWorld(), graphicResources.getViewport().getCamera().combined);
                 }

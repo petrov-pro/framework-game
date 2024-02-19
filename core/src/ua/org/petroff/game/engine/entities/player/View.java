@@ -18,7 +18,7 @@ public class View extends ua.org.petroff.game.engine.entities.characters.base.Vi
     private final Player model;
     private final Blood blood;
     private Player.PlayerSize currentPlayerSize;
-    private final int zIndex = 2;
+    public static final int zIndex = 50;
 
     private boolean canDrawGroundEffect = true;
 

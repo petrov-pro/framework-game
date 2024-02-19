@@ -19,6 +19,7 @@ public class Assets {
     public static final String IMAGE_ENTITIES_PATH = "images/entities/";
     public static final String MAP_PATH = "map/";
     public static final String SKIN_PATH = "gdx-skins-master/default/skin/";
+    public static final String BACKGROUND_ALIAS = "background";
 
     private final AssetManager manager = new AssetManager();
 
@@ -26,6 +27,14 @@ public class Assets {
 
     private String aliasMap;
     private String atlasPath = "atlas/general.atlas";
+
+    public void loadBackground(int number, String path) {
+        load(BACKGROUND_ALIAS + number, Assets.MAP_PATH + path, Texture.class);
+    }
+
+    public Texture getBackground(int number) {
+        return (Texture) get(BACKGROUND_ALIAS + number);
+    }
 
     public void loadTexture(String alias, String path) {
         load(alias, Assets.PATH + path, Texture.class);
