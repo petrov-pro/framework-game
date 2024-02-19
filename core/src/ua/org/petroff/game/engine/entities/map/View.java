@@ -11,6 +11,7 @@ import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 import ua.org.petroff.game.engine.util.Assets;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import ua.org.petroff.game.engine.Settings;
@@ -48,12 +49,14 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         camera.position.set(map.getCameraPosition(), 0);
         camera.setWorldBounds(map.gameResources.getWorldWidth(), map.gameResources.getWorldHeight());
         viewport = new FillViewport(Settings.WIDTH, Settings.HEIGHT, camera);
-        renderer.setView(camera);
         share(graphicResources);
         initLight();
         initSun();
 
         background = new BackGround(camera, assets, 4, 10f);
+
+        renderer.setView(camera);
+        renderer.getBatch().setProjectionMatrix(camera.combined);
     }
 
     private void initLight() {
@@ -62,7 +65,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
         rayHandler.setBlurNum(3);
         rayHandler.setShadows(Settings.IS_SHADOW);
         rayHandler.setCulling(true);
-        this.graphicResources.setRayHandler(rayHandler);
+        graphicResources.setRayHandler(rayHandler);
     }
 
     private void initSun() {
@@ -80,7 +83,6 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             public void draw() {
 
                 graphicResources.getCamera().update();
-                renderer.getBatch().setProjectionMatrix(graphicResources.getCamera().combined);
                 renderer.setView((OrthographicCamera) graphicResources.getCamera());
 
                 background.drawBackground((SpriteBatch) renderer.getBatch());
@@ -89,16 +91,11 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
                 graphicResources.getRayHandler().setCombinedMatrix(graphicResources.getCamera());
                 graphicResources.getRayHandler().updateAndRender();
                 if (sunDirection < 200f) {
-                    directionForward = true;
+                    sunDirection += Gdx.graphics.getDeltaTime();
                 } else if (sunDirection > 340f) {
-                    directionForward = false;
+                    sunDirection -= Gdx.graphics.getDeltaTime();
                 }
-
-                if (directionForward) {
-                    sunDirection += Gdx.graphics.getDeltaTime() * 1f;
-                } else if (!directionForward) {
-                    sunDirection -= Gdx.graphics.getDeltaTime() * 1f;
-                }
+                sunDirection = MathUtils.clamp(sunDirection, 200f, 340f);
                 sun.setDirection(sunDirection);
 
                 renderer.getBatch().begin();
