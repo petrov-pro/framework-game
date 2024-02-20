@@ -10,7 +10,7 @@ import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.entities.characters.base.creature.EnemyFactory;
 import ua.org.petroff.game.engine.entities.cloud.CloudFactory;
-import ua.org.petroff.game.engine.entities.guns.arrow.ArrowFactory;
+import ua.org.petroff.game.engine.entities.weapons.arrow.ArrowFactory;
 import ua.org.petroff.game.engine.entities.hud.HUD;
 import ua.org.petroff.game.engine.entities.player.Player;
 import ua.org.petroff.game.engine.scenes.Interface.ContainerInterface;

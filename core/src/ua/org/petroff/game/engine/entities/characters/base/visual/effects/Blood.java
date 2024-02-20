@@ -7,7 +7,7 @@ import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 
-public class Blood {
+public class Blood implements ViewHitInterface{
 
     private final Assets asset;
     private ParticleEffect effectBlood;

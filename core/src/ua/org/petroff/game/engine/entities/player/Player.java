@@ -9,14 +9,14 @@ import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
 import ua.org.petroff.game.engine.entities.characters.base.creature.CreatureInterface;
-import ua.org.petroff.game.engine.entities.guns.arrow.Telegram;
+import ua.org.petroff.game.engine.entities.weapons.arrow.Telegram;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.characters.base.creature.Creature;
 import ua.org.petroff.game.engine.entities.characters.enemies.Enemy;
-import ua.org.petroff.game.engine.entities.guns.GunInterface;
+import ua.org.petroff.game.engine.entities.weapons.WeaponInterface;
 
 public class Player extends Creature implements EntityInterface, MoveEntityInterface, StateInterface, CreatureInterface {
 
@@ -60,10 +60,9 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
         switch (StateInterface.State.getStateBy(msg.message)) {
 
             case HIT:
-                decreaseLive(
-                        ((GunInterface) msg.extraInfo).getDamage(),
-                        ((GunInterface) msg.extraInfo).getPlaceHit(),
-                        ((GunInterface) msg.extraInfo).getDirectionHit()
+                decreaseLive(((WeaponInterface) msg.extraInfo).getDamage(),
+                        ((WeaponInterface) msg.extraInfo).getPlaceHit(),
+                        ((WeaponInterface) msg.extraInfo).getDirectionHit()
                 );
                 action = State.HIT;
                 vector = WorldInterface.Vector.STAY;

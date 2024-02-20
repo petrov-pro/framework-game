@@ -2,7 +2,6 @@ package ua.org.petroff.game.engine.entities.player;
 
 import box2dLight.PointLight;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -10,12 +9,15 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Filter;
+import java.util.HashMap;
 import ua.org.petroff.game.engine.Settings;
+import ua.org.petroff.game.engine.entities.Interfaces.SkinInterface;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
 import ua.org.petroff.game.engine.entities.characters.base.Static;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
+import ua.org.petroff.game.engine.entities.characters.base.BaseGraphic;
 
 public class Graphic extends ua.org.petroff.game.engine.entities.characters.base.Graphic {
 
@@ -129,27 +131,29 @@ public class Graphic extends ua.org.petroff.game.engine.entities.characters.base
         Animation fireAnimationLeft = new Animation(0.1f, (Object[]) playerRegionsFireLeft);
 
         defaultActionFrame = new Static(player, StateInterface.State.MOVE, WorldInterface.Vector.STAY);
-        graphics.put(View.getFrameName(StateInterface.State.MOVE, WorldInterface.Vector.STAY),
-                defaultActionFrame);
-        graphics.put(View.getFrameName(StateInterface.State.MOVE, WorldInterface.Vector.RIGHT),
-                new ua.org.petroff.game.engine.entities.player.graphics.Animation(walkAnimationRight, StateInterface.State.MOVE, WorldInterface.Vector.RIGHT, true));
-        graphics.put(View.getFrameName(StateInterface.State.MOVE, WorldInterface.Vector.LEFT),
-                new ua.org.petroff.game.engine.entities.player.graphics.Animation(walkAnimationLeft, StateInterface.State.MOVE, WorldInterface.Vector.LEFT, true));
-        graphics.put(View.getFrameName(StateInterface.State.JUMP, WorldInterface.Vector.LEFT),
-                new ua.org.petroff.game.engine.entities.player.graphics.Animation(jumpAnimationLeft, StateInterface.State.JUMP, WorldInterface.Vector.LEFT, false));
-        graphics.put(View.getFrameName(StateInterface.State.JUMP, WorldInterface.Vector.RIGHT),
-                new ua.org.petroff.game.engine.entities.player.graphics.Animation(jumpAnimationRight, StateInterface.State.JUMP, WorldInterface.Vector.RIGHT, false));
-        graphics.put(View.getFrameName(StateInterface.State.JUMP, WorldInterface.Vector.STAY),
-                new ua.org.petroff.game.engine.entities.player.graphics.Animation(jumpAnimationStay, StateInterface.State.JUMP, WorldInterface.Vector.STAY, false));
-        graphics.put(View.getFrameName(StateInterface.State.DIED, WorldInterface.Vector.STAY),
-                new ua.org.petroff.game.engine.entities.player.graphics.Animation(diedAnimationStay, StateInterface.State.DIED, false));
-        graphics.put(View.getFrameName(StateInterface.State.FIRE, WorldInterface.Vector.RIGHT),
-                new ua.org.petroff.game.engine.entities.player.graphics.Animation(fireAnimationRight, StateInterface.State.FIRE, WorldInterface.Vector.RIGHT, false, Player.FIRE_SPEED));
-        graphics.put(View.getFrameName(StateInterface.State.FIRE, WorldInterface.Vector.LEFT),
-                new ua.org.petroff.game.engine.entities.player.graphics.Animation(fireAnimationLeft, StateInterface.State.FIRE, WorldInterface.Vector.LEFT, false, Player.FIRE_SPEED));
-        graphics.put(View.getFrameName(StateInterface.State.HIT, WorldInterface.Vector.STAY),
-                new ua.org.petroff.game.engine.entities.player.graphics.Animation(hitAnimationStay, StateInterface.State.HIT, false));
 
+        HashMap<String, BaseGraphic> graphic = new HashMap();
+        graphic.put(View.getFrameName(StateInterface.State.MOVE, WorldInterface.Vector.STAY),
+                defaultActionFrame);
+        graphic.put(View.getFrameName(StateInterface.State.MOVE, WorldInterface.Vector.RIGHT),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(walkAnimationRight, StateInterface.State.MOVE, WorldInterface.Vector.RIGHT, true));
+        graphic.put(View.getFrameName(StateInterface.State.MOVE, WorldInterface.Vector.LEFT),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(walkAnimationLeft, StateInterface.State.MOVE, WorldInterface.Vector.LEFT, true));
+        graphic.put(View.getFrameName(StateInterface.State.JUMP, WorldInterface.Vector.LEFT),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(jumpAnimationLeft, StateInterface.State.JUMP, WorldInterface.Vector.LEFT, false));
+        graphic.put(View.getFrameName(StateInterface.State.JUMP, WorldInterface.Vector.RIGHT),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(jumpAnimationRight, StateInterface.State.JUMP, WorldInterface.Vector.RIGHT, false));
+        graphic.put(View.getFrameName(StateInterface.State.JUMP, WorldInterface.Vector.STAY),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(jumpAnimationStay, StateInterface.State.JUMP, WorldInterface.Vector.STAY, false));
+        graphic.put(View.getFrameName(StateInterface.State.DIED, WorldInterface.Vector.STAY),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(diedAnimationStay, StateInterface.State.DIED, false));
+        graphic.put(View.getFrameName(StateInterface.State.FIRE, WorldInterface.Vector.RIGHT),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(fireAnimationRight, StateInterface.State.FIRE, WorldInterface.Vector.RIGHT, false, Player.FIRE_SPEED));
+        graphic.put(View.getFrameName(StateInterface.State.FIRE, WorldInterface.Vector.LEFT),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(fireAnimationLeft, StateInterface.State.FIRE, WorldInterface.Vector.LEFT, false, Player.FIRE_SPEED));
+        graphic.put(View.getFrameName(StateInterface.State.HIT, WorldInterface.Vector.STAY),
+                new ua.org.petroff.game.engine.entities.player.graphics.Animation(hitAnimationStay, StateInterface.State.HIT, false));
+        graphics.put(SkinInterface.Type.DEFAULT, graphic);
     }
 
 }

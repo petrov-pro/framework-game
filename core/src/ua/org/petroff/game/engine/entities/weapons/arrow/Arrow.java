@@ -1,4 +1,4 @@
-package ua.org.petroff.game.engine.entities.guns.arrow;
+package ua.org.petroff.game.engine.entities.weapons.arrow;
 
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
@@ -10,10 +10,10 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import ua.org.petroff.game.engine.entities.Interfaces.GroundedInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
-import ua.org.petroff.game.engine.entities.guns.GunInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
+import ua.org.petroff.game.engine.entities.weapons.WeaponInterface;
 
-public class Arrow implements GunInterface, GroundedInterface, com.badlogic.gdx.ai.msg.Telegraph {
+public class Arrow implements WeaponInterface, GroundedInterface, com.badlogic.gdx.ai.msg.Telegraph {
 
     private final GameResources gameResources;
 
@@ -48,7 +48,7 @@ public class Arrow implements GunInterface, GroundedInterface, com.badlogic.gdx.
     }
 
     @Override
-    public GunInterface setDirectionHit(Vector2 vectorHit) {
+    public WeaponInterface setDirectionHit(Vector2 vectorHit) {
         this.vectorHit = vectorHit;
 
         return this;

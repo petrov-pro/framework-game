@@ -4,8 +4,9 @@ import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
 import ua.org.petroff.game.engine.entities.characters.enemies.EnemyBowGraphic;
 import ua.org.petroff.game.engine.entities.characters.base.creature.View;
+import ua.org.petroff.game.engine.entities.characters.base.visual.effects.Blood;
 import ua.org.petroff.game.engine.entities.characters.enemies.Enemy;
-import ua.org.petroff.game.engine.entities.guns.arrow.Telegram;
+import ua.org.petroff.game.engine.entities.weapons.arrow.Telegram;
 import static ua.org.petroff.game.engine.entities.player.Player.FIRE_FORCE;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
@@ -18,7 +19,13 @@ public class DirtyMan extends Enemy {
 
     public DirtyMan(int x, int y, Assets asset, GameResources gameResources, GraphicResources graphicResources) {
         super(x, y, asset, gameResources, graphicResources, DESCRIPTOR);
-        view = new View(asset, graphicResources, this, new EnemyBowGraphic(asset, graphicResources, DESCRIPTOR, FIRE_SPEED));
+        view = new View(
+                asset,
+                graphicResources,
+                this,
+                new EnemyBowGraphic(asset, graphicResources, DESCRIPTOR, FIRE_SPEED),
+                new Blood(asset, graphicResources)
+        );
     }
 
     @Override

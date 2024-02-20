@@ -1,4 +1,4 @@
-package ua.org.petroff.game.engine.entities.guns.arrow;
+package ua.org.petroff.game.engine.entities.weapons.arrow;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;

@@ -6,9 +6,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
 import ua.org.petroff.game.engine.entities.characters.base.creature.View;
+import ua.org.petroff.game.engine.entities.characters.base.visual.effects.Blood;
 import ua.org.petroff.game.engine.entities.characters.enemies.Enemy;
 import ua.org.petroff.game.engine.entities.characters.enemies.EnemySwordGraphic;
-import ua.org.petroff.game.engine.entities.guns.melee.Sword;
+import ua.org.petroff.game.engine.entities.weapons.melee.Sword;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
@@ -24,7 +25,13 @@ public class DirtyManSword extends Enemy {
 
     public DirtyManSword(int x, int y, Assets asset, GameResources gameResources, GraphicResources graphicResources) {
         super(x, y, asset, gameResources, graphicResources, DESCRIPTOR);
-        view = new View(asset, graphicResources, this, new EnemySwordGraphic(asset, graphicResources, DESCRIPTOR, FIRE_SPEED));
+        view = new View(
+                asset,
+                graphicResources,
+                this,
+                new EnemySwordGraphic(asset, graphicResources, DESCRIPTOR, FIRE_SPEED),
+                new Blood(asset, graphicResources)
+        );
         hitRange = 1.5f;
     }
 

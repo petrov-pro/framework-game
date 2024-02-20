@@ -1,4 +1,4 @@
-package ua.org.petroff.game.engine.entities.guns;
+package ua.org.petroff.game.engine.entities.weapons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegraph;
@@ -12,9 +12,9 @@ import ua.org.petroff.game.engine.entities.characters.base.creature.CreatureInte
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.entities.map.Surface;
 
-public class GunListener extends Listener {
+public class WeaponListener extends Listener {
 
-    public GunListener(GameResources gameResources) {
+    public WeaponListener(GameResources gameResources) {
         super(gameResources);
     }
 
@@ -34,13 +34,13 @@ public class GunListener extends Listener {
         }
     }
 
-    private boolean shouldContact(Fixture gun) {
-        return gun.getUserData() instanceof GunInterface
-                && gun.isSensor();
+    private boolean shouldContact(Fixture weapon) {
+        return weapon.getUserData() instanceof WeaponInterface
+                && weapon.isSensor();
 
     }
 
-    private void handleContact(Contact contact, Object gunData, Object entityData) {
+    private void handleContact(Contact contact, Object weaponData, Object entityData) {
         if (entityData instanceof CreatureInterface) {
             Vector2 positionA = contact.getFixtureA().getBody().getPosition();
             Vector2 positionB = contact.getFixtureB().getBody().getPosition();
@@ -48,16 +48,16 @@ public class GunListener extends Listener {
                     this,
                     (Telegraph) entityData,
                     StateInterface.State.HIT.telegramNumber,
-                    ((GunInterface) gunData).setDirectionHit(
+                    ((WeaponInterface) weaponData).setDirectionHit(
                             positionB.cpy().sub(positionA).nor()
                     ),
                     false
             );
         } else if (entityData instanceof Surface
-                && gunData instanceof GroundedInterface) {
+                && weaponData instanceof GroundedInterface) {
             gameResources.getMessageManger().dispatchMessage(
                     this,
-                    (Telegraph) gunData,
+                    (Telegraph) weaponData,
                     StateInterface.State.GROUND.telegramNumber,
                     true,
                     false

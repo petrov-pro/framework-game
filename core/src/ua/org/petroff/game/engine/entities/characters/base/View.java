@@ -1,14 +1,13 @@
 package ua.org.petroff.game.engine.entities.characters.base;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import ua.org.petroff.game.engine.entities.Interfaces.ViewNotifierInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 
-public class View implements ViewInterface, ViewNotifierInterface {
+public class View implements ViewInterface {
 
     public GraphicResources graphicResources;
     protected Assets asset;
@@ -21,15 +20,6 @@ public class View implements ViewInterface, ViewNotifierInterface {
     public View(Assets asset, GraphicResources graphicResources) {
         this.asset = asset;
         this.graphicResources = graphicResources;
-    }
-
-    @Override
-    public void resetState(StateInterface.State action) {
-        for (BaseGraphic graphic : graphic.graphics.values()) {
-            if (action == graphic.getActionType()) {
-                graphic.setStateTime(0f);
-            }
-        }
     }
 
     public boolean isFinishAction(StateInterface.State action) {

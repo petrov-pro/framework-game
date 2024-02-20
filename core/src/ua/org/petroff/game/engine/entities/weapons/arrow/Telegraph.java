@@ -1,4 +1,4 @@
-package ua.org.petroff.game.engine.entities.guns.arrow;
+package ua.org.petroff.game.engine.entities.weapons.arrow;
 
 import com.badlogic.gdx.ai.msg.Telegram;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
@@ -19,7 +19,7 @@ public class Telegraph implements com.badlogic.gdx.ai.msg.Telegraph {
     public boolean handleMessage(Telegram tlgrm) {
         switch (StateInterface.State.getStateBy(tlgrm.message)) {
             case FIRE:
-                ua.org.petroff.game.engine.entities.guns.arrow.Telegram telegram = (ua.org.petroff.game.engine.entities.guns.arrow.Telegram) tlgrm.extraInfo;
+                ua.org.petroff.game.engine.entities.weapons.arrow.Telegram telegram = (ua.org.petroff.game.engine.entities.weapons.arrow.Telegram) tlgrm.extraInfo;
                 arrow.shoot(telegram.getX(), telegram.getY(), telegram.getAngular(), telegram.getForceX(), telegram.getForceY());
                 break;
         }

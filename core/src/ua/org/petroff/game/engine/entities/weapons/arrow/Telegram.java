@@ -1,4 +1,4 @@
-package ua.org.petroff.game.engine.entities.guns.arrow;
+package ua.org.petroff.game.engine.entities.weapons.arrow;
 
 public class Telegram {
 

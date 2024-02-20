@@ -3,7 +3,6 @@ package ua.org.petroff.game.engine.entities.map;
 import box2dLight.DirectionalLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterface;
@@ -69,7 +68,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     }
 
     private void initSun() {
-        sun = new DirectionalLight(this.graphicResources.getRayHandler(), 4 * RAYS_PER, null, sunDirection);
+        sun = new DirectionalLight(graphicResources.getRayHandler(), 4 * RAYS_PER, null, sunDirection);
     }
 
     @Override

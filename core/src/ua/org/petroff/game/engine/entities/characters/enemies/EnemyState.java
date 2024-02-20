@@ -4,8 +4,8 @@ import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.characters.base.creature.StateTelegramInterface;
-import ua.org.petroff.game.engine.entities.guns.GunInterface;
 import ua.org.petroff.game.engine.util.Timer;
+import ua.org.petroff.game.engine.entities.weapons.WeaponInterface;
 
 public enum EnemyState implements State<Enemy>, StateTelegramInterface {
 
@@ -122,10 +122,9 @@ public enum EnemyState implements State<Enemy>, StateTelegramInterface {
         @Override
         public void enter(Enemy model) {
             if (model.getCurrentLive() > 0) {
-                model.decreaseLive(
-                        ((GunInterface) telegram.extraInfo).getDamage(),
-                        ((GunInterface) telegram.extraInfo).getPlaceHit(),
-                        ((GunInterface) telegram.extraInfo).getDirectionHit()
+                model.decreaseLive(((WeaponInterface) telegram.extraInfo).getDamage(),
+                        ((WeaponInterface) telegram.extraInfo).getPlaceHit(),
+                        ((WeaponInterface) telegram.extraInfo).getDirectionHit()
                 );
             } else {
                 model.changeState(DIED);

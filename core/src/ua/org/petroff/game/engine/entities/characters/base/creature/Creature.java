@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
+import ua.org.petroff.game.engine.entities.Interfaces.SkinInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
 import ua.org.petroff.game.engine.entities.ia.Box2dLocation;
@@ -18,7 +19,7 @@ import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.util.MapResolver;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 
-abstract public class Creature implements EntityInterface, StateInterface, CreatureInterface {
+abstract public class Creature implements EntityInterface, StateInterface, CreatureInterface, SkinInterface {
 
     protected Body body;
     protected int currentLive = 100;
@@ -26,11 +27,12 @@ abstract public class Creature implements EntityInterface, StateInterface, Creat
     protected Assets asset;
     protected GameResources gameResources;
     protected GraphicResources graphicResources;
-    protected ua.org.petroff.game.engine.entities.characters.base.View view;
+    protected View view;
 
     protected boolean onGround = true;
 
     protected WorldInterface.Vector vector = WorldInterface.Vector.STAY;
+    protected SkinInterface.Type currentSkin = SkinInterface.Type.DEFAULT;
 
     protected float bodyWidth = 1f;
     protected float bodyHeight = 1.45f;
@@ -79,6 +81,11 @@ abstract public class Creature implements EntityInterface, StateInterface, Creat
 
     public Vector2 getPlaceHit() {
         return placeHit;
+    }
+
+    @Override
+    public Type getSkinType() {
+        return currentSkin;
     }
 
     //+

@@ -1,9 +1,9 @@
-package ua.org.petroff.game.engine.entities.guns.melee;
+package ua.org.petroff.game.engine.entities.weapons.melee;
 
 import com.badlogic.gdx.math.Vector2;
-import ua.org.petroff.game.engine.entities.guns.GunInterface;
+import ua.org.petroff.game.engine.entities.weapons.WeaponInterface;
 
-public class Sword implements GunInterface {
+public class Sword implements WeaponInterface {
 
     private final int damage = 30;
     private Vector2 vectorHit;
@@ -19,7 +19,7 @@ public class Sword implements GunInterface {
     }
 
     @Override
-    public GunInterface setDirectionHit(Vector2 vectorHit) {
+    public WeaponInterface setDirectionHit(Vector2 vectorHit) {
         this.vectorHit = vectorHit;
 
         return this;

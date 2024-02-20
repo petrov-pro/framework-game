@@ -1,9 +1,9 @@
-package ua.org.petroff.game.engine.entities.guns.arrow;
+package ua.org.petroff.game.engine.entities.weapons.arrow;
 
 import java.util.ArrayList;
 import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
 import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
-import ua.org.petroff.game.engine.entities.guns.GunListener;
+import ua.org.petroff.game.engine.entities.weapons.WeaponListener;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
@@ -21,7 +21,7 @@ public class ArrowFactory implements EntityInterface {
         view = new View(asset, graphicResources, this);
         this.gameResources = gameResources;
         new Telegraph(this, gameResources);
-        gameResources.getWorldContactListener().addListener(new GunListener(gameResources));
+        gameResources.getWorldContactListener().addListener(new WeaponListener(gameResources));
     }
 
     @Override

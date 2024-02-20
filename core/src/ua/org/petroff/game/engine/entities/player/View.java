@@ -13,54 +13,46 @@ import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.characters.base.visual.effects.Blood;
 
-public class View extends ua.org.petroff.game.engine.entities.characters.base.View implements ViewInterface, QueueDrawInterface, GraphicQueueMemberInterface {
+public class View extends ua.org.petroff.game.engine.entities.characters.base.creature.View implements ViewInterface, QueueDrawInterface, GraphicQueueMemberInterface {
 
-    private final Player model;
-    private final Blood blood;
     private Player.PlayerSize currentPlayerSize;
-    public static final int zIndex = 50;
+    public static final int ZINDEX = 50;
 
     private boolean canDrawGroundEffect = true;
 
     public View(Assets asset, GraphicResources graphicResources, Player model) {
-        super(asset, graphicResources);
-        this.model = model;
-        graphic = new Graphic(asset, graphicResources, model);
-        this.blood = new Blood(asset, graphicResources);
+        super(
+                asset,
+                graphicResources,
+                model,
+                new Graphic(asset, graphicResources, model),
+                new Blood(asset, graphicResources)
+        );
     }
 
     @Override
     public void prepareDraw(Map<Integer, QueueDrawInterface> queueDraw) {
-        ((QueueDraw) queueDraw).putSafe(zIndex, this);
+        ((QueueDraw) queueDraw).putSafe(ZINDEX, this);
     }
 
     @Override
     public void draw() {
         changeSize();
-        graphicFrame = getFrameName(model.getState(), model.getVector());
-        frame = graphic.graphics.getOrDefault(graphicFrame, graphic.getDefaultActionFrame());
-
-        frameAnimation = frame.prepareGraphic();
-        graphic.sprite.setRegion(frameAnimation);
-        graphic.sprite.setCenter(model.getPosition().x, model.getPosition().y);
-        graphic.sprite.draw(graphicResources.getSpriteBatch());
-
-        blood.drawHit((model.getState() == StateInterface.State.HIT), model.getPlaceHit());
+        super.draw();
         groundedEffect();
-        ((CameraBound) graphicResources.getCamera()).positionSafe(model.getCameraNewPosition());
+        ((CameraBound) graphicResources.getCamera()).positionSafe(((Player) model).getCameraNewPosition());
     }
 
     private void changeSize() {
-
-        if (currentPlayerSize != model.getPlayerSize()) {
-            if (model.getPlayerSize().equals(Player.PlayerSize.NORMAL)) {
+        if (currentPlayerSize != ((Player) model).getPlayerSize()) {
+            if (((Player) model).getPlayerSize().equals(Player.PlayerSize.NORMAL)) {
                 graphic.sprite.setScale(Settings.SCALE);
             } else {
                 graphic.sprite.setScale(Settings.SCALE + 0.011f);
             }
 
         }
-        currentPlayerSize = model.getPlayerSize();
+        currentPlayerSize = ((Player) model).getPlayerSize();
 
     }
 
