@@ -3,14 +3,15 @@ package ua.org.petroff.game.engine.scenes.level1;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
 import java.util.Map;
-import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
-import ua.org.petroff.game.engine.entities.Interfaces.GraphicQueueMemberInterface;
-import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
-import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
+import ua.org.petroff.game.engine.interfaces.EntityInterface;
+import ua.org.petroff.game.engine.interfaces.GraphicQueueMemberInterface;
+import ua.org.petroff.game.engine.interfaces.MoveEntityInterface;
+import ua.org.petroff.game.engine.interfaces.QueueDrawInterface;
+import ua.org.petroff.game.engine.interfaces.SupplierViewInterface;
 import ua.org.petroff.game.engine.entities.QueueDraw;
-import ua.org.petroff.game.engine.entities.characters.base.creature.EnemyFactory;
+import ua.org.petroff.game.engine.characters.creature.EnemyFactory;
 import ua.org.petroff.game.engine.entities.cloud.CloudFactory;
-import ua.org.petroff.game.engine.entities.weapons.arrow.ArrowFactory;
+import ua.org.petroff.game.engine.entities.weapons.ranged.RangedWeaponFactory;
 import ua.org.petroff.game.engine.entities.hud.HUD;
 import ua.org.petroff.game.engine.entities.player.Player;
 import ua.org.petroff.game.engine.scenes.Interface.ContainerInterface;
@@ -18,6 +19,7 @@ import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.scenes.core.ManagerScenes;
 import ua.org.petroff.game.engine.entities.map.GameWorld;
+import ua.org.petroff.game.engine.entities.weapons.hand.HandWeaponFactory;
 import ua.org.petroff.game.engine.util.Assets;
 
 public class Level1Container implements ContainerInterface {
@@ -78,16 +80,20 @@ public class Level1Container implements ContainerInterface {
         gameResources.setModels(entities);
         entities.add(new GameWorld(asset, gameResources, graphicResources));
         entities.add(new HUD(asset, gameResources, graphicResources));
-        entities.add(Player.getInstance(asset, gameResources, graphicResources));
-        entities.add(new ArrowFactory(asset, gameResources, graphicResources));
+        entities.add(new RangedWeaponFactory(asset, gameResources, graphicResources));
+        entities.add(new HandWeaponFactory(asset, gameResources));
         entities.add(new CloudFactory(asset, gameResources, graphicResources));
+        entities.add(Player.getInstance(asset, gameResources, graphicResources));
         EnemyFactory.addEnemy(entities, asset, gameResources, graphicResources);
     }
 
     public void prepareDraw() {
         Map<Integer, QueueDrawInterface> queueDraw = new QueueDraw<>();
         for (EntityInterface entity : entities) {
-            ((GraphicQueueMemberInterface) entity.getView()).prepareDraw(queueDraw);
+            if (entity instanceof SupplierViewInterface) {
+                ((GraphicQueueMemberInterface) ((SupplierViewInterface) entity).getView()).prepareDraw(queueDraw);
+            }
+
         }
         copy(queueDraw);
     }

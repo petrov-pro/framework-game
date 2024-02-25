@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.ContactFilter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import ua.org.petroff.game.engine.entities.characters.base.creature.CreatureInterface;
+import ua.org.petroff.game.engine.characters.creature.CreatureInterface;
 
 public class GroundedFilter implements ContactFilter {
 

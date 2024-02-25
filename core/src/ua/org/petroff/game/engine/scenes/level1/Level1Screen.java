@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
-import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
-import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
+import ua.org.petroff.game.engine.interfaces.EntityInterface;
+import ua.org.petroff.game.engine.interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 
 public class Level1Screen extends ScreenAdapter {

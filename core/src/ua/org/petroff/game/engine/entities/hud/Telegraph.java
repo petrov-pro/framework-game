@@ -1,7 +1,7 @@
 package ua.org.petroff.game.engine.entities.hud;
 
 import com.badlogic.gdx.ai.msg.Telegram;
-import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
+import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.player.PlayerTelegram;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 

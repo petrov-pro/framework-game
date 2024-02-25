@@ -1,14 +1,15 @@
 package ua.org.petroff.game.engine.entities.hud;
 
 import com.badlogic.gdx.Gdx;
-import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
-import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
+import ua.org.petroff.game.engine.interfaces.EntityInterface;
+import ua.org.petroff.game.engine.interfaces.SupplierViewInterface;
+import ua.org.petroff.game.engine.interfaces.ViewInterface;
 import ua.org.petroff.game.engine.entities.player.PlayerTelegram;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 
-public class HUD implements EntityInterface {
+public class HUD implements EntityInterface, SupplierViewInterface {
 
     public static final String DESCRIPTOR = "hud";
     public Integer worldTimer = 0;

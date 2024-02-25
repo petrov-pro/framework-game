@@ -1,7 +1,7 @@
 package ua.org.petroff.game.engine.entities;
 
-import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
-import ua.org.petroff.game.engine.entities.Interfaces.QueueDrawInterface;
+import ua.org.petroff.game.engine.interfaces.EntityInterface;
+import ua.org.petroff.game.engine.interfaces.QueueDrawInterface;
 
 public class QueueEntityDescriber {
 

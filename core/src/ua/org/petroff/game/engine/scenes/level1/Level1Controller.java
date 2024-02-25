@@ -3,7 +3,7 @@ package ua.org.petroff.game.engine.scenes.level1;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
-import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
+import ua.org.petroff.game.engine.interfaces.MoveEntityInterface;
 import ua.org.petroff.game.engine.scenes.Interface.ControllerInterface;
 import ua.org.petroff.game.engine.scenes.core.ManagerScenes;
 
@@ -57,6 +57,14 @@ public class Level1Controller extends InputAdapter implements ControllerInterfac
 
             case Keys.ALT_LEFT:
                 entity.ability(active);
+                break;
+
+            case Keys.NUM_1:
+                entity.slot(0);
+                break;
+
+            case Keys.NUM_2:
+                entity.slot(1);
                 break;
 
         }

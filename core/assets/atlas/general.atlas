@@ -77,11 +77,11 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-player
+playerBOW2
   rotate: false
   xy: 2, 2
-  size: 833, 930
-  orig: 833, 930
+  size: 1000, 956
+  orig: 1000, 956
   offset: 0, 0
   index: -1
 
@@ -90,11 +90,11 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-dirty_man_sword_two
+playerBOW
   rotate: false
   xy: 2, 2
-  size: 1000, 1012
-  orig: 1000, 1012
+  size: 1000, 900
+  orig: 1000, 900
   offset: 0, 0
   index: -1
 
@@ -103,7 +103,46 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-dirty_man_two
+playerBARE
+  rotate: false
+  xy: 2, 2
+  size: 832, 900
+  orig: 832, 900
+  offset: 0, 0
+  index: -1
+
+general8.png
+size: 1024,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+playerBARE2
+  rotate: false
+  xy: 2, 2
+  size: 832, 444
+  orig: 832, 444
+  offset: 0, 0
+  index: -1
+
+general9.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+dirty_man_sword2
+  rotate: false
+  xy: 2, 2
+  size: 1000, 1012
+  orig: 1000, 1012
+  offset: 0, 0
+  index: -1
+
+general10.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+dirty_man2
   rotate: false
   xy: 2, 2
   size: 1000, 955
@@ -111,7 +150,7 @@ dirty_man_two
   offset: 0, 0
   index: -1
 
-general8.png
+general11.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -124,7 +163,7 @@ dirty_man
   offset: 0, 0
   index: -1
 
-general9.png
+general12.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -137,7 +176,7 @@ dirty_man_sword
   offset: 0, 0
   index: -1
 
-general10.png
+general13.png
 size: 512,256
 format: RGBA8888
 filter: Nearest,Nearest
@@ -150,7 +189,7 @@ dust
   offset: 0, 0
   index: -1
 
-general11.png
+general14.png
 size: 64,256
 format: RGBA8888
 filter: Nearest,Nearest

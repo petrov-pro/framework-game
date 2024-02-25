@@ -2,14 +2,15 @@ package ua.org.petroff.game.engine.entities.cloud;
 
 import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
-import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
-import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
+import ua.org.petroff.game.engine.interfaces.EntityInterface;
+import ua.org.petroff.game.engine.interfaces.SupplierViewInterface;
+import ua.org.petroff.game.engine.interfaces.ViewInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.util.RandomGenerate;
 
-public class CloudFactory implements EntityInterface {
+public class CloudFactory implements EntityInterface, SupplierViewInterface {
 
     public static final String DESCRIPTOR = "cloud";
     public static final int DEFAULT = 30;
@@ -17,13 +18,11 @@ public class CloudFactory implements EntityInterface {
     private final View view;
     private final GameResources gameResources;
     private final ArrayList<Cloud> clouds = new ArrayList<>();
-    private final GraphicResources graphicResources;
     private float forceX = 0.01f;
 
     public CloudFactory(Assets asset, GameResources gameResources, GraphicResources graphicResources) {
         view = new View(asset, graphicResources, this);
         this.gameResources = gameResources;
-        this.graphicResources = graphicResources;
         create(DEFAULT);
     }
 
@@ -31,7 +30,6 @@ public class CloudFactory implements EntityInterface {
         this.forceX = forceX;
         view = new View(asset, graphicResources, this);
         this.gameResources = gameResources;
-        this.graphicResources = graphicResources;
         create(numberClouds);
     }
 

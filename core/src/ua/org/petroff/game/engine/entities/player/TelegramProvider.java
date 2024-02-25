@@ -1,6 +1,6 @@
 package ua.org.petroff.game.engine.entities.player;
 
-import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
+import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 
 public class TelegramProvider implements com.badlogic.gdx.ai.msg.TelegramProvider {

@@ -5,24 +5,28 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
-import ua.org.petroff.game.engine.entities.Interfaces.MoveEntityInterface;
-import ua.org.petroff.game.engine.entities.Interfaces.WorldInterface;
-import ua.org.petroff.game.engine.entities.characters.base.creature.CreatureInterface;
-import ua.org.petroff.game.engine.entities.weapons.arrow.Telegram;
+import java.util.ArrayList;
+import java.util.Collections;
+import ua.org.petroff.game.engine.interfaces.EntityInterface;
+import ua.org.petroff.game.engine.interfaces.MoveEntityInterface;
+import ua.org.petroff.game.engine.interfaces.WorldInterface;
+import ua.org.petroff.game.engine.characters.creature.CreatureInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
-import ua.org.petroff.game.engine.entities.Interfaces.StateInterface;
-import ua.org.petroff.game.engine.entities.characters.base.creature.Creature;
-import ua.org.petroff.game.engine.entities.characters.enemies.Enemy;
-import ua.org.petroff.game.engine.entities.weapons.WeaponInterface;
+import ua.org.petroff.game.engine.interfaces.StateInterface;
+import ua.org.petroff.game.engine.characters.creature.Creature;
+import ua.org.petroff.game.engine.characters.enemies.Enemy;
+import ua.org.petroff.game.engine.entities.weapons.hand.Telegram;
+import ua.org.petroff.game.engine.weapons.WeaponInterface;
 
 public class Player extends Creature implements EntityInterface, MoveEntityInterface, StateInterface, CreatureInterface {
 
     public static final String DESCRIPTOR = "player";
-    public static final float FIRE_SPEED = 0.035f;
-    public static final float FIRE_FORCE = 7f;
+    public static final float FIRE_ARROW_SPEED = 0.0035f;
+    public static final float FIRE_BARE_SPEED = 0.005f;
+    public static final float FIRE_ARROW_FORCE = 7f;
+    public static final int FIRE_DAMAGE = 10;
 
     public enum PlayerSize {
         NORMAL, GROWN
@@ -36,6 +40,9 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
 
     private PlayerSize playerSize = PlayerSize.NORMAL;
     private StateInterface.State action = StateInterface.State.MOVE;
+
+    private ArrayList<WeaponInterface.Type> slotWeapons = new ArrayList<>(Collections.singletonList(WeaponInterface.Type.BARE));
+    private WeaponInterface.Type weapon;
 
     public Player(int x, int y, Assets asset, GameResources gameResources, GraphicResources graphicResources) {
         super(x, y, DESCRIPTOR, asset, gameResources, graphicResources);
@@ -86,6 +93,7 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
 
                 if (msg.extraInfo instanceof Enemy) {
                     decreaseLive(5, body.getPosition());
+                    sendPlayerStatus();
                     action = State.HIT;
                     vector = WorldInterface.Vector.STAY;
                 }
@@ -112,22 +120,20 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
 
     @Override
     public void left(boolean active) {
-        if (!active) {
+        if (!active && vector == WorldInterface.Vector.LEFT) {
             vector = WorldInterface.Vector.STAY;
-
-            return;
+        } else if (active) {
+            vector = WorldInterface.Vector.LEFT;
         }
-        vector = WorldInterface.Vector.LEFT;
     }
 
     @Override
     public void right(boolean active) {
-        if (!active) {
+        if (!active && vector == WorldInterface.Vector.RIGHT) {
             vector = WorldInterface.Vector.STAY;
-
-            return;
+        } else if (active) {
+            vector = WorldInterface.Vector.RIGHT;
         }
-        vector = WorldInterface.Vector.RIGHT;
     }
 
     @Override
@@ -161,8 +167,15 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
     }
 
     @Override
+    public void slot(int number) {
+        if (slotWeapons.size() > number) {
+            weapon = slotWeapons.get(number);
+        }
+    }
+
+    @Override
     public void update() {
-        if (action == State.DIED || currentLive <= 0) {
+        if (action == State.DIED || live <= 0) {
             died();
 
             return;
@@ -182,14 +195,23 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
                 float x = body.getPosition().x;
                 float y = body.getPosition().y;
                 float forceX;
+                float positionHitX;
                 if (vector.equals(WorldInterface.Vector.RIGHT)) {
                     x += 0.5f;
-                    forceX = +FIRE_FORCE;
+                    forceX = +FIRE_ARROW_FORCE;
+                    positionHitX = -(bodyWidth - 0.35f);
                 } else {
                     x -= 0.5f;
-                    forceX = -FIRE_FORCE;
+                    forceX = -FIRE_ARROW_FORCE;
+                    positionHitX = (bodyWidth - 0.35f);
                 }
-                gameResources.getMessageManger().dispatchMessage(StateInterface.State.FIRE.telegramNumber, new Telegram(x, y, forceX));
+//                gameResources.getMessageManger().dispatchMessage(StateInterface.State.FIRE.telegramNumber, new Telegram(WeaponInterface.Type.BOW, x, y, forceX));
+
+                gameResources.getMessageManger().dispatchMessage(
+                        StateInterface.State.FIRE.telegramNumber,
+                        new ua.org.petroff.game.engine.entities.weapons.hand.Telegram(WeaponInterface.Type.BARE, body, FIRE_DAMAGE, positionHitX, -0.2f, (bodyWidth / 3.5f) - 0.2f, 0.1f)
+                );
+
                 action = StateInterface.State.MOVE;
                 view.resetState(StateInterface.State.FIRE);
             } else {
@@ -276,10 +298,11 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
     @Override
     protected void createBody(GameResources gameResources) {
         super.createBody(gameResources);
+        body.setBullet(true);
     }
 
     private void sendPlayerStatus() {
-        gameResources.getMessageManger().dispatchMessage(StateInterface.State.PLAYER_STATUS.telegramNumber, new PlayerTelegram(currentLive));
+        gameResources.getMessageManger().dispatchMessage(StateInterface.State.PLAYER_STATUS.telegramNumber, new PlayerTelegram(live));
     }
 
 }

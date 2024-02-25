@@ -112,8 +112,8 @@
 </data>
  </layer>
  <objectgroup id="4" name="objects">
-  <object id="3" name="player" x="427.333" y="568.667" width="32.3333" height="31.6667"/>
-  <object id="14" name="start camera position" x="831" y="483" width="33" height="29"/>
+  <object id="3" name="player" x="2347.33" y="542.667" width="32.3333" height="31.6667"/>
+  <object id="14" name="start camera position" x="2027" y="440" width="33" height="29"/>
   <object id="32" name="surface" x="1" y="642">
    <polyline points="0,0 507,1 575,-33 608,-65 733.955,-64.7841"/>
   </object>
@@ -156,12 +156,12 @@
   <object id="74" name="surface" x="802.545" y="576.727">
    <polyline points="0,0 155.818,0.363636"/>
   </object>
-  <object id="78" name="enemy" gid="52" x="1759.17" y="540.832" width="32.33" height="31.67">
+  <object id="78" name="enemy" gid="52" x="1765.8" y="570.999" width="32.33" height="31.67">
    <properties>
     <property name="type" value="dirty_man_sword"/>
    </properties>
   </object>
-  <object id="79" name="enemy" gid="52" x="967.169" y="733.499" width="32.33" height="35.67">
+  <object id="79" name="enemy" gid="52" x="971.169" y="724.499" width="32.33" height="35.67">
    <properties>
     <property name="type" value="dirty_man"/>
    </properties>

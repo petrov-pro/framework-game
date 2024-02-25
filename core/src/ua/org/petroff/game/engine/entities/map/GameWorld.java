@@ -6,14 +6,15 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import ua.org.petroff.game.engine.entities.Interfaces.EntityInterface;
-import ua.org.petroff.game.engine.entities.Interfaces.ViewInterface;
+import ua.org.petroff.game.engine.interfaces.EntityInterface;
+import ua.org.petroff.game.engine.interfaces.SupplierViewInterface;
+import ua.org.petroff.game.engine.interfaces.ViewInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.util.MapResolver;
 
-public class GameWorld implements EntityInterface {
+public class GameWorld implements EntityInterface, SupplierViewInterface {
     
     public static final String OBJECT_NAME = "start camera position";
     public static final String DESCRIPTOR = "map level 1";
