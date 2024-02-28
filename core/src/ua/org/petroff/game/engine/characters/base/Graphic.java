@@ -9,7 +9,7 @@ import ua.org.petroff.game.engine.util.Assets;
 public class Graphic {
 
 
-    public final HashMap<SkinInterface.Type, HashMap<String, GraphicElement>> graphics = new HashMap();
+    public final HashMap<String, HashMap<String, GraphicElement>> graphics = new HashMap();
     public Sprite sprite = new Sprite();
 
     protected Assets asset;

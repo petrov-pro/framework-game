@@ -1,5 +1,6 @@
 package ua.org.petroff.game.engine.entities.enemies.simple;
 
+import com.badlogic.gdx.Gdx;
 import ua.org.petroff.game.engine.interfaces.SkinInterface;
 import ua.org.petroff.game.engine.interfaces.WorldInterface;
 import ua.org.petroff.game.engine.characters.creature.View;
@@ -23,7 +24,7 @@ public class DirtyManSword extends Enemy {
 
     public DirtyManSword(int x, int y, Assets asset, GameResources gameResources, GraphicResources graphicResources) {
         super(x, y, asset, gameResources, graphicResources, DESCRIPTOR);
-        skin = SkinInterface.Type.SWORD;
+        skin = SkinInterface.Type.DEFAULT;
         view = new View(
                 asset,
                 graphicResources,
@@ -32,7 +33,6 @@ public class DirtyManSword extends Enemy {
                         asset,
                         graphicResources,
                         new MeleeWeaponGraphic(),
-                        skin,
                         DESCRIPTOR,
                         FIRE_SPEED
                 ),
@@ -50,14 +50,25 @@ public class DirtyManSword extends Enemy {
         boolean canFire = super.fire();
 
         if (canFire) {
-            float positionSwordHit = (vector == WorldInterface.Vector.LEFT) ? (bodyWidth - 0.1f) : -(bodyWidth - 0.1f);
+            float positionSwordHit = (vector == WorldInterface.Vector.LEFT) ? (bodyWidth - 0.2f) : -(bodyWidth - 0.2f);
             gameResources.getMessageManger().dispatchMessage(
                     StateInterface.State.FIRE.telegramNumber,
-                    new Telegram(WeaponInterface.Type.SWORD, body, FIRE_DAMAGE, positionSwordHit, -0.2f, (bodyWidth / 2f) - 0.2f, 0.1f)
+                    new Telegram(WeaponInterface.Type.SWORD, body, FIRE_DAMAGE, positionSwordHit, -0.2f, 0.2f, 0.1f)
             );
         }
 
         return canFire;
+    }
+
+    @Override
+    public boolean withinReachFire() {
+        boolean canTouch = super.withinReachFire();
+
+        if (canTouch && body.getLinearVelocity().len() < 1f) {
+            return false;
+        }
+
+        return canTouch;
     }
 
 }

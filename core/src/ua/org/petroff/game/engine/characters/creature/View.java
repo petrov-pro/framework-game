@@ -38,7 +38,7 @@ public class View extends ua.org.petroff.game.engine.characters.base.View implem
 
     @Override
     public void draw() {
-        graphics = graphic.graphics.get(model.getSkinType());
+        graphics = graphic.graphics.get(prepareSkinType());
         frame = graphics
                 .getOrDefault(
                         getFrameName(model.getState(), model.getVector()),
@@ -60,10 +60,14 @@ public class View extends ua.org.petroff.game.engine.characters.base.View implem
 
     @Override
     public void resetState(StateInterface.State action) {
-        for (GraphicElement graphic : graphic.graphics.get(model.getSkinType()).values()) {
+        for (GraphicElement graphic : graphic.graphics.get(prepareSkinType()).values()) {
             if (action == graphic.getActionType()) {
                 graphic.setStateTime(0f);
             }
         }
+    }
+
+    protected String prepareSkinType() {
+        return model.getSkinType().toString();
     }
 }

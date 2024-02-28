@@ -15,7 +15,6 @@ import ua.org.petroff.game.engine.scenes.core.CameraBound;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
-import ua.org.petroff.game.engine.characters.enemies.EnemyGraphic;
 import ua.org.petroff.game.engine.characters.visual.effects.Blood;
 
 public class View extends ua.org.petroff.game.engine.characters.creature.View implements ViewInterface, QueueDrawInterface, GraphicQueueMemberInterface {
@@ -55,6 +54,11 @@ public class View extends ua.org.petroff.game.engine.characters.creature.View im
         super.draw();
         groundedEffect();
         ((CameraBound) graphicResources.getCamera()).positionSafe(((Player) model).getCameraNewPosition());
+    }
+
+    @Override
+    protected String prepareSkinType() {
+        return model.getSkinType() + "" + ((Player) model).getWeapon();
     }
 
     private void changeSize() {

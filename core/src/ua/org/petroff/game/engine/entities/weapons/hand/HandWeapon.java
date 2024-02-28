@@ -12,6 +12,7 @@ public class HandWeapon implements WeaponInterface {
     private int damage = 30;
     private Vector2 vectorHit;
     private Body body;
+    private Fixture swordFixture;
     private Fixture swordSensor;
 
     public HandWeapon(Body body, float positionHit, float positionHitY, float x, float y) {
@@ -52,15 +53,22 @@ public class HandWeapon implements WeaponInterface {
         poly.setAsBox(x, y, body.getLocalCenter().cpy().sub(positionHitX, positionHitY), 0);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = poly;
-        fixtureDef.isSensor = true;
+        swordFixture = body.createFixture(fixtureDef);
+        swordFixture.setUserData(this);
 
-        swordSensor = body.createFixture(fixtureDef);
+        poly.setAsBox(x, y - 0.01f, body.getLocalCenter().cpy().sub(positionHitX, positionHitY), 0);
+        FixtureDef fixtureDefSensor = new FixtureDef();
+        fixtureDefSensor.shape = poly;
+        fixtureDefSensor.isSensor = true;
+        swordSensor = body.createFixture(fixtureDefSensor);
         swordSensor.setUserData(this);
+
         poly.dispose();
     }
 
     public void destroy() {
         body.destroyFixture(swordSensor);
+        body.destroyFixture(swordFixture);
     }
 
 }

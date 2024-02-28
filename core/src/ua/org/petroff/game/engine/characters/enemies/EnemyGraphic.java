@@ -11,13 +11,12 @@ public class EnemyGraphic extends ua.org.petroff.game.engine.characters.base.Gra
             Assets asset,
             GraphicResources graphicResources,
             GraphicLoaderInterface graphicLoader,
-            SkinInterface.Type typeSkin,
             String regionName,
             float velocityFireAnimation
     ) {
         super(asset, graphicResources);
         graphics.put(
-                typeSkin,
+                SkinInterface.Type.DEFAULT.toString(),
                 graphicLoader.loadAnimation(sprite, asset, regionName, velocityFireAnimation)
         );
     }

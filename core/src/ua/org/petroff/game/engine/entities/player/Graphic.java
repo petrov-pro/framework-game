@@ -12,12 +12,12 @@ public class Graphic extends ua.org.petroff.game.engine.characters.base.Graphic 
     public Graphic(Assets asset, GraphicResources graphicResources) {
         super(asset, graphicResources);
         graphics.put(
-                SkinInterface.Type.DEFAULT,
+                SkinInterface.Type.DEFAULT + WeaponInterface.Type.BARE.toString(),
                 (new BareWeaponGraphic()).loadAnimation(sprite, asset, Player.DESCRIPTOR + WeaponInterface.Type.BARE, Player.FIRE_BARE_SPEED)
         );
 
         graphics.put(
-                SkinInterface.Type.BOW,
+                SkinInterface.Type.DEFAULT + WeaponInterface.Type.BOW.toString(),
                 (new RangedWeaponGraphic()).loadAnimation(sprite, asset, Player.DESCRIPTOR + WeaponInterface.Type.BOW, Player.FIRE_ARROW_SPEED)
         );
     }

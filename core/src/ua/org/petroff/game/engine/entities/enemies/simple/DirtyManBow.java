@@ -22,7 +22,7 @@ public class DirtyManBow extends Enemy {
 
     public DirtyManBow(int x, int y, Assets asset, GameResources gameResources, GraphicResources graphicResources) {
         super(x, y, asset, gameResources, graphicResources, DESCRIPTOR);
-        skin = SkinInterface.Type.BOW;
+        skin = SkinInterface.Type.DEFAULT;
         view = new View(
                 asset,
                 graphicResources,
@@ -31,7 +31,6 @@ public class DirtyManBow extends Enemy {
                         asset,
                         graphicResources,
                         new RangedWeaponGraphic(),
-                        skin,
                         DESCRIPTOR,
                         FIRE_SPEED
                 ),

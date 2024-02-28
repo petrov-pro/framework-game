@@ -3,7 +3,7 @@ package ua.org.petroff.game.engine.interfaces;
 public interface SkinInterface {
 
     public enum Type {
-        DEFAULT, BOW, SWORD
+        DEFAULT
     }
 
     public SkinInterface.Type getSkinType();
