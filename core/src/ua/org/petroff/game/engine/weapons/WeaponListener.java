@@ -5,12 +5,14 @@ import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import ua.org.petroff.game.engine.interfaces.GroundedInterface;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.Listener;
 import ua.org.petroff.game.engine.characters.creature.CreatureInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.entities.map.Surface;
+import ua.org.petroff.game.engine.equipment.Shield;
 
 public class WeaponListener extends Listener {
 
@@ -22,6 +24,11 @@ public class WeaponListener extends Listener {
     public void beginContact(Contact contact) {
         Object userDataA = contact.getFixtureA().getBody().getUserData();
         Object userDataB = contact.getFixtureB().getBody().getUserData();
+
+        if ((contact.getFixtureA().getUserData() instanceof Shield && !contact.getFixtureA().isSensor())
+                || (contact.getFixtureB().getUserData() instanceof Shield && !contact.getFixtureB().isSensor())) {
+            return;
+        }
 
         if (shouldContact(contact.getFixtureA())) {
             handleContact(contact, contact.getFixtureA().getUserData(), userDataB);
@@ -36,6 +43,7 @@ public class WeaponListener extends Listener {
 
     private boolean shouldContact(Fixture weapon) {
         return weapon.getUserData() instanceof WeaponInterface
+                && !(weapon.getUserData() instanceof RayCastCallback)
                 && weapon.isSensor();
 
     }
@@ -75,6 +83,6 @@ public class WeaponListener extends Listener {
         }
         // Compare fields or properties here
         return true;
-        }
+    }
 
 }

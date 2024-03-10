@@ -99,7 +99,7 @@ public class Enemy extends Creature {
             vector = WorldInterface.Vector.LEFT;
         }
 
-        if (view.isFinishAction(State.FIRE)) {
+        if (view.isFinishState(State.FIRE)) {
             view.resetState(StateInterface.State.FIRE);
 
             return true;

@@ -7,15 +7,16 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Pool;
 import ua.org.petroff.game.engine.interfaces.GroundedInterface;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.interfaces.WorldInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.weapons.WeaponInterface;
 
-public class Arrow implements WeaponInterface, GroundedInterface, com.badlogic.gdx.ai.msg.Telegraph {
+public class Arrow implements WeaponInterface, GroundedInterface, com.badlogic.gdx.ai.msg.Telegraph, Pool.Poolable {
 
-    private final GameResources gameResources;
+    private GameResources gameResources;
 
     private Body bodyArrow;
 
@@ -23,13 +24,31 @@ public class Arrow implements WeaponInterface, GroundedInterface, com.badlogic.g
     private final float bodyWidth = 0.46f;
     private final float bodyHeight = 0.05f;
     private WorldInterface.Vector vector;
-    private final int damage = 10;
+    private int damage = 10;
     private boolean grounded = false;
     private Vector2 vectorHit;
 
-    public Arrow(GameResources gameResources, float x, float y, float angular, float forceX, float forceY) {
+    public Arrow() {
+    }
+
+    public Arrow(GameResources gameResources, Vector2 start, int damage, float angular, float forceX, float forceY) {
         this.gameResources = gameResources;
-        initArrow(x, y, angular, forceX, forceY);
+        this.damage = damage;
+        initArrow(start, angular, forceX, forceY);
+    }
+
+    public void init(GameResources gameResources, Vector2 start, int damage, float angular, float forceX, float forceY) {
+        this.gameResources = gameResources;
+        this.damage = damage;
+        if (bodyArrow == null) {
+            initArrow(start, angular, forceX, forceY);
+
+            return;
+        }
+        bodyArrow.setTransform(start, 0);
+        bodyArrow.setActive(true);
+        bodyArrow.setAngularVelocity(angular);
+        bodyArrow.applyForceToCenter(forceX, forceY, true);
     }
 
     @Override
@@ -86,7 +105,17 @@ public class Arrow implements WeaponInterface, GroundedInterface, com.badlogic.g
         return true;
     }
 
-    private void initArrow(float x, float y, float angular, float forceX, float forceY) {
+    @Override
+    public void reset() {
+        bodyArrow.setTransform(new Vector2(-50, -50), 0);
+        bodyArrow.setLinearVelocity(0, 0);
+        bodyArrow.setActive(false);
+        damage = 10;
+        grounded = false;
+        vectorHit = null;
+    }
+
+    private void initArrow(Vector2 start, float angular, float forceX, float forceY) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = false;
@@ -99,7 +128,7 @@ public class Arrow implements WeaponInterface, GroundedInterface, com.badlogic.g
         fixtureDef.shape = poly;
         fixtureDef.density = 0.1f;
         bodyArrow.createFixture(fixtureDef);
-        bodyArrow.setTransform(x, y, 0);
+        bodyArrow.setTransform(start, 0);
         bodyArrow.setUserData(this);
 
         Vector2 centerArrow = bodyArrow.getLocalCenter().cpy();

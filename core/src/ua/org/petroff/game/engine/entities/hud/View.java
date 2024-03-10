@@ -7,10 +7,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.interfaces.GraphicQueueMemberInterface;
@@ -19,20 +23,14 @@ import ua.org.petroff.game.engine.interfaces.ViewInterface;
 import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
+import ua.org.petroff.game.engine.weapons.WeaponInterface;
 
 public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDrawInterface {
 
-    private Label levelLabel;
-
+    private static int countSlots = 3;
     private Stage stage;
     private ExtendViewport viewport;
     private Table table;
-    // Now we create our widgets. Our widgets will be labels, essentially text, that allow us to display Game Information
-    private Label countdownLabel;
-    static Label scoreLabel;
-    private Label timeLabel;
-    private Label worldLabel;
-    private Label scoreNameLabel;
     private Label liveLabel;
     private Label deadLabel;
 
@@ -40,6 +38,9 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
     private final GraphicResources graphicResources;
     private final HUD model;
     private Animation healthAnimation;
+    private Map<WeaponInterface.Type, Image> weaponImages = new HashMap<>();
+    private ArrayList<Image> slots = new ArrayList<>();
+    private Image shieldImage;
 
     public View(Assets asset, GraphicResources graphicResources, HUD model) {
         this.asset = asset;
@@ -58,10 +59,22 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         stage.getViewport().apply();
         stage.act();
         stage.draw();
-        countdownLabel.setText(model.worldTimer.toString());
         liveLabel.setText(model.currentLive.toString());
         if (model.currentLive <= 0) {
             deadLabel.setVisible(true);
+        }
+    }
+
+    public void drawSlots(ArrayList<WeaponInterface.Type> weaponsPlayer, WeaponInterface.Type weaponCurrent) {
+        for (int i = 0; i < weaponsPlayer.size(); i++) {
+            Image weaponImage = weaponImages.get(weaponsPlayer.get(i));
+            slots.get(i).setDrawable(
+                    weaponImage.getDrawable()
+            );
+            slots.get(i).setScale(1f);
+            if (weaponsPlayer.get(i) == weaponCurrent) {
+                slots.get(i).setScale(1.3f);
+            }
         }
     }
 
@@ -74,11 +87,31 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
             playerRegionsHealth[i] = new TextureRegion(playerTextureHealth, 50 * i, 0, 50, 63);
         }
         healthAnimation = new Animation(0.1f, (Object[]) playerRegionsHealth);
+    }
 
+    private void loadWeapon() {
+        TextureAtlas atlas = asset.getAtlas();
+        for (WeaponInterface.Type weapon : WeaponInterface.Type.values()) {
+            TextureAtlas.AtlasRegion weaponRegion = atlas.findRegion(weapon.toString());
+            TextureRegion weaponTexture = new TextureRegion(weaponRegion, 0, 0, 19, 49);
+            Image weaponImage = new Image(weaponTexture);
+            weaponImages.put(weapon, weaponImage);
+        }
+        TextureAtlas.AtlasRegion shieldRegion = atlas.findRegion("shield");
+        TextureRegion shieldTexture = new TextureRegion(shieldRegion, 0, 0, 50, 51);
+        shieldImage = new Image(shieldTexture);
+        shieldImage.setVisible(false);
+
+        TextureAtlas.AtlasRegion emptyRegion = atlas.findRegion("empty");
+        TextureRegion emptyTexture = new TextureRegion(emptyRegion, 0, 0, 19, 49);
+        for (int i = 0; i < countSlots; i++) {
+            slots.add(i, new Image(emptyTexture));
+        }
     }
 
     private void init() {
         loadAnimation();
+        loadWeapon();
 
         viewport = new ExtendViewport(Settings.APP_WIDTH, Settings.APP_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, graphicResources.getSpriteBatch()); // We must create order by creating a table in our stage
@@ -89,27 +122,6 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         table.top(); // Will put it at the top of our stage
         table.setFillParent(true);
 
-        countdownLabel = new Label(model.worldTimer.toString(), skin);
-        scoreLabel = new Label(model.score.toString(), skin);
-        timeLabel = new Label("TIME", skin);
-        levelLabel = new Label("WASTE LAND", skin);
-        worldLabel = new Label("ROUND 1", skin);
-
-        deadLabel = new Label("YOU ARE DEAD", skin);
-        deadLabel.setFontScale(3);
-        deadLabel.setColor(Color.RED);
-        deadLabel.setVisible(false);
-
-        table.add(scoreNameLabel).expandX().padTop(10); // This expand X makes everything in the row share the row equally
-        table.add(worldLabel).expandX().padTop(10);
-        table.add(timeLabel).expandX().padTop(10);
-
-        table.row(); // THIS CREATES A NEW ROW
-        table.add(scoreLabel).expandX();
-        table.add(levelLabel).expandX();
-        table.add(countdownLabel).expandX();
-
-        table.row().expandY().bottom();
         HorizontalGroup liveGroup = new HorizontalGroup();
 
         ImageAnimation image = new ImageAnimation();
@@ -125,11 +137,21 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
 
         table.add(liveGroup)
                 .left()
-                .padLeft(50)
-                .padBottom(50);
+                .expandX().padTop(10);
 
-        table.add(deadLabel)
-                .center();
+        table.add(shieldImage).expandX().padTop(10);
+
+        for (Image slot : slots) {
+            table.add(slot).expandX().padTop(10);
+        }
+
+        table.row().colspan(5); // THIS CREATES A NEW ROW
+
+        deadLabel = new Label("YOU ARE DEAD", skin);
+        deadLabel.setFontScale(3);
+        deadLabel.setColor(Color.RED);
+        deadLabel.setVisible(false);
+        table.add(deadLabel).center().padTop(500);
 
         // add table to our stage
         stage.addActor(table);

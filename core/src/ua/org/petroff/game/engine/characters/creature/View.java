@@ -59,9 +59,9 @@ public class View extends ua.org.petroff.game.engine.characters.base.View implem
     }
 
     @Override
-    public void resetState(StateInterface.State action) {
+    public void resetState(StateInterface.State state) {
         for (GraphicElement graphic : graphic.graphics.get(prepareSkinType()).values()) {
-            if (action == graphic.getActionType()) {
+            if (state == graphic.getStateType()) {
                 graphic.setStateTime(0f);
             }
         }

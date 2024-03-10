@@ -11,26 +11,26 @@ public class Animation extends GraphicElement {
     protected com.badlogic.gdx.graphics.g2d.Animation animation;
     private float speed;
 
-    public Animation(com.badlogic.gdx.graphics.g2d.Animation animation, StateInterface.State action, WorldInterface.Vector vector, boolean isLoop, float speed) {
-        super(action, vector, isLoop);
+    public Animation(com.badlogic.gdx.graphics.g2d.Animation animation, StateInterface.State state, WorldInterface.Vector vector, boolean isLoop, float speed) {
+        super(state, vector, isLoop);
         this.animation = animation;
         this.speed = speed;
     }
 
-    public Animation(com.badlogic.gdx.graphics.g2d.Animation animation, StateInterface.State action, WorldInterface.Vector vector, boolean isLoop) {
-        super(action, vector, isLoop);
+    public Animation(com.badlogic.gdx.graphics.g2d.Animation animation, StateInterface.State state, WorldInterface.Vector vector, boolean isLoop) {
+        super(state, vector, isLoop);
         this.animation = animation;
         this.speed = 0f;
     }
 
-    public Animation(com.badlogic.gdx.graphics.g2d.Animation animation, StateInterface.State action, boolean isLoop) {
-        super(action, isLoop);
+    public Animation(com.badlogic.gdx.graphics.g2d.Animation animation, StateInterface.State state, boolean isLoop) {
+        super(state, isLoop);
         this.animation = animation;
         this.speed = 0f;
     }
 
-    public Animation(com.badlogic.gdx.graphics.g2d.Animation animation, StateInterface.State action, boolean isLoop, float speed) {
-        super(action, isLoop);
+    public Animation(com.badlogic.gdx.graphics.g2d.Animation animation, StateInterface.State state, boolean isLoop, float speed) {
+        super(state, isLoop);
         this.speed = speed;
         this.animation = animation;
     }

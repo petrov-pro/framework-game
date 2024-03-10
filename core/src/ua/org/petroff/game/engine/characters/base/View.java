@@ -19,8 +19,8 @@ public class View implements ViewInterface {
         this.graphicResources = graphicResources;
     }
 
-    public boolean isFinishAction(StateInterface.State action) {
-        return frame != null && !frame.isLoop() && frame.isFinish() && frame.getActionType() == action;
+    public boolean isFinishState(StateInterface.State state) {
+        return frame != null && !frame.isLoop() && frame.isFinish() && frame.getStateType() == state;
     }
 
     public static String getFrameName(StateInterface.State graphicType, WorldInterface.Vector vector) {

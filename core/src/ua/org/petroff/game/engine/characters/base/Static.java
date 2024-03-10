@@ -8,8 +8,8 @@ public class Static extends GraphicElement {
 
     private final TextureRegion frame;
 
-    public Static(TextureRegion frame, StateInterface.State action, WorldInterface.Vector vector) {
-        super(action, vector, false);
+    public Static(TextureRegion frame, StateInterface.State state, WorldInterface.Vector vector) {
+        super(state, vector, false);
         this.frame = frame;
     }
 

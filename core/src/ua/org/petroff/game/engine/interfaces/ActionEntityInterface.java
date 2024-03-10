@@ -1,6 +1,6 @@
 package ua.org.petroff.game.engine.interfaces;
 
-public interface MoveEntityInterface {
+public interface ActionEntityInterface {
 
     public void left(boolean active);
 
@@ -13,5 +13,7 @@ public interface MoveEntityInterface {
     public void ability(boolean active);
 
     public void slot(int number);
+
+    public void block(boolean active);
 
 }

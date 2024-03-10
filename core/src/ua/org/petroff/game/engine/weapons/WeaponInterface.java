@@ -8,7 +8,7 @@ public interface WeaponInterface {
 
     public enum Type {
 
-        BOW, SWORD, BARE;
+        BARE, SWORD, BOW;
 
     }
 

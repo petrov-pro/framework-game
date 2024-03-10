@@ -9,20 +9,20 @@ abstract public class GraphicElement {
     protected boolean isLoop;
     protected boolean isFinish = false;
     protected float stateTime;
-    protected StateInterface.State action;
+    protected StateInterface.State state;
     protected WorldInterface.Vector vector;
 
     public GraphicElement(StateInterface.State action, WorldInterface.Vector vector, boolean isLoop) {
         this.stateTime = 0f;
         this.isLoop = isLoop;
-        this.action = action;
+        this.state = action;
         this.vector = vector;
     }
 
-    public GraphicElement(StateInterface.State action, boolean isLoop) {
+    public GraphicElement(StateInterface.State state, boolean isLoop) {
         this.stateTime = 0f;
         this.isLoop = isLoop;
-        this.action = action;
+        this.state = state;
     }
 
     public abstract TextureRegion prepareGraphic();
@@ -55,8 +55,8 @@ abstract public class GraphicElement {
         return vector;
     }
 
-    public StateInterface.State getActionType() {
-        return action;
+    public StateInterface.State getStateType() {
+        return state;
     }
 
 }

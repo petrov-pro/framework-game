@@ -1,6 +1,5 @@
 package ua.org.petroff.game.engine.characters.enemies;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import ua.org.petroff.game.engine.interfaces.StateInterface;

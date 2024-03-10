@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.Array;
 import java.util.Map;
 import ua.org.petroff.game.engine.interfaces.EntityInterface;
 import ua.org.petroff.game.engine.interfaces.GraphicQueueMemberInterface;
-import ua.org.petroff.game.engine.interfaces.MoveEntityInterface;
 import ua.org.petroff.game.engine.interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.interfaces.SupplierViewInterface;
 import ua.org.petroff.game.engine.entities.QueueDraw;
@@ -19,8 +18,9 @@ import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.scenes.core.ManagerScenes;
 import ua.org.petroff.game.engine.entities.map.GameWorld;
-import ua.org.petroff.game.engine.entities.weapons.hand.HandWeaponFactory;
+import ua.org.petroff.game.engine.entities.weapons.melee.MeleeWeaponFactory;
 import ua.org.petroff.game.engine.util.Assets;
+import ua.org.petroff.game.engine.interfaces.ActionEntityInterface;
 
 public class Level1Container implements ContainerInterface {
 
@@ -61,7 +61,7 @@ public class Level1Container implements ContainerInterface {
         loadEntities();
         prepareDraw();
         screen = new Level1Screen(entities, drawings, graphicResources);
-        (new Level1Controller(manageScene, screen, (MoveEntityInterface) gameResources.findModel(Player.class))).bindControl();
+        (new Level1Controller(manageScene, screen, (ActionEntityInterface) gameResources.findModel(Player.class))).bindControl();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class Level1Container implements ContainerInterface {
         entities.add(new GameWorld(asset, gameResources, graphicResources));
         entities.add(new HUD(asset, gameResources, graphicResources));
         entities.add(new RangedWeaponFactory(asset, gameResources, graphicResources));
-        entities.add(new HandWeaponFactory(asset, gameResources));
+        entities.add(new MeleeWeaponFactory(asset, gameResources));
         entities.add(new CloudFactory(asset, gameResources, graphicResources));
         entities.add(Player.getInstance(asset, gameResources, graphicResources));
         EnemyFactory.addEnemy(entities, asset, gameResources, graphicResources);

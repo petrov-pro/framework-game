@@ -3,17 +3,17 @@ package ua.org.petroff.game.engine.scenes.level1;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
-import ua.org.petroff.game.engine.interfaces.MoveEntityInterface;
 import ua.org.petroff.game.engine.scenes.Interface.ControllerInterface;
 import ua.org.petroff.game.engine.scenes.core.ManagerScenes;
+import ua.org.petroff.game.engine.interfaces.ActionEntityInterface;
 
 public class Level1Controller extends InputAdapter implements ControllerInterface {
 
     private final ManagerScenes managerScenes;
     private final Level1Screen screen;
-    private final MoveEntityInterface entity;
+    private final ActionEntityInterface entity;
 
-    public Level1Controller(ManagerScenes managerScenes, Level1Screen level1Screen, MoveEntityInterface entity) {
+    public Level1Controller(ManagerScenes managerScenes, Level1Screen level1Screen, ActionEntityInterface entity) {
         this.managerScenes = managerScenes;
         this.screen = level1Screen;
         this.entity = entity;
@@ -55,7 +55,7 @@ public class Level1Controller extends InputAdapter implements ControllerInterfac
                 entity.fire(active);
                 break;
 
-            case Keys.ALT_LEFT:
+            case Keys.Z:
                 entity.ability(active);
                 break;
 
@@ -65,6 +65,10 @@ public class Level1Controller extends InputAdapter implements ControllerInterfac
 
             case Keys.NUM_2:
                 entity.slot(1);
+                break;
+
+            case Keys.ALT_LEFT:
+                entity.block(active);
                 break;
 
         }

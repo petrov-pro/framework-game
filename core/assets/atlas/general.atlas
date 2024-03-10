@@ -33,19 +33,6 @@ mainmenu-background
   index: -1
 
 general3.png
-size: 64,16
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-arrow
-  rotate: false
-  xy: 2, 2
-  size: 32, 3
-  orig: 32, 3
-  offset: 0, 0
-  index: -1
-
-general4.png
 size: 1024,128
 format: RGBA8888
 filter: Nearest,Nearest
@@ -72,7 +59,7 @@ cloud
   offset: 0, 0
   index: 1
 
-general5.png
+general4.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -85,7 +72,7 @@ playerBOW2
   offset: 0, 0
   index: -1
 
-general6.png
+general5.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -98,7 +85,7 @@ playerBOW
   offset: 0, 0
   index: -1
 
-general7.png
+general6.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -111,7 +98,7 @@ playerBARE
   offset: 0, 0
   index: -1
 
-general8.png
+general7.png
 size: 1024,512
 format: RGBA8888
 filter: Nearest,Nearest
@@ -124,7 +111,7 @@ playerBARE2
   offset: 0, 0
   index: -1
 
-general9.png
+general8.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -137,12 +124,12 @@ dirty_man_sword2
   offset: 0, 0
   index: -1
 
-general10.png
+general9.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-dirty_man2
+dirty_man_bow2
   rotate: false
   xy: 2, 2
   size: 1000, 955
@@ -150,12 +137,12 @@ dirty_man2
   offset: 0, 0
   index: -1
 
-general11.png
+general10.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-dirty_man
+dirty_man_bow
   rotate: false
   xy: 2, 2
   size: 1000, 901
@@ -163,7 +150,7 @@ dirty_man
   offset: 0, 0
   index: -1
 
-general12.png
+general11.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -173,6 +160,54 @@ dirty_man_sword
   xy: 2, 2
   size: 1000, 900
   orig: 1000, 900
+  offset: 0, 0
+  index: -1
+
+general12.png
+size: 256,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+BARE
+  rotate: false
+  xy: 54, 9
+  size: 19, 49
+  orig: 19, 49
+  offset: 0, 0
+  index: -1
+BOW
+  rotate: false
+  xy: 75, 9
+  size: 19, 49
+  orig: 19, 49
+  offset: 0, 0
+  index: -1
+SWORD
+  rotate: false
+  xy: 96, 9
+  size: 19, 49
+  orig: 19, 49
+  offset: 0, 0
+  index: -1
+arrow
+  rotate: false
+  xy: 2, 2
+  size: 32, 3
+  orig: 32, 3
+  offset: 0, 0
+  index: -1
+empty
+  rotate: false
+  xy: 117, 9
+  size: 19, 49
+  orig: 19, 49
+  offset: 0, 0
+  index: -1
+shield
+  rotate: false
+  xy: 2, 7
+  size: 50, 51
+  orig: 50, 51
   offset: 0, 0
   index: -1
 

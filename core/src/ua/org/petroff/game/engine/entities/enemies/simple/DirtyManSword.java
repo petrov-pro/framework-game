@@ -8,7 +8,7 @@ import ua.org.petroff.game.engine.characters.graphicLoaders.MeleeWeaponGraphic;
 import ua.org.petroff.game.engine.characters.visual.effects.Blood;
 import ua.org.petroff.game.engine.characters.enemies.Enemy;
 import ua.org.petroff.game.engine.characters.enemies.EnemyGraphic;
-import ua.org.petroff.game.engine.entities.weapons.hand.Telegram;
+import ua.org.petroff.game.engine.entities.weapons.melee.Telegram;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
@@ -50,10 +50,17 @@ public class DirtyManSword extends Enemy {
         boolean canFire = super.fire();
 
         if (canFire) {
-            float positionSwordHit = (vector == WorldInterface.Vector.LEFT) ? (bodyWidth - 0.2f) : -(bodyWidth - 0.2f);
             gameResources.getMessageManger().dispatchMessage(
                     StateInterface.State.FIRE.telegramNumber,
-                    new Telegram(WeaponInterface.Type.SWORD, body, FIRE_DAMAGE, positionSwordHit, -0.2f, 0.2f, 0.1f)
+                    new Telegram(
+                            WeaponInterface.Type.SWORD,
+                            vector,
+                            body.getPosition().cpy(),
+                            FIRE_DAMAGE,
+                            bodyWidth / 2,
+                            0.2f,
+                            0.6f
+                    )
             );
         }
 

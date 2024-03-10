@@ -33,18 +33,18 @@ public class DebugWorld {
     public static float radius = 0.2f;
 
     public static void run(World world, Matrix4 combined) {
-        if (Settings.IS_DEBUG) {
-//            fps.log();
-//            MessageManager.getInstance().setDebugEnabled(true);
-            debugRenderer.setDrawAABBs(true);
-            debugRenderer.setDrawVelocities(true);
-            debugRenderer.setDrawContacts(true);
-            debugRenderer.setDrawInactiveBodies(true);
-            debugRenderer.render(world, combined);
-
-            debugView(combined);
-
+        if (!Settings.IS_DEBUG) {
+            return;
         }
+//      fps.log();
+//      MessageManager.getInstance().setDebugEnabled(true);
+        debugRenderer.setDrawAABBs(true);
+        debugRenderer.setDrawVelocities(true);
+        debugRenderer.setDrawContacts(true);
+        debugRenderer.setDrawInactiveBodies(true);
+        debugRenderer.render(world, combined);
+
+        debugView(combined);
     }
 
     private static void debugView(Matrix4 combined) {

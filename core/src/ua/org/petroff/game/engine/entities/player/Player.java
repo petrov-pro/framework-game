@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import ua.org.petroff.game.engine.interfaces.EntityInterface;
-import ua.org.petroff.game.engine.interfaces.MoveEntityInterface;
 import ua.org.petroff.game.engine.interfaces.WorldInterface;
 import ua.org.petroff.game.engine.characters.creature.CreatureInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
@@ -18,16 +17,19 @@ import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.characters.creature.Creature;
 import ua.org.petroff.game.engine.characters.enemies.Enemy;
+import ua.org.petroff.game.engine.equipment.Shield;
 import ua.org.petroff.game.engine.interfaces.SkinInterface;
 import ua.org.petroff.game.engine.weapons.WeaponInterface;
+import ua.org.petroff.game.engine.interfaces.ActionEntityInterface;
 
-public class Player extends Creature implements EntityInterface, MoveEntityInterface, StateInterface, CreatureInterface {
+public class Player extends Creature implements EntityInterface, ActionEntityInterface, StateInterface, CreatureInterface {
 
     public static final String DESCRIPTOR = "player";
     public static final float FIRE_ARROW_SPEED = 0.0035f;
     public static final float FIRE_BARE_SPEED = 0.005f;
     public static final float FIRE_ARROW_FORCE = 7f;
     public static final int FIRE_DAMAGE = 10;
+    public static final int FIRE_ARROW_DAMAGE = 10;
 
     public enum PlayerSize {
         NORMAL, GROWN
@@ -40,10 +42,11 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
     private final Vector3 cameraNewPosition = new Vector3();
 
     private PlayerSize playerSize = PlayerSize.NORMAL;
-    private StateInterface.State action = StateInterface.State.MOVE;
+    private StateInterface.State state = StateInterface.State.MOVE;
 
     private ArrayList<WeaponInterface.Type> slotWeapons = new ArrayList<>(Collections.unmodifiableList(Arrays.asList(WeaponInterface.Type.BARE, WeaponInterface.Type.BOW)));
     private WeaponInterface.Type weapon = WeaponInterface.Type.BARE;
+    private final Shield shield;
 
     public Player(int x, int y, Assets asset, GameResources gameResources, GraphicResources graphicResources) {
         super(x, y, DESCRIPTOR, asset, gameResources, graphicResources);
@@ -52,6 +55,7 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
         new TelegramProvider(this, gameResources);
         sendPlayerStatus();
         skin = SkinInterface.Type.DEFAULT;
+        shield = new Shield(body, bodyWidth, bodyHeight);
     }
 
     public static Player getInstance(Assets asset, GameResources gameResources, GraphicResources graphicResources) {
@@ -72,7 +76,7 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
                         ((WeaponInterface) msg.extraInfo).getPlaceHit(),
                         ((WeaponInterface) msg.extraInfo).getDirectionHit()
                 );
-                action = State.HIT;
+                state = State.HIT;
                 vector = WorldInterface.Vector.STAY;
                 break;
 
@@ -87,7 +91,7 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
             case CREATURE_COLLISION:
                 ground(true);
                 if (msg.extraInfo instanceof StateInterface && ((StateInterface) msg.extraInfo).getState() == State.DIED) {
-                    action = State.MOVE;
+                    state = State.MOVE;
 
                     return true;
                 }
@@ -95,7 +99,7 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
                 if (msg.extraInfo instanceof Enemy) {
                     decreaseLive(5, body.getPosition());
                     sendPlayerStatus();
-                    action = State.HIT;
+                    state = State.HIT;
                     vector = WorldInterface.Vector.STAY;
                 }
 
@@ -140,16 +144,16 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
     @Override
     public void jump(boolean active) {
         if (active) {
-            action = StateInterface.State.JUMP;
+            state = StateInterface.State.JUMP;
         }
     }
 
     @Override
     public void fire(boolean active) {
         if (active) {
-            action = StateInterface.State.FIRE;
+            state = StateInterface.State.FIRE;
         } else {
-            action = StateInterface.State.MOVE;
+            state = StateInterface.State.MOVE;
             view.resetState(StateInterface.State.FIRE);
         }
     }
@@ -171,46 +175,65 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
     public void slot(int number) {
         if (slotWeapons.size() > number) {
             weapon = slotWeapons.get(number);
+            sendPlayerStatus();
         }
     }
 
     @Override
+    public void block(boolean active) {
+        if (!active) {
+            shield.hide();
+            state = StateInterface.State.MOVE;
+
+            return;
+        }
+        state = StateInterface.State.BLOCK;
+    }
+
+    @Override
     public void update() {
-        if (action == State.DIED || live <= 0) {
+        Gdx.app.log("DEBUG", state.toString() + ":" + vector.toString());
+        if (state == State.DIED || live <= 0) {
             died();
 
             return;
         }
 
-        if (action == State.HIT) {
-            if (!view.isFinishAction(action)) {
+        if (state == State.HIT) {
+            if (!view.isFinishState(state)) {
                 vector = WorldInterface.Vector.STAY;
 
                 return;
             }
 
-            view.resetState(action);
-            action = State.MOVE;
+            view.resetState(state);
+            state = State.MOVE;
         }
 
-        if (action == StateInterface.State.FIRE) {
-            if (!view.isFinishAction(StateInterface.State.FIRE)) {
+        if (state == StateInterface.State.BLOCK) {
+            block();
+
+            return;
+        }
+
+        if (state == StateInterface.State.FIRE) {
+            if (!view.isFinishState(StateInterface.State.FIRE)) {
                 return;
             }
 
             sendFire();
-            action = StateInterface.State.MOVE;
+            state = StateInterface.State.MOVE;
             view.resetState(StateInterface.State.FIRE);
         }
 
 //      handler if body have vertical velocity
-        if (action != StateInterface.State.JUMP && !onGround && body.getLinearVelocity().y <= -3f) {
-            action = StateInterface.State.JUMP;
+        if (state != StateInterface.State.JUMP && !onGround && body.getLinearVelocity().y <= -3f) {
+            state = StateInterface.State.JUMP;
         }
 
-        if (action == StateInterface.State.JUMP && onGround && body.getLinearVelocity().y < MAXJUMPVELOCITY) {
+        if (state == StateInterface.State.JUMP && onGround && body.getLinearVelocity().y < MAXJUMPVELOCITY) {
             body.applyLinearImpulse(0, JUMPVELOCITY, body.getPosition().x, body.getPosition().y, true);
-            //for force
+            //for force apply
             onGround = false;
         }
 
@@ -226,8 +249,8 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
     @Override
     public void ground(boolean isGround) {
         super.ground(isGround);
-        if (isGround && action == State.JUMP) {
-            action = State.MOVE;
+        if (isGround && state == State.JUMP) {
+            state = State.MOVE;
         }
     }
 
@@ -236,47 +259,67 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
         super.died();
 
         gameResources.getMessageManger().dispatchMessage(StateInterface.State.PLAYER_DEAD.telegramNumber);
-        action = StateInterface.State.DIED;
+        state = StateInterface.State.DIED;
     }
 
     @Override
     public StateInterface.State getState() {
-        return action;
+        return state;
     }
 
     public WeaponInterface.Type getWeapon() {
         return weapon;
     }
 
-    private void sendFire() {
-        float x = body.getPosition().x;
-        float y = body.getPosition().y;
-        float forceX;
-        float positionHitX;
-        if (vector.equals(WorldInterface.Vector.RIGHT)) {
-            x += 0.5f;
-            forceX = +FIRE_ARROW_FORCE;
-            positionHitX = -(bodyWidth - 0.35f);
-        } else {
-            x -= 0.5f;
-            forceX = -FIRE_ARROW_FORCE;
-            positionHitX = (bodyWidth - 0.35f);
-        }
+    public ArrayList<WeaponInterface.Type> getSlotWeapons() {
+        return slotWeapons;
+    }
 
+    private void sendFire() {
         switch (weapon) {
             case BARE:
                 gameResources.getMessageManger().dispatchMessage(
                         StateInterface.State.FIRE.telegramNumber,
-                        new ua.org.petroff.game.engine.entities.weapons.hand.Telegram(WeaponInterface.Type.BARE, body, FIRE_DAMAGE, positionHitX, -0.2f, 0.08f, 0.1f)
+                        new ua.org.petroff.game.engine.entities.weapons.melee.Telegram(
+                                WeaponInterface.Type.BARE,
+                                vector,
+                                body.getPosition().cpy(),
+                                FIRE_DAMAGE,
+                                bodyWidth / 2,
+                                0.1f,
+                                0.2f
+                        )
                 );
                 break;
             case BOW:
-                gameResources.getMessageManger().dispatchMessage(StateInterface.State.FIRE.telegramNumber, new ua.org.petroff.game.engine.entities.weapons.ranged.Telegram(WeaponInterface.Type.BOW, x, y, forceX));
+                gameResources.getMessageManger().dispatchMessage(StateInterface.State.FIRE.telegramNumber, new ua.org.petroff.game.engine.entities.weapons.ranged.Telegram(
+                        WeaponInterface.Type.BOW,
+                        vector,
+                        body.getPosition().cpy(),
+                        FIRE_ARROW_DAMAGE,
+                        bodyWidth / 2,
+                        0.1f,
+                        FIRE_ARROW_FORCE
+                ));
                 break;
             case SWORD:
                 System.out.println("Wednesday");
                 break;
 
+        }
+    }
+
+    private void block() {
+        switch (vector) {
+            case RIGHT:
+                shield.right();
+                break;
+            case LEFT:
+                shield.left();
+                break;
+            default:
+                shield.hide();
+                break;
         }
     }
 
@@ -322,7 +365,7 @@ public class Player extends Creature implements EntityInterface, MoveEntityInter
     }
 
     private void sendPlayerStatus() {
-        gameResources.getMessageManger().dispatchMessage(StateInterface.State.PLAYER_STATUS.telegramNumber, new PlayerTelegram(live));
+        gameResources.getMessageManger().dispatchMessage(StateInterface.State.PLAYER_STATUS.telegramNumber, this);
     }
 
 }

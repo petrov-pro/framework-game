@@ -16,9 +16,10 @@ import ua.org.petroff.game.engine.weapons.WeaponInterface;
 
 public class DirtyManBow extends Enemy {
 
-    public static final String DESCRIPTOR = "dirty_man";
+    public static final String DESCRIPTOR = "dirty_man_bow";
     public static final float FIRE_SPEED = 0.0035f;
     public static final float FIRE_ARROW_FORCE = 7f;
+    public static final int FIRE_ARROW_DAMAGE = 10;
 
     public DirtyManBow(int x, int y, Assets asset, GameResources gameResources, GraphicResources graphicResources) {
         super(x, y, asset, gameResources, graphicResources, DESCRIPTOR);
@@ -43,11 +44,15 @@ public class DirtyManBow extends Enemy {
         boolean canFire = super.fire();
 
         if (canFire) {
-            float x = body.getPosition().x + (vector == WorldInterface.Vector.RIGHT ? 0.5f : -0.5f);
-            float y = body.getPosition().y;
-            float forceX = (vector == WorldInterface.Vector.RIGHT) ? FIRE_ARROW_FORCE : -FIRE_ARROW_FORCE;
-
-            gameResources.getMessageManger().dispatchMessage(StateInterface.State.FIRE.telegramNumber, new Telegram(WeaponInterface.Type.BOW, x, y, forceX));
+            gameResources.getMessageManger().dispatchMessage(StateInterface.State.FIRE.telegramNumber, new Telegram(
+                    WeaponInterface.Type.BOW,
+                    vector,
+                    body.getPosition().cpy(),
+                    FIRE_ARROW_DAMAGE,
+                    bodyWidth / 2,
+                    0.1f,
+                    FIRE_ARROW_FORCE
+            ));
         }
 
         return canFire;

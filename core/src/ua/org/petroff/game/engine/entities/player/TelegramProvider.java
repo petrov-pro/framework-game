@@ -16,7 +16,7 @@ public class TelegramProvider implements com.badlogic.gdx.ai.msg.TelegramProvide
     public Object provideMessageInfo(int i, com.badlogic.gdx.ai.msg.Telegraph tlgrph) {
         switch (StateInterface.State.getStateBy(i)) {
             case PLAYER_STATUS:
-                return new PlayerTelegram(player.getCurrentLive());
+                return player;
         }
         return null;
     }

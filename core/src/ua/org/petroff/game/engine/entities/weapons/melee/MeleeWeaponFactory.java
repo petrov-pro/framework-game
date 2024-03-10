@@ -1,6 +1,7 @@
-package ua.org.petroff.game.engine.entities.weapons.hand;
+package ua.org.petroff.game.engine.entities.weapons.melee;
 
 import com.badlogic.gdx.ai.msg.Telegraph;
+import com.badlogic.gdx.utils.Pool;
 import java.util.ArrayList;
 import ua.org.petroff.game.engine.interfaces.EntityInterface;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
@@ -9,26 +10,40 @@ import ua.org.petroff.game.engine.weapons.WeaponListener;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.util.Assets;
 
-public class HandWeaponFactory implements EntityInterface, Telegraph {
+public class MeleeWeaponFactory implements EntityInterface, Telegraph {
 
-    public static final String DESCRIPTOR = "handWeapon";
+    public static final String DESCRIPTOR = "meleeWeapon";
     public static final int MAX = 500;
 
-    private final ArrayList<HandWeapon> weapons = new ArrayList<>();
+    private final ArrayList<MeleeWeapon> weapons = new ArrayList<>();
+    private final Pool<MeleeWeapon> meleeWeaponPool = new Pool<MeleeWeapon>() {
+        @Override
+        protected MeleeWeapon newObject() {
+            return new MeleeWeapon();
+        }
+    };
 
-    public HandWeaponFactory(Assets asset, GameResources gameResources) {
+    private GameResources gameResources;
+
+    public MeleeWeaponFactory(Assets asset, GameResources gameResources) {
         gameResources.getWorldContactListener().addUniqListener(new WeaponListener(gameResources));
         gameResources.getMessageManger().addListener(this, StateInterface.State.FIRE.telegramNumber);
+        this.gameResources = gameResources;
     }
 
     @Override
     public void update() {
-        weapons.forEach(HandWeapon::destroy);
+        for (MeleeWeapon meleeWeapon : weapons) {
+            meleeWeapon.update();
+            meleeWeaponPool.free(meleeWeapon);
+        }
         weapons.clear();
     }
 
     private void shoot(Telegram telegram) {
-        weapons.add(new HandWeapon(telegram.getBody(), telegram.getPositionHitX(), telegram.getPositionHitY(), telegram.getX(), telegram.getY(), telegram.getDamage()));
+        MeleeWeapon meleeWeapon = meleeWeaponPool.obtain();
+        meleeWeapon.init(gameResources, telegram.getStart(), telegram.getFinish(), telegram.getDamage());
+        weapons.add(meleeWeapon);
     }
 
     @Override
