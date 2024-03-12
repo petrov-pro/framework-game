@@ -14,6 +14,7 @@ import ua.org.petroff.game.engine.util.Assets;
 
 public class HUD implements EntityInterface, SupplierViewInterface, Telegraph {
     
+    public static int COUNTSLOT = 3;
     public static final String DESCRIPTOR = "hud";
     public Integer currentLife = 0;
     

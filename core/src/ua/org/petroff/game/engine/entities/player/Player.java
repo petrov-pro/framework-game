@@ -19,6 +19,7 @@ import ua.org.petroff.game.engine.characters.creature.Creature;
 import ua.org.petroff.game.engine.characters.enemies.Enemy;
 import ua.org.petroff.game.engine.characters.creature.equipment.Shield;
 import ua.org.petroff.game.engine.entities.equipments.PotionInterface;
+import ua.org.petroff.game.engine.entities.hud.HUD;
 import ua.org.petroff.game.engine.interfaces.SkinInterface;
 import ua.org.petroff.game.engine.weapons.WeaponInterface;
 import ua.org.petroff.game.engine.interfaces.ActionEntityInterface;
@@ -95,7 +96,16 @@ public class Player extends Creature implements EntityInterface, ActionEntityInt
                     changeLife(((PotionInterface) msg.extraInfo).getValue());
                 } else if (msg.extraInfo instanceof ua.org.petroff.game.engine.entities.equipments.WeaponInterface
                         && !slotWeapons.contains(((ua.org.petroff.game.engine.entities.equipments.WeaponInterface) msg.extraInfo).getWeaponType())) {
-                    slotWeapons.add(((ua.org.petroff.game.engine.entities.equipments.WeaponInterface) msg.extraInfo).getWeaponType());
+                    int slot = slotWeapons.indexOf(weapon);
+                    if (slot == 0) {
+                        slot = 1;
+                    }
+
+                    slotWeapons.add(slot, ((ua.org.petroff.game.engine.entities.equipments.WeaponInterface) msg.extraInfo).getWeaponType());
+
+                    if (slotWeapons.size() >= HUD.COUNTSLOT) {
+                        slotWeapons.remove(HUD.COUNTSLOT);
+                    }
                 } else if (msg.extraInfo instanceof ua.org.petroff.game.engine.entities.equipments.shield.Shield && !hasShield) {
                     hasShield = true;
                 }

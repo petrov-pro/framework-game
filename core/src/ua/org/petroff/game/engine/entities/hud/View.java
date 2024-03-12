@@ -26,7 +26,7 @@ import ua.org.petroff.game.engine.weapons.WeaponInterface;
 
 public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDrawInterface {
 
-    private static int countSlots = 3;
+    
     private Stage stage;
     private ExtendViewport viewport;
     private Table table;
@@ -107,7 +107,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
 
         TextureAtlas.AtlasRegion emptyRegion = atlas.findRegion("empty");
         TextureRegion emptyTexture = new TextureRegion(emptyRegion, 0, 0, 19, 49);
-        for (int i = 0; i < countSlots; i++) {
+        for (int i = 0; i < HUD.COUNTSLOT; i++) {
             slots.add(i, new Image(emptyTexture));
         }
     }
