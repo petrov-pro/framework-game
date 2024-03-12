@@ -6,7 +6,7 @@ public interface StateInterface {
         //Actions
         MOVE(1), JUMP(2), DIED(3), FIRE(4), STAY(5), HIT(6), BLOCK(11),
         //Statuses
-        GROUND(7), PLAYER_DEAD(8), PLAYER_STATUS(9), CREATURE_COLLISION(10);
+        GROUND(7), PLAYER_DEAD(8), PLAYER_STATUS(9), CREATURE_COLLISION(10), EQUIPMENT(12);
 
         public final int telegramNumber;
 

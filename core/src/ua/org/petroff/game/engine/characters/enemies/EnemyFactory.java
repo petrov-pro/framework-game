@@ -1,4 +1,4 @@
-package ua.org.petroff.game.engine.characters.creature;
+package ua.org.petroff.game.engine.characters.enemies;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.utils.Array;

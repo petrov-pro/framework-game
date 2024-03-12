@@ -1,4 +1,4 @@
-package ua.org.petroff.game.engine.equipment;
+package ua.org.petroff.game.engine.characters.creature.equipment;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;

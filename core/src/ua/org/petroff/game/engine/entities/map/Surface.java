@@ -14,7 +14,7 @@ import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 
-public class Surface {
+public class Surface implements SurfaceInterface {
 
     public static final String DESCRIPTOR = "surface";
 

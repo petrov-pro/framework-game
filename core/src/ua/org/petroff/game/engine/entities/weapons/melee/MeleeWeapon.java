@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.utils.Pool;
 import ua.org.petroff.game.engine.characters.creature.CreatureInterface;
-import ua.org.petroff.game.engine.equipment.Shield;
+import ua.org.petroff.game.engine.characters.creature.equipment.Shield;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.weapons.WeaponInterface;

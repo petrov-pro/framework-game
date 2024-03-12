@@ -6,16 +6,23 @@ filter: Nearest,Nearest
 repeat: none
 backgroud-loading
   rotate: false
-  xy: 2, 67
+  xy: 2, 120
   size: 1020, 764
   orig: 1020, 764
   offset: 0, 0
   index: -1
-health
+health_hud
   rotate: false
-  xy: 2, 2
+  xy: 2, 55
   size: 350, 63
   orig: 350, 63
+  offset: 0, 0
+  index: -1
+shield_hud
+  rotate: false
+  xy: 2, 2
+  size: 50, 51
+  orig: 50, 51
   offset: 0, 0
   index: -1
 
@@ -33,6 +40,142 @@ mainmenu-background
   index: -1
 
 general3.png
+size: 64,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+box
+  rotate: false
+  xy: 2, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+
+general4.png
+size: 256,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bow
+  rotate: false
+  xy: 2, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+bow
+  rotate: false
+  xy: 36, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+bow
+  rotate: false
+  xy: 70, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+bow
+  rotate: false
+  xy: 104, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+bow
+  rotate: false
+  xy: 138, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+bow
+  rotate: false
+  xy: 172, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 6
+
+general5.png
+size: 256,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+shield
+  rotate: false
+  xy: 2, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+shield
+  rotate: false
+  xy: 36, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+shield
+  rotate: false
+  xy: 70, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+shield
+  rotate: false
+  xy: 104, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+shield
+  rotate: false
+  xy: 138, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+shield
+  rotate: false
+  xy: 172, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 6
+
+general6.png
+size: 128,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+health
+  rotate: false
+  xy: 2, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+health
+  rotate: false
+  xy: 36, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+health
+  rotate: false
+  xy: 70, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+
+general7.png
 size: 1024,128
 format: RGBA8888
 filter: Nearest,Nearest
@@ -59,7 +202,7 @@ cloud
   offset: 0, 0
   index: 1
 
-general4.png
+general8.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -72,7 +215,7 @@ playerBOW2
   offset: 0, 0
   index: -1
 
-general5.png
+general9.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -85,7 +228,7 @@ playerBOW
   offset: 0, 0
   index: -1
 
-general6.png
+general10.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -98,7 +241,7 @@ playerBARE
   offset: 0, 0
   index: -1
 
-general7.png
+general11.png
 size: 1024,512
 format: RGBA8888
 filter: Nearest,Nearest
@@ -111,7 +254,7 @@ playerBARE2
   offset: 0, 0
   index: -1
 
-general8.png
+general12.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -124,7 +267,7 @@ dirty_man_sword2
   offset: 0, 0
   index: -1
 
-general9.png
+general13.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -137,7 +280,7 @@ dirty_man_bow2
   offset: 0, 0
   index: -1
 
-general10.png
+general14.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -150,7 +293,7 @@ dirty_man_bow
   offset: 0, 0
   index: -1
 
-general11.png
+general15.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -163,28 +306,28 @@ dirty_man_sword
   offset: 0, 0
   index: -1
 
-general12.png
-size: 256,64
+general16.png
+size: 128,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 BARE
   rotate: false
-  xy: 54, 9
+  xy: 2, 7
   size: 19, 49
   orig: 19, 49
   offset: 0, 0
   index: -1
 BOW
   rotate: false
-  xy: 75, 9
+  xy: 23, 7
   size: 19, 49
   orig: 19, 49
   offset: 0, 0
   index: -1
 SWORD
   rotate: false
-  xy: 96, 9
+  xy: 44, 7
   size: 19, 49
   orig: 19, 49
   offset: 0, 0
@@ -198,20 +341,13 @@ arrow
   index: -1
 empty
   rotate: false
-  xy: 117, 9
+  xy: 65, 7
   size: 19, 49
   orig: 19, 49
   offset: 0, 0
   index: -1
-shield
-  rotate: false
-  xy: 2, 7
-  size: 50, 51
-  orig: 50, 51
-  offset: 0, 0
-  index: -1
 
-general13.png
+general17.png
 size: 512,256
 format: RGBA8888
 filter: Nearest,Nearest
@@ -224,7 +360,7 @@ dust
   offset: 0, 0
   index: -1
 
-general14.png
+general18.png
 size: 64,256
 format: RGBA8888
 filter: Nearest,Nearest

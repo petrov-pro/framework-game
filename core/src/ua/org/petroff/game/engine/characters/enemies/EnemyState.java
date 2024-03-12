@@ -4,6 +4,8 @@ import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.characters.creature.StateTelegramInterface;
+import ua.org.petroff.game.engine.entities.equipments.EquipmentInterface;
+import ua.org.petroff.game.engine.entities.equipments.PotionInterface;
 import ua.org.petroff.game.engine.util.Timer;
 import ua.org.petroff.game.engine.weapons.WeaponInterface;
 
@@ -123,8 +125,8 @@ public enum EnemyState implements State<Enemy>, StateTelegramInterface {
 
         @Override
         public void enter(Enemy model) {
-            if (model.getCurrentLive() > 0) {
-                model.decreaseLive(((WeaponInterface) telegram.extraInfo).getDamage(),
+            if (model.getCurrentLife() > 0) {
+                model.decreaseLife(((WeaponInterface) telegram.extraInfo).getDamage(),
                         ((WeaponInterface) telegram.extraInfo).getPlaceHit(),
                         ((WeaponInterface) telegram.extraInfo).getDirectionHit()
                 );
@@ -135,7 +137,7 @@ public enum EnemyState implements State<Enemy>, StateTelegramInterface {
 
         @Override
         public void update(Enemy model) {
-            if (model.getCurrentLive() <= 0 && Timer.runReset(model.toString() + "dead", 0.5f)) {
+            if (model.getCurrentLife() <= 0 && Timer.runReset(model.toString() + "dead", 0.5f)) {
                 model.changeState(DIED);
 
                 return;
@@ -198,6 +200,13 @@ public enum EnemyState implements State<Enemy>, StateTelegramInterface {
             case CREATURE_COLLISION:
                 model.ground(true);
                 model.changeState(JUMP);
+                break;
+
+            case EQUIPMENT:
+                if (telegram.extraInfo instanceof PotionInterface) {
+                    model.changeLife(((PotionInterface) telegram.extraInfo).getValue());
+                }
+
                 break;
         }
 

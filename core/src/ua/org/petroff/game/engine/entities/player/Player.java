@@ -17,7 +17,8 @@ import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.characters.creature.Creature;
 import ua.org.petroff.game.engine.characters.enemies.Enemy;
-import ua.org.petroff.game.engine.equipment.Shield;
+import ua.org.petroff.game.engine.characters.creature.equipment.Shield;
+import ua.org.petroff.game.engine.entities.equipments.PotionInterface;
 import ua.org.petroff.game.engine.interfaces.SkinInterface;
 import ua.org.petroff.game.engine.weapons.WeaponInterface;
 import ua.org.petroff.game.engine.interfaces.ActionEntityInterface;
@@ -44,9 +45,10 @@ public class Player extends Creature implements EntityInterface, ActionEntityInt
     private PlayerSize playerSize = PlayerSize.NORMAL;
     private StateInterface.State state = StateInterface.State.MOVE;
 
-    private ArrayList<WeaponInterface.Type> slotWeapons = new ArrayList<>(Collections.unmodifiableList(Arrays.asList(WeaponInterface.Type.BARE, WeaponInterface.Type.BOW)));
+    private ArrayList<WeaponInterface.Type> slotWeapons = new ArrayList<>(Collections.unmodifiableList(Arrays.asList(WeaponInterface.Type.BARE)));
     private WeaponInterface.Type weapon = WeaponInterface.Type.BARE;
-    private final Shield shield;
+    private Shield shield = null;
+    private boolean hasShield = false;
 
     public Player(int x, int y, Assets asset, GameResources gameResources, GraphicResources graphicResources) {
         super(x, y, DESCRIPTOR, asset, gameResources, graphicResources);
@@ -72,7 +74,7 @@ public class Player extends Creature implements EntityInterface, ActionEntityInt
         switch (StateInterface.State.getStateBy(msg.message)) {
 
             case HIT:
-                decreaseLive(((WeaponInterface) msg.extraInfo).getDamage(),
+                decreaseLife(((WeaponInterface) msg.extraInfo).getDamage(),
                         ((WeaponInterface) msg.extraInfo).getPlaceHit(),
                         ((WeaponInterface) msg.extraInfo).getDirectionHit()
                 );
@@ -88,6 +90,18 @@ public class Player extends Creature implements EntityInterface, ActionEntityInt
                 ground((boolean) msg.extraInfo);
                 break;
 
+            case EQUIPMENT:
+                if (msg.extraInfo instanceof PotionInterface) {
+                    changeLife(((PotionInterface) msg.extraInfo).getValue());
+                } else if (msg.extraInfo instanceof ua.org.petroff.game.engine.entities.equipments.WeaponInterface
+                        && !slotWeapons.contains(((ua.org.petroff.game.engine.entities.equipments.WeaponInterface) msg.extraInfo).getWeaponType())) {
+                    slotWeapons.add(((ua.org.petroff.game.engine.entities.equipments.WeaponInterface) msg.extraInfo).getWeaponType());
+                } else if (msg.extraInfo instanceof ua.org.petroff.game.engine.entities.equipments.shield.Shield && !hasShield) {
+                    hasShield = true;
+                }
+                sendPlayerStatus();
+                break;
+
             case CREATURE_COLLISION:
                 ground(true);
                 if (msg.extraInfo instanceof StateInterface && ((StateInterface) msg.extraInfo).getState() == State.DIED) {
@@ -97,7 +111,7 @@ public class Player extends Creature implements EntityInterface, ActionEntityInt
                 }
 
                 if (msg.extraInfo instanceof Enemy) {
-                    decreaseLive(5, body.getPosition());
+                    decreaseLife(5, body.getPosition());
                     sendPlayerStatus();
                     state = State.HIT;
                     vector = WorldInterface.Vector.STAY;
@@ -110,8 +124,8 @@ public class Player extends Creature implements EntityInterface, ActionEntityInt
     }
 
     @Override
-    public void decreaseLive(int amount, Vector2 placeHit, Vector2 directionHit) {
-        super.decreaseLive(amount, placeHit, directionHit);
+    public void decreaseLife(int amount, Vector2 placeHit, Vector2 directionHit) {
+        super.decreaseLife(amount, placeHit, directionHit);
         sendPlayerStatus();
     }
 
@@ -181,6 +195,10 @@ public class Player extends Creature implements EntityInterface, ActionEntityInt
 
     @Override
     public void block(boolean active) {
+        if (!hasShield) {
+            return;
+        }
+
         if (!active) {
             shield.hide();
             state = StateInterface.State.MOVE;
@@ -193,7 +211,7 @@ public class Player extends Creature implements EntityInterface, ActionEntityInt
     @Override
     public void update() {
         Gdx.app.log("DEBUG", state.toString() + ":" + vector.toString());
-        if (state == State.DIED || live <= 0) {
+        if (state == State.DIED || life <= 0) {
             died();
 
             return;
@@ -275,6 +293,16 @@ public class Player extends Creature implements EntityInterface, ActionEntityInt
         return slotWeapons;
     }
 
+    public boolean hasShield() {
+        return hasShield;
+    }
+
+    @Override
+    protected void createBody(GameResources gameResources) {
+        super.createBody(gameResources);
+        body.setBullet(true);
+    }
+
     private void sendFire() {
         switch (weapon) {
             case BARE:
@@ -310,6 +338,10 @@ public class Player extends Creature implements EntityInterface, ActionEntityInt
     }
 
     private void block() {
+        if (!hasShield) {
+            return;
+        }
+
         switch (vector) {
             case RIGHT:
                 shield.right();
@@ -356,12 +388,6 @@ public class Player extends Creature implements EntityInterface, ActionEntityInt
         body.resetMassData();
         Vector2 newPosition = body.getTransform().getPosition();
         body.setTransform(newPosition.add(0, 0.4f), 0);
-    }
-
-    @Override
-    protected void createBody(GameResources gameResources) {
-        super.createBody(gameResources);
-        body.setBullet(true);
     }
 
     private void sendPlayerStatus() {

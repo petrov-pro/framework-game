@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +30,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
     private Stage stage;
     private ExtendViewport viewport;
     private Table table;
-    private Label liveLabel;
+    private Label lifeLabel;
     private Label deadLabel;
 
     private final Assets asset;
@@ -59,8 +58,8 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         stage.getViewport().apply();
         stage.act();
         stage.draw();
-        liveLabel.setText(model.currentLive.toString());
-        if (model.currentLive <= 0) {
+        lifeLabel.setText(model.currentLife.toString());
+        if (model.currentLife <= 0) {
             deadLabel.setVisible(true);
         }
     }
@@ -78,9 +77,13 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         }
     }
 
+    public void showShield(boolean show) {
+        shieldImage.setVisible(show);
+    }
+
     private void loadAnimation() {
         TextureAtlas atlas = asset.getAtlas();
-        TextureAtlas.AtlasRegion playerTextureHealth = atlas.findRegion("health");
+        TextureAtlas.AtlasRegion playerTextureHealth = atlas.findRegion("health_hud");
         TextureRegion[] playerRegionsHealth = new TextureRegion[7];
 
         for (int i = 0; i < 7; i++) {
@@ -97,7 +100,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
             Image weaponImage = new Image(weaponTexture);
             weaponImages.put(weapon, weaponImage);
         }
-        TextureAtlas.AtlasRegion shieldRegion = atlas.findRegion("shield");
+        TextureAtlas.AtlasRegion shieldRegion = atlas.findRegion("shield_hud");
         TextureRegion shieldTexture = new TextureRegion(shieldRegion, 0, 0, 50, 51);
         shieldImage = new Image(shieldTexture);
         shieldImage.setVisible(false);
@@ -122,20 +125,20 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         table.top(); // Will put it at the top of our stage
         table.setFillParent(true);
 
-        HorizontalGroup liveGroup = new HorizontalGroup();
+        HorizontalGroup lifeGroup = new HorizontalGroup();
 
         ImageAnimation image = new ImageAnimation();
         image.setAnimation(healthAnimation);
-        liveGroup.left()
+        lifeGroup.left()
                 .addActor(image);
 
-        liveLabel = new Label(model.currentLive.toString(), skin);
-        liveLabel.setFontScale(2);
-        liveGroup.rowBottom()
+        lifeLabel = new Label(model.currentLife.toString(), skin);
+        lifeLabel.setFontScale(2);
+        lifeGroup.rowBottom()
                 .space(5)
-                .addActor(liveLabel);
+                .addActor(lifeLabel);
 
-        table.add(liveGroup)
+        table.add(lifeGroup)
                 .left()
                 .expandX().padTop(10);
 

@@ -8,6 +8,7 @@ import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.LocalListener;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.entities.map.Surface;
+import ua.org.petroff.game.engine.entities.map.SurfaceInterface;
 
 public class GroundListener extends LocalListener<GroundedInterface> {
 
@@ -37,7 +38,7 @@ public class GroundListener extends LocalListener<GroundedInterface> {
 
     @Override
     protected boolean shouldContact(Fixture entityA, Fixture entityB) {
-        return entityA.getBody().getUserData() instanceof Surface
+        return entityA.getBody().getUserData() instanceof SurfaceInterface
                 && isGroundEntity(entityB);
     }
 

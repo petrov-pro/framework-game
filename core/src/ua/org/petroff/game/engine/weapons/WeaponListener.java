@@ -12,7 +12,7 @@ import ua.org.petroff.game.engine.entities.Listener;
 import ua.org.petroff.game.engine.characters.creature.CreatureInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.entities.map.Surface;
-import ua.org.petroff.game.engine.equipment.Shield;
+import ua.org.petroff.game.engine.characters.creature.equipment.Shield;
 
 public class WeaponListener extends Listener {
 
@@ -25,8 +25,8 @@ public class WeaponListener extends Listener {
         Object userDataA = contact.getFixtureA().getBody().getUserData();
         Object userDataB = contact.getFixtureB().getBody().getUserData();
 
-        if ((contact.getFixtureA().getUserData() instanceof Shield && !contact.getFixtureA().isSensor())
-                || (contact.getFixtureB().getUserData() instanceof Shield && !contact.getFixtureB().isSensor())) {
+        if (contact.getFixtureA().getUserData() instanceof Shield
+                || contact.getFixtureB().getUserData() instanceof Shield) {
             return;
         }
 
