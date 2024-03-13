@@ -1,8 +1,9 @@
 package ua.org.petroff.game.engine.entities.player;
 
 import ua.org.petroff.game.engine.characters.enemies.Enemy;
+import ua.org.petroff.game.engine.entities.equipments.AmmoInterface;
 import ua.org.petroff.game.engine.entities.equipments.PotionInterface;
-import ua.org.petroff.game.engine.entities.hud.HUD;
+import ua.org.petroff.game.engine.entities.equipments.ammo.Ammo;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.interfaces.WorldInterface;
 import ua.org.petroff.game.engine.weapons.WeaponInterface;
@@ -41,19 +42,15 @@ public class Telegraph implements com.badlogic.gdx.ai.msg.Telegraph {
             case EQUIPMENT:
                 if (msg.extraInfo instanceof PotionInterface) {
                     player.changeLife(((PotionInterface) msg.extraInfo).getValue());
-                } else if (msg.extraInfo instanceof ua.org.petroff.game.engine.entities.equipments.WeaponInterface
-                        && !player.weapon.getSlotWeapons().contains(((ua.org.petroff.game.engine.entities.equipments.WeaponInterface) msg.extraInfo).getWeaponType())) {
-                    int slot = player.weapon.getSlotWeapons().indexOf(player.weapon.getWeapon());
-                    if (slot == 0) {
-                        slot = 1;
-                    }
-
-                    player.weapon.getSlotWeapons().add(slot, ((ua.org.petroff.game.engine.entities.equipments.WeaponInterface) msg.extraInfo).getWeaponType());
-                    player.weapon.addAmmo(((ua.org.petroff.game.engine.entities.equipments.WeaponInterface) msg.extraInfo).getAmmo());
-
-                    if (player.weapon.getSlotWeapons().size() >= HUD.COUNTSLOT) {
-                        player.weapon.getSlotWeapons().remove(HUD.COUNTSLOT);
-                    }
+                } else if (msg.extraInfo instanceof AmmoInterface) {
+                    AmmoInterface ammo = (AmmoInterface) msg.extraInfo;
+                    player.weapon.addAmmo(ammo.getWeaponType(), ammo.getAmmo());
+                } else if (msg.extraInfo instanceof ua.org.petroff.game.engine.entities.equipments.WeaponInterface) {
+                    ua.org.petroff.game.engine.entities.equipments.WeaponInterface weaponNew = (ua.org.petroff.game.engine.entities.equipments.WeaponInterface) msg.extraInfo;
+                    player.weapon.addToSlot(
+                            weaponNew.getWeaponType(),
+                            Ammo.getAmmo(weaponNew.getWeaponType())
+                    );
                 } else if (msg.extraInfo instanceof ua.org.petroff.game.engine.entities.equipments.shield.Shield && !player.ability.hasShield()) {
                     player.ability.setShieldStatus(true);
                 }

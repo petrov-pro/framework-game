@@ -77,12 +77,12 @@ public class RangedWeaponGraphic implements GraphicLoaderInterface {
         Animation hitAnimationStay = new Animation(0.1f, (Object[]) creatureRegionsHit);
 
         for (int i = 0; i < creatureRegionsFireRight.length; i++) {
-            creatureRegionsFireRight[i] = new TextureRegion(creatureTexture2, 64 * i, 320, 64, 64);
+            creatureRegionsFireRight[i] = new TextureRegion(creatureTexture2, 64 * i, 322, 64, 64);
         }
         Animation fireAnimationRight = new Animation(0.1f, (Object[]) creatureRegionsFireRight);
 
         for (int i = 0; i < creatureRegionsFireLeft.length; i++) {
-            creatureRegionsFireLeft[i] = new TextureRegion(creatureTexture2, 64 * i, 188, 64, 64);
+            creatureRegionsFireLeft[i] = new TextureRegion(creatureTexture2, 64 * i, 194, 64, 64);
         }
         Animation fireAnimationLeft = new Animation(0.1f, (Object[]) creatureRegionsFireLeft);
 

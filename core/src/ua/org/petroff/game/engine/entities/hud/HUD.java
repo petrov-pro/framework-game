@@ -48,6 +48,7 @@ public class HUD implements EntityInterface, SupplierViewInterface, Telegraph {
                 Player player = ((Player) tlgrm.extraInfo);
                 currentLife = player.getCurrentLife();
                 view.drawSlots(player.weapon.getSlotWeapons(), player.weapon.getWeapon());
+                view.drawAmmo(player.weapon.getAmmo());
                 view.showShield(player.ability.hasShield());
                 break;
         }

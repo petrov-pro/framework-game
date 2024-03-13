@@ -18,6 +18,13 @@ health_hud
   orig: 350, 63
   offset: 0, 0
   index: -1
+quiver_hud
+  rotate: false
+  xy: 354, 68
+  size: 16, 50
+  orig: 16, 50
+  offset: 0, 0
+  index: -1
 shield_hud
   rotate: false
   xy: 2, 2
@@ -149,6 +156,54 @@ shield
   index: 6
 
 general6.png
+size: 256,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ammo
+  rotate: false
+  xy: 2, 2
+  size: 32, 30
+  orig: 32, 30
+  offset: 0, 0
+  index: 1
+ammo
+  rotate: false
+  xy: 36, 2
+  size: 32, 30
+  orig: 32, 30
+  offset: 0, 0
+  index: 2
+ammo
+  rotate: false
+  xy: 70, 2
+  size: 32, 30
+  orig: 32, 30
+  offset: 0, 0
+  index: 3
+ammo
+  rotate: false
+  xy: 104, 2
+  size: 32, 30
+  orig: 32, 30
+  offset: 0, 0
+  index: 4
+ammo
+  rotate: false
+  xy: 138, 2
+  size: 32, 30
+  orig: 32, 30
+  offset: 0, 0
+  index: 5
+ammo
+  rotate: false
+  xy: 172, 2
+  size: 32, 30
+  orig: 32, 30
+  offset: 0, 0
+  index: 6
+
+general7.png
 size: 128,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -175,7 +230,7 @@ health
   offset: 0, 0
   index: 2
 
-general7.png
+general8.png
 size: 1024,128
 format: RGBA8888
 filter: Nearest,Nearest
@@ -202,7 +257,7 @@ cloud
   offset: 0, 0
   index: 1
 
-general8.png
+general9.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -215,7 +270,7 @@ playerBOW2
   offset: 0, 0
   index: -1
 
-general9.png
+general10.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -228,7 +283,7 @@ playerBOW
   offset: 0, 0
   index: -1
 
-general10.png
+general11.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -241,7 +296,7 @@ playerBARE
   offset: 0, 0
   index: -1
 
-general11.png
+general12.png
 size: 1024,512
 format: RGBA8888
 filter: Nearest,Nearest
@@ -254,7 +309,7 @@ playerBARE2
   offset: 0, 0
   index: -1
 
-general12.png
+general13.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -267,7 +322,7 @@ dirty_man_sword2
   offset: 0, 0
   index: -1
 
-general13.png
+general14.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -280,7 +335,7 @@ dirty_man_bow2
   offset: 0, 0
   index: -1
 
-general14.png
+general15.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -293,7 +348,7 @@ dirty_man_bow
   offset: 0, 0
   index: -1
 
-general15.png
+general16.png
 size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
@@ -306,7 +361,7 @@ dirty_man_sword
   offset: 0, 0
   index: -1
 
-general16.png
+general17.png
 size: 128,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -347,7 +402,7 @@ empty
   offset: 0, 0
   index: -1
 
-general17.png
+general18.png
 size: 512,256
 format: RGBA8888
 filter: Nearest,Nearest
@@ -360,7 +415,7 @@ dust
   offset: 0, 0
   index: -1
 
-general18.png
+general19.png
 size: 64,256
 format: RGBA8888
 filter: Nearest,Nearest

@@ -14,36 +14,26 @@ public class Weapon extends EquipmentUsing implements WeaponInterface {
     private final static int BODYWIDTH = 14;
     private final static int BODYHEIGHT = 14;
 
-    private String objectType;
+    private final String objectType;
 
     public Weapon(int x, int y, Assets asset, GameResources gameResources, GraphicResources graphicResources, String objectType) {
         super(x, y, BODYWIDTH, BODYHEIGHT, asset, gameResources, graphicResources);
         this.objectType = objectType;
-        view = new View(asset, graphicResources, this, objectType);
+        view = new View(asset, graphicResources, this, objectType.toLowerCase());
     }
 
     @Override
     public ua.org.petroff.game.engine.weapons.WeaponInterface.Type getWeaponType() {
+        switch (ua.org.petroff.game.engine.weapons.WeaponInterface.Type.valueOf(objectType)) {
 
-        switch (objectType) {
-
-            case "bow":
+            case BOW:
                 return ua.org.petroff.game.engine.weapons.WeaponInterface.Type.BOW;
 
-            case "sword":
+            case SWORD:
                 return ua.org.petroff.game.engine.weapons.WeaponInterface.Type.SWORD;
 
         }
         return ua.org.petroff.game.engine.weapons.WeaponInterface.Type.BARE;
-    }
-
-    @Override
-    public int getAmmo() {
-        if (objectType == "bow") {
-            return 10;
-        }
-
-        return 0;
     }
 
 }

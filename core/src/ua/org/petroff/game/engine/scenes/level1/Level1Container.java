@@ -22,7 +22,6 @@ import ua.org.petroff.game.engine.entities.map.GameWorld;
 import ua.org.petroff.game.engine.entities.player.Controller;
 import ua.org.petroff.game.engine.entities.weapons.melee.MeleeWeaponFactory;
 import ua.org.petroff.game.engine.util.Assets;
-import ua.org.petroff.game.engine.interfaces.ActionEntityInterface;
 
 public class Level1Container implements ContainerInterface {
 

@@ -26,12 +26,12 @@ import ua.org.petroff.game.engine.weapons.WeaponInterface;
 
 public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDrawInterface {
 
-    
     private Stage stage;
     private ExtendViewport viewport;
     private Table table;
     private Label lifeLabel;
     private Label deadLabel;
+    private Label ammoLabel;
 
     private final Assets asset;
     private final GraphicResources graphicResources;
@@ -40,6 +40,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
     private Map<WeaponInterface.Type, Image> weaponImages = new HashMap<>();
     private ArrayList<Image> slots = new ArrayList<>();
     private Image shieldImage;
+    private Image ammoImage;
 
     public View(Assets asset, GraphicResources graphicResources, HUD model) {
         this.asset = asset;
@@ -75,6 +76,19 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
                 slots.get(i).setScale(1.3f);
             }
         }
+
+    }
+
+    public void drawAmmo(Integer ammo) {
+        if (ammo > 0) {
+            ammoLabel.setText(ammo.toString());
+            ammoLabel.setVisible(true);
+            ammoImage.setVisible(true);
+            return;
+        }
+
+        ammoLabel.setVisible(false);
+        ammoImage.setVisible(false);
     }
 
     public void showShield(boolean show) {
@@ -104,6 +118,11 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         TextureRegion shieldTexture = new TextureRegion(shieldRegion, 0, 0, 50, 51);
         shieldImage = new Image(shieldTexture);
         shieldImage.setVisible(false);
+
+        TextureAtlas.AtlasRegion ammoRegion = atlas.findRegion("quiver_hud");
+        TextureRegion ammoTexture = new TextureRegion(ammoRegion, 0, 0, 16, 50);
+        ammoImage = new Image(ammoTexture);
+        ammoImage.setVisible(false);
 
         TextureAtlas.AtlasRegion emptyRegion = atlas.findRegion("empty");
         TextureRegion emptyTexture = new TextureRegion(emptyRegion, 0, 0, 19, 49);
@@ -141,6 +160,11 @@ public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDr
         table.add(lifeGroup)
                 .left()
                 .expandX().padTop(10);
+
+        ammoLabel = new Label("", skin);
+        ammoLabel.setFontScale(2);
+        table.add(ammoImage).padTop(10);
+        table.add(ammoLabel).expandX().padLeft(-100).padTop(10);
 
         table.add(shieldImage).expandX().padTop(10);
 

@@ -3,6 +3,7 @@ package ua.org.petroff.game.engine.entities.equipments;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
+import ua.org.petroff.game.engine.entities.equipments.ammo.Ammo;
 import ua.org.petroff.game.engine.entities.equipments.box.Box;
 import ua.org.petroff.game.engine.entities.equipments.health.Health;
 import ua.org.petroff.game.engine.entities.equipments.shield.Shield;
@@ -44,6 +45,11 @@ public class EquipmentFactory {
                 case Weapon.DESCRIPTOR:
                     String subType = equipment.getProperties().get("sub_type", String.class);
                     entities.add(new Weapon(x, y, asset, gameResources, graphicResources, subType));
+                    break;
+                    
+                case Ammo.DESCRIPTOR:
+                    String subTypeAmmo = equipment.getProperties().get("sub_type", String.class);
+                    entities.add(new Ammo(x, y, asset, gameResources, graphicResources, subTypeAmmo));
                     break;
             }
 
