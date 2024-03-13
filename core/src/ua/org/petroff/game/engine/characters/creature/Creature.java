@@ -136,6 +136,14 @@ abstract public class Creature implements EntityInterface, StateInterface, Creat
         return graphicResources.getCamera().frustum.pointInFrustum(body.getPosition().x, body.getPosition().y, 0);
     }
 
+    public float getBodyWidth() {
+        return bodyWidth;
+    }
+
+    public float getBodyHeight() {
+        return bodyHeight;
+    }
+
     protected void createBody(GameResources gameResources) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DynamicBody;

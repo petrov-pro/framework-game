@@ -37,4 +37,13 @@ public class Weapon extends EquipmentUsing implements WeaponInterface {
         return ua.org.petroff.game.engine.weapons.WeaponInterface.Type.BARE;
     }
 
+    @Override
+    public int getAmmo() {
+        if (objectType == "bow") {
+            return 10;
+        }
+
+        return 0;
+    }
+
 }

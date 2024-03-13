@@ -24,7 +24,7 @@ public class View extends ua.org.petroff.game.engine.characters.creature.View im
     private static final int RAYS_PER = 128;
     private static final float LIGHT_DISTANCE = 16f;
 
-    private Player.PlayerSize currentPlayerSize;
+    private Ability.PlayerSize currentPlayerSize;
     private PointLight light;
     private Filter filterLight;
     private ParticleEffect effect;
@@ -58,24 +58,24 @@ public class View extends ua.org.petroff.game.engine.characters.creature.View im
 
     @Override
     protected String prepareSkinType() {
-        return model.getSkinType() + "" + ((Player) model).getWeapon();
+        return model.getSkinType() + "" + ((Player) model).weapon.getWeapon();
     }
 
     private void changeSize() {
-        if (currentPlayerSize != ((Player) model).getPlayerSize()) {
-            if (((Player) model).getPlayerSize().equals(Player.PlayerSize.NORMAL)) {
+        if (currentPlayerSize != ((Player) model).ability.getPlayerSize()) {
+            if (((Player) model).ability.getPlayerSize().equals(Ability.PlayerSize.NORMAL)) {
                 graphic.sprite.setScale(Settings.SCALE);
             } else {
                 graphic.sprite.setScale(Settings.SCALE + 0.011f);
             }
 
         }
-        currentPlayerSize = ((Player) model).getPlayerSize();
+        currentPlayerSize = ((Player) model).ability.getPlayerSize();
 
     }
 
     private void groundedEffect() {
-        if (!currentPlayerSize.equals(Player.PlayerSize.GROWN)) {
+        if (!currentPlayerSize.equals(Ability.PlayerSize.GROWN)) {
             return;
         }
 

@@ -13,31 +13,31 @@ import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 
 public class HUD implements EntityInterface, SupplierViewInterface, Telegraph {
-    
+
     public static int COUNTSLOT = 3;
     public static final String DESCRIPTOR = "hud";
     public Integer currentLife = 0;
-    
+
     private final View view;
-    
+
     public HUD(Assets asset, GameResources gameResources, GraphicResources graphicResources) {
         view = new View(asset, graphicResources, this);
         gameResources.getMessageManger().addListeners(this, StateInterface.State.PLAYER_STATUS.telegramNumber, StateInterface.State.PLAYER_DEAD.telegramNumber);
     }
-    
+
     @Override
     public ViewInterface getView() {
         return view;
     }
-    
+
     @Override
     public void update() {
-        
+
         if (currentLife < 0) {
             currentLife = 0;
         }
     }
-    
+
     @Override
     public boolean handleMessage(Telegram tlgrm) {
         switch (StateInterface.State.getStateBy(tlgrm.message)) {
@@ -47,12 +47,12 @@ public class HUD implements EntityInterface, SupplierViewInterface, Telegraph {
             case PLAYER_STATUS:
                 Player player = ((Player) tlgrm.extraInfo);
                 currentLife = player.getCurrentLife();
-                view.drawSlots(player.getSlotWeapons(), player.getWeapon());
-                view.showShield(player.hasShield());
+                view.drawSlots(player.weapon.getSlotWeapons(), player.weapon.getWeapon());
+                view.showShield(player.ability.hasShield());
                 break;
         }
-        
+
         return true;
     }
-    
+
 }
