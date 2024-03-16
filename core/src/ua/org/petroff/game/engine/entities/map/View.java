@@ -9,10 +9,17 @@ import ua.org.petroff.game.engine.interfaces.GraphicQueueMemberInterface;
 import ua.org.petroff.game.engine.interfaces.ViewInterface;
 import ua.org.petroff.game.engine.util.Assets;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.crashinvaders.vfx.VfxManager;
+import com.crashinvaders.vfx.effects.ChromaticAberrationEffect;
+import com.crashinvaders.vfx.effects.GaussianBlurEffect;
+import com.crashinvaders.vfx.framebuffer.VfxFrameBuffer;
+import com.crashinvaders.vfx.framebuffer.VfxFrameBuffer.BatchRendererAdapter;
+import com.crashinvaders.vfx.framebuffer.VfxFrameBuffer.Renderer;
 import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.interfaces.QueueDrawInterface;
@@ -34,6 +41,7 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
     private DirectionalLight sun;
     private float sunDirection = 250f;
     private BackGround background;
+    private VfxManager vfxManager;
 
     public View(Assets assets, GraphicResources graphicResources, GameWorld map) {
         this.assets = assets;
@@ -56,6 +64,9 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
 
         renderer.setView(camera);
         renderer.getBatch().setProjectionMatrix(camera.combined);
+
+        vfxManager = new VfxManager(Pixmap.Format.RGBA8888);
+        graphicResources.setVFXEffect(vfxManager);
     }
 
     private void initLight() {
@@ -84,11 +95,15 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
                 graphicResources.getCamera().update();
                 renderer.setView((OrthographicCamera) graphicResources.getCamera());
 
+                vfxManager.beginCapture();
                 background.drawBackground((SpriteBatch) renderer.getBatch());
                 renderer.render(mapLayers);
+                vfxManager.endCapture();
+                vfxManager.applyEffects();
+                vfxManager.renderToScreen();
 
                 graphicResources.getRayHandler().setCombinedMatrix(graphicResources.getCamera());
-                graphicResources.getRayHandler().updateAndRender();
+
                 if (sunDirection < 200f) {
                     sunDirection += Gdx.graphics.getDeltaTime();
                 } else if (sunDirection > 340f) {
@@ -105,7 +120,10 @@ public class View implements ViewInterface, GraphicQueueMemberInterface {
             @Override
             public void draw() {
                 renderer.getBatch().end();
+
                 renderer.render(foregroundLayers);
+
+                graphicResources.getRayHandler().updateAndRender();
                 if (Settings.IS_DEBUG) {
                     DebugWorld.run(map.gameResources.getWorld(), graphicResources.getViewport().getCamera().combined);
                 }

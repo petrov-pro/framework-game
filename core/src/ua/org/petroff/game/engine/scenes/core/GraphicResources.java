@@ -4,6 +4,7 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.crashinvaders.vfx.VfxManager;
 
 public class GraphicResources {
 
@@ -11,6 +12,7 @@ public class GraphicResources {
     private Viewport viewportHud;
     private SpriteBatch spriteBatch;
     private RayHandler rayHandler;
+    private VfxManager vfxManager;
 
     public Viewport getViewportHud() {
         return viewportHud;
@@ -48,4 +50,11 @@ public class GraphicResources {
         this.rayHandler = rayHandler;
     }
 
+    public void setVFXEffect(VfxManager vfxManager) {
+        this.vfxManager = vfxManager;
+    }
+
+    public VfxManager getVfxManager() {
+        return vfxManager;
+    }
 }
