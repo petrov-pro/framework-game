@@ -20,6 +20,7 @@ public class Assets {
     public static final String MAP_PATH = "map/";
     public static final String SKIN_PATH = "gdx-skins-master/default/skin/";
     public static final String BACKGROUND_ALIAS = "background";
+    public static final String SHADER_PATH = "shader/";
 
     private final AssetManager manager = new AssetManager();
 
@@ -93,6 +94,10 @@ public class Assets {
 
     public AssetManager getManager() {
         return manager;
+    }
+
+    public FileHandle loadShader(String name) {
+        return Gdx.files.internal(SHADER_PATH + name);
     }
 
 }

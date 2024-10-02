@@ -151,24 +151,26 @@ abstract public class Creature implements EntityInterface, StateInterface, Creat
         body = gameResources.getWorld().createBody(bodyDef);
         body.setUserData(this);
 
-        Filter filterLight = new Filter();
-        filterLight.categoryBits = (short) 1;
-        filterLight.groupIndex = (short) 0;
-        filterLight.maskBits = (short) 0;
-
         PolygonShape poly = new PolygonShape();
-        poly.setAsBox(bodyWidth / 2, bodyHeight / 2);
+        Vector2 centerBody = body.getLocalCenter();
+        poly.setAsBox(bodyWidth / 2, bodyHeight / 4f, centerBody.cpy().sub(0, 0.35f), 0);
 
         Fixture bodyPlayer = body.createFixture(poly, 1);
         bodyPlayer.setUserData(this);
 
         Vector2 centerFoot = bodyPlayer.getBody().getLocalCenter();
-        poly.setAsBox((bodyWidth / 2f) - 0.08f, 0.1f, centerFoot.cpy().sub(0, bodyHeight / 1.8f), 0);
+        poly.setAsBox((bodyWidth / 2f) - 0.02f, 0.1f, centerFoot.cpy().sub(0, bodyHeight / 3f), 0);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = poly;
         fixtureDef.isSensor = true;
         Fixture bodyFootPlayer = body.createFixture(fixtureDef);
         bodyFootPlayer.setUserData(this);
+
+        //head
+        poly = new PolygonShape();
+        poly.setAsBox(bodyWidth / 3f, bodyHeight / 4f, centerBody.cpy().add(0, 0.7f), 0);
+        Fixture bodyHead = body.createFixture(poly, 1);
+        bodyHead.setUserData(this);
         poly.dispose();
     }
 

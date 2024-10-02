@@ -45,6 +45,8 @@ public class Arrow implements WeaponInterface, GroundedInterface, com.badlogic.g
 
             return;
         }
+        
+        //Use bodyArrow from pool
         bodyArrow.setTransform(start, 0);
         bodyArrow.setActive(true);
         bodyArrow.setAngularVelocity(angular);

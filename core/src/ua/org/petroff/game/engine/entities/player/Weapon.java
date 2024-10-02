@@ -75,7 +75,7 @@ public class Weapon {
                         player.getVector(),
                         player.getBody().getPosition().cpy(),
                         FIRE_ARROW_DAMAGE,
-                        player.getBodyWidth() / 2,
+                        player.getBodyWidth() / 1.5f,
                         0.1f,
                         FIRE_ARROW_FORCE
                 ));
