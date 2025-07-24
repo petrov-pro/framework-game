@@ -2,7 +2,6 @@ package ua.org.petroff.game.engine.entities.hud;
 
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import ua.org.petroff.game.engine.characters.creature.CreatureInterface;
 import ua.org.petroff.game.engine.entities.player.Player;
 import ua.org.petroff.game.engine.interfaces.EntityInterface;
 import ua.org.petroff.game.engine.interfaces.StateInterface;

@@ -1,20 +1,14 @@
 package ua.org.petroff.game.engine.characters.creature;
 
-import com.badlogic.gdx.math.Vector2;
-import java.util.HashMap;
-import java.util.Map;
-import ua.org.petroff.game.engine.interfaces.GraphicQueueMemberInterface;
-import ua.org.petroff.game.engine.interfaces.QueueDrawInterface;
-import ua.org.petroff.game.engine.interfaces.SkinInterface;
-import ua.org.petroff.game.engine.interfaces.StateInterface;
-import ua.org.petroff.game.engine.interfaces.ViewInterface;
-import ua.org.petroff.game.engine.interfaces.ViewNotifierInterface;
-import ua.org.petroff.game.engine.interfaces.WorldInterface;
-import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.characters.base.GraphicElement;
+import ua.org.petroff.game.engine.characters.visual.effects.ViewHitInterface;
+import ua.org.petroff.game.engine.entities.QueueDraw;
+import ua.org.petroff.game.engine.interfaces.*;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
-import ua.org.petroff.game.engine.characters.visual.effects.ViewHitInterface;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class View extends ua.org.petroff.game.engine.characters.base.View implements QueueDrawInterface, ViewNotifierInterface, GraphicQueueMemberInterface, ViewInterface {
 

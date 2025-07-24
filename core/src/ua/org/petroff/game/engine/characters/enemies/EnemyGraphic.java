@@ -2,8 +2,8 @@ package ua.org.petroff.game.engine.characters.enemies;
 
 import ua.org.petroff.game.engine.interfaces.GraphicLoaderInterface;
 import ua.org.petroff.game.engine.interfaces.SkinInterface;
-import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
+import ua.org.petroff.game.engine.util.Assets;
 
 public class EnemyGraphic extends ua.org.petroff.game.engine.characters.base.Graphic {
 

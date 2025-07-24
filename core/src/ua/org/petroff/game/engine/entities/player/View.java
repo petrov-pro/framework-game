@@ -5,17 +5,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Filter;
-import java.util.Map;
 import ua.org.petroff.game.engine.Settings;
+import ua.org.petroff.game.engine.characters.visual.effects.Blood;
+import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.interfaces.GraphicQueueMemberInterface;
 import ua.org.petroff.game.engine.interfaces.QueueDrawInterface;
+import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.interfaces.ViewInterface;
-import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.scenes.core.CameraBound;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
-import ua.org.petroff.game.engine.interfaces.StateInterface;
-import ua.org.petroff.game.engine.characters.visual.effects.Blood;
+
+import java.util.Map;
 
 public class View extends ua.org.petroff.game.engine.characters.creature.View implements ViewInterface, QueueDrawInterface, GraphicQueueMemberInterface {
 

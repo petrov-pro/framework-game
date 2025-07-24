@@ -1,17 +1,13 @@
 package ua.org.petroff.game.engine.scenes.core;
 
-import ua.org.petroff.game.engine.scenes.Interface.ContainerInterface;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import ua.org.petroff.game.engine.scenes.Interface.ContainerInterface;
 import ua.org.petroff.game.engine.util.Assets;
 
 public class LoadingScreen extends ScreenAdapter {

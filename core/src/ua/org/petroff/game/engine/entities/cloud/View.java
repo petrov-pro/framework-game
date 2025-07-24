@@ -3,14 +3,15 @@ package ua.org.petroff.game.engine.entities.cloud;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
-import java.util.Map;
 import ua.org.petroff.game.engine.Settings;
+import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.interfaces.GraphicQueueMemberInterface;
 import ua.org.petroff.game.engine.interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.interfaces.ViewInterface;
-import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
+
+import java.util.Map;
 
 public class View extends ua.org.petroff.game.engine.characters.base.View implements ViewInterface, GraphicQueueMemberInterface {
 

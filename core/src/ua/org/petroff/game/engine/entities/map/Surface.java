@@ -3,16 +3,13 @@ package ua.org.petroff.game.engine.entities.map;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.ChainShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import java.util.ArrayList;
+import com.badlogic.gdx.physics.box2d.*;
 import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
+
+import java.util.ArrayList;
 
 public class Surface implements SurfaceInterface {
 

@@ -9,12 +9,12 @@ public class Ability {
 
     public enum PlayerSize {
         NORMAL, GROWN
-    };
+    }
 
     private Ability.PlayerSize playerSize = Ability.PlayerSize.NORMAL;
     private final Player player;
 
-    private Shield shield = null;
+    private final Shield shield;
     private boolean hasShield = false;
 
     public Ability(Player player) {

@@ -1,8 +1,8 @@
 package ua.org.petroff.game.engine.characters.base;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import ua.org.petroff.game.engine.interfaces.WorldInterface;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
+import ua.org.petroff.game.engine.interfaces.WorldInterface;
 
 public class Static extends GraphicElement {
 

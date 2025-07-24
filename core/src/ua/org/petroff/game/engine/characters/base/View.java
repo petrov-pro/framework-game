@@ -1,10 +1,10 @@
 package ua.org.petroff.game.engine.characters.base;
 
+import ua.org.petroff.game.engine.interfaces.StateInterface;
+import ua.org.petroff.game.engine.interfaces.ViewInterface;
 import ua.org.petroff.game.engine.interfaces.WorldInterface;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
-import ua.org.petroff.game.engine.interfaces.StateInterface;
-import ua.org.petroff.game.engine.interfaces.ViewInterface;
 
 public class View implements ViewInterface {
 

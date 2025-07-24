@@ -2,13 +2,14 @@ package ua.org.petroff.game.engine.entities.weapons.melee;
 
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.utils.Pool;
-import java.util.ArrayList;
 import ua.org.petroff.game.engine.interfaces.EntityInterface;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
-import ua.org.petroff.game.engine.weapons.WeaponInterface;
-import ua.org.petroff.game.engine.weapons.WeaponListener;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.util.Assets;
+import ua.org.petroff.game.engine.weapons.WeaponInterface;
+import ua.org.petroff.game.engine.weapons.WeaponListener;
+
+import java.util.ArrayList;
 
 public class MeleeWeaponFactory implements EntityInterface, Telegraph {
 

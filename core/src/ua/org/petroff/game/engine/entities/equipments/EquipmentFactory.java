@@ -2,7 +2,6 @@ package ua.org.petroff.game.engine.entities.equipments;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.utils.Array;
-import java.util.ArrayList;
 import ua.org.petroff.game.engine.entities.equipments.ammo.Ammo;
 import ua.org.petroff.game.engine.entities.equipments.box.Box;
 import ua.org.petroff.game.engine.entities.equipments.health.Health;
@@ -12,6 +11,8 @@ import ua.org.petroff.game.engine.interfaces.EntityInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
+
+import java.util.ArrayList;
 
 public class EquipmentFactory {
 

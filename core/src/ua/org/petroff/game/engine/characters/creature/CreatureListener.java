@@ -3,8 +3,8 @@ package ua.org.petroff.game.engine.characters.creature;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.entities.LocalListener;
+import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 
 public class CreatureListener extends LocalListener<Creature> {

@@ -1,10 +1,10 @@
 package ua.org.petroff.game.engine.entities.player.graphics;
 
-import ua.org.petroff.game.engine.characters.base.GraphicElement;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import ua.org.petroff.game.engine.interfaces.WorldInterface;
+import ua.org.petroff.game.engine.characters.base.GraphicElement;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
+import ua.org.petroff.game.engine.interfaces.WorldInterface;
 
 public class Animation extends GraphicElement {
 

@@ -1,20 +1,20 @@
 package ua.org.petroff.game.engine.characters.enemies;
 
-import ua.org.petroff.game.engine.characters.base.Ray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.math.Vector2;
-import ua.org.petroff.game.engine.interfaces.WorldInterface;
+import ua.org.petroff.game.engine.characters.base.Ray;
 import ua.org.petroff.game.engine.characters.creature.Creature;
+import ua.org.petroff.game.engine.entities.player.Player;
 import ua.org.petroff.game.engine.ia.Box2dLocation;
 import ua.org.petroff.game.engine.ia.SteeringAgent;
-import ua.org.petroff.game.engine.entities.player.Player;
+import ua.org.petroff.game.engine.interfaces.StateInterface;
+import ua.org.petroff.game.engine.interfaces.WorldInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
-import ua.org.petroff.game.engine.interfaces.StateInterface;
 
 public class Enemy extends Creature {
 

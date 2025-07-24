@@ -3,29 +3,24 @@ package ua.org.petroff.game.engine.entities.map;
 import box2dLight.DirectionalLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import ua.org.petroff.game.engine.interfaces.GraphicQueueMemberInterface;
-import ua.org.petroff.game.engine.interfaces.ViewInterface;
-import ua.org.petroff.game.engine.util.Assets;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.crashinvaders.vfx.VfxManager;
-import com.crashinvaders.vfx.effects.ChromaticAberrationEffect;
-import com.crashinvaders.vfx.effects.GaussianBlurEffect;
-import com.crashinvaders.vfx.framebuffer.VfxFrameBuffer;
-import com.crashinvaders.vfx.framebuffer.VfxFrameBuffer.BatchRendererAdapter;
-import com.crashinvaders.vfx.framebuffer.VfxFrameBuffer.Renderer;
 import ua.org.petroff.game.engine.Settings;
 import ua.org.petroff.game.engine.entities.QueueDraw;
+import ua.org.petroff.game.engine.interfaces.GraphicQueueMemberInterface;
 import ua.org.petroff.game.engine.interfaces.QueueDrawInterface;
+import ua.org.petroff.game.engine.interfaces.ViewInterface;
 import ua.org.petroff.game.engine.scenes.core.CameraBound;
 import ua.org.petroff.game.engine.scenes.core.DebugWorld;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
+import ua.org.petroff.game.engine.util.Assets;
 
 public class View implements ViewInterface, GraphicQueueMemberInterface {
 

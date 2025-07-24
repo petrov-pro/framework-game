@@ -45,3 +45,13 @@ task texturePacker << {
     }
   
 }
+
+dependencies {
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-ai:1.8.1"
+    compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+    compile "com.badlogicgames.box2dlights:box2dlights:1.4"
+    implementation 'com.crashinvaders.vfx:gdx-vfx-core:0.4.3'
+    implementation 'com.crashinvaders.vfx:gdx-vfx-effects:0.4.3' 
+}

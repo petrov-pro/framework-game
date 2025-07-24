@@ -1,10 +1,8 @@
 package ua.org.petroff.game.engine.characters.base;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
-import ua.org.petroff.game.engine.scenes.core.DebugWorld;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 
 public class Ray implements RayCastCallback {

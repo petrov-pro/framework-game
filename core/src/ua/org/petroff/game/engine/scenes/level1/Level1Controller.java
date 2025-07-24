@@ -3,9 +3,9 @@ package ua.org.petroff.game.engine.scenes.level1;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
+import ua.org.petroff.game.engine.interfaces.ActionEntityInterface;
 import ua.org.petroff.game.engine.scenes.Interface.ControllerInterface;
 import ua.org.petroff.game.engine.scenes.core.ManagerScenes;
-import ua.org.petroff.game.engine.interfaces.ActionEntityInterface;
 
 public class Level1Controller extends InputAdapter implements ControllerInterface {
 

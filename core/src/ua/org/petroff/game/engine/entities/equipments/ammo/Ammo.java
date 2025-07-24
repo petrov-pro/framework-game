@@ -1,8 +1,8 @@
 package ua.org.petroff.game.engine.entities.equipments.ammo;
 
 import ua.org.petroff.game.engine.entities.equipments.AmmoInterface;
-import ua.org.petroff.game.engine.entities.equipments.View;
 import ua.org.petroff.game.engine.entities.equipments.EquipmentUsing;
+import ua.org.petroff.game.engine.entities.equipments.View;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;

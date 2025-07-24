@@ -6,15 +6,15 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.crashinvaders.vfx.effects.LensFlareEffect;
-import ua.org.petroff.game.engine.interfaces.EntityInterface;
-import ua.org.petroff.game.engine.interfaces.WorldInterface;
+import ua.org.petroff.game.engine.characters.creature.Creature;
 import ua.org.petroff.game.engine.characters.creature.CreatureInterface;
+import ua.org.petroff.game.engine.interfaces.EntityInterface;
+import ua.org.petroff.game.engine.interfaces.SkinInterface;
+import ua.org.petroff.game.engine.interfaces.StateInterface;
+import ua.org.petroff.game.engine.interfaces.WorldInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
-import ua.org.petroff.game.engine.interfaces.StateInterface;
-import ua.org.petroff.game.engine.characters.creature.Creature;
-import ua.org.petroff.game.engine.interfaces.SkinInterface;
 
 public class Player extends Creature implements EntityInterface, StateInterface, CreatureInterface {
     

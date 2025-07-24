@@ -3,8 +3,8 @@ package ua.org.petroff.game.engine.scenes.core;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import ua.org.petroff.game.engine.interfaces.EntityInterface;
 import ua.org.petroff.game.engine.entities.map.WorldContactListener;
+import ua.org.petroff.game.engine.interfaces.EntityInterface;
 
 public class GameResources {
 

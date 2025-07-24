@@ -6,23 +6,20 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import ua.org.petroff.game.engine.Settings;
+import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.interfaces.GraphicQueueMemberInterface;
 import ua.org.petroff.game.engine.interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.interfaces.ViewInterface;
-import ua.org.petroff.game.engine.entities.QueueDraw;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.weapons.WeaponInterface;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class View implements ViewInterface, GraphicQueueMemberInterface, QueueDrawInterface {
 

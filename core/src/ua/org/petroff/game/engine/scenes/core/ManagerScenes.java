@@ -1,12 +1,13 @@
 package ua.org.petroff.game.engine.scenes.core;
 
-import ua.org.petroff.game.engine.scenes.Interface.ContainerInterface;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import java.util.HashMap;
+import ua.org.petroff.game.engine.scenes.Interface.ContainerInterface;
 import ua.org.petroff.game.engine.scenes.level1.Level1Container;
 import ua.org.petroff.game.engine.scenes.mainmenu.MainMenuContainer;
+
+import java.util.HashMap;
 
 public class ManagerScenes {
 

@@ -1,24 +1,14 @@
 package ua.org.petroff.game.engine.characters.creature;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import ua.org.petroff.game.engine.interfaces.EntityInterface;
-import ua.org.petroff.game.engine.interfaces.SkinInterface;
-import ua.org.petroff.game.engine.interfaces.ViewInterface;
-import ua.org.petroff.game.engine.interfaces.WorldInterface;
 import ua.org.petroff.game.engine.ia.Box2dLocation;
+import ua.org.petroff.game.engine.interfaces.*;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.util.MapResolver;
-import ua.org.petroff.game.engine.interfaces.StateInterface;
-import ua.org.petroff.game.engine.interfaces.SupplierViewInterface;
 
 abstract public class Creature implements EntityInterface, StateInterface, CreatureInterface, SkinInterface, SupplierViewInterface {
 

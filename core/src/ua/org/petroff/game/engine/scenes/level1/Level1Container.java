@@ -2,26 +2,27 @@ package ua.org.petroff.game.engine.scenes.level1;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
-import java.util.Map;
+import ua.org.petroff.game.engine.characters.enemies.EnemyFactory;
+import ua.org.petroff.game.engine.entities.QueueDraw;
+import ua.org.petroff.game.engine.entities.cloud.CloudFactory;
+import ua.org.petroff.game.engine.entities.equipments.EquipmentFactory;
+import ua.org.petroff.game.engine.entities.hud.HUD;
+import ua.org.petroff.game.engine.entities.map.GameWorld;
+import ua.org.petroff.game.engine.entities.player.Controller;
+import ua.org.petroff.game.engine.entities.player.Player;
+import ua.org.petroff.game.engine.entities.weapons.melee.MeleeWeaponFactory;
+import ua.org.petroff.game.engine.entities.weapons.ranged.RangedWeaponFactory;
 import ua.org.petroff.game.engine.interfaces.EntityInterface;
 import ua.org.petroff.game.engine.interfaces.GraphicQueueMemberInterface;
 import ua.org.petroff.game.engine.interfaces.QueueDrawInterface;
 import ua.org.petroff.game.engine.interfaces.SupplierViewInterface;
-import ua.org.petroff.game.engine.entities.QueueDraw;
-import ua.org.petroff.game.engine.characters.enemies.EnemyFactory;
-import ua.org.petroff.game.engine.entities.cloud.CloudFactory;
-import ua.org.petroff.game.engine.entities.equipments.EquipmentFactory;
-import ua.org.petroff.game.engine.entities.weapons.ranged.RangedWeaponFactory;
-import ua.org.petroff.game.engine.entities.hud.HUD;
-import ua.org.petroff.game.engine.entities.player.Player;
 import ua.org.petroff.game.engine.scenes.Interface.ContainerInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.scenes.core.ManagerScenes;
-import ua.org.petroff.game.engine.entities.map.GameWorld;
-import ua.org.petroff.game.engine.entities.player.Controller;
-import ua.org.petroff.game.engine.entities.weapons.melee.MeleeWeaponFactory;
 import ua.org.petroff.game.engine.util.Assets;
+
+import java.util.Map;
 
 public class Level1Container implements ContainerInterface {
 
@@ -64,6 +65,7 @@ public class Level1Container implements ContainerInterface {
         screen = new Level1Screen(entities, drawings, graphicResources);
         Controller controller = new Controller((Player) gameResources.findModel(Player.class));
         (new Level1Controller(manageScene, screen, controller)).bindControl();
+        // Removed background music code
     }
 
     @Override

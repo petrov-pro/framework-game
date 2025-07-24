@@ -1,7 +1,7 @@
 package ua.org.petroff.game.engine.entities.equipments.weapon;
 
-import ua.org.petroff.game.engine.entities.equipments.View;
 import ua.org.petroff.game.engine.entities.equipments.EquipmentUsing;
+import ua.org.petroff.game.engine.entities.equipments.View;
 import ua.org.petroff.game.engine.entities.equipments.WeaponInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;

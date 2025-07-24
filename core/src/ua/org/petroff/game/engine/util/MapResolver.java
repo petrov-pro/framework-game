@@ -2,8 +2,9 @@ package ua.org.petroff.game.engine.util;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
-import java.util.ArrayList;
 import ua.org.petroff.game.engine.Settings;
+
+import java.util.ArrayList;
 
 public class MapResolver {
 

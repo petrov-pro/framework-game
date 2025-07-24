@@ -1,7 +1,5 @@
 package ua.org.petroff.game.engine.entities.cloud;
 
-import com.badlogic.gdx.Gdx;
-import java.util.ArrayList;
 import ua.org.petroff.game.engine.interfaces.EntityInterface;
 import ua.org.petroff.game.engine.interfaces.SupplierViewInterface;
 import ua.org.petroff.game.engine.interfaces.ViewInterface;
@@ -9,6 +7,8 @@ import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
 import ua.org.petroff.game.engine.util.RandomGenerate;
+
+import java.util.ArrayList;
 
 public class CloudFactory implements EntityInterface, SupplierViewInterface {
 

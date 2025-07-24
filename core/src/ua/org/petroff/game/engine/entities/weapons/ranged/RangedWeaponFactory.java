@@ -2,17 +2,14 @@ package ua.org.petroff.game.engine.entities.weapons.ranged;
 
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.utils.Pool;
-import java.util.ArrayList;
-import ua.org.petroff.game.engine.interfaces.EntityInterface;
-import ua.org.petroff.game.engine.interfaces.StateInterface;
-import ua.org.petroff.game.engine.interfaces.SupplierViewInterface;
-import ua.org.petroff.game.engine.interfaces.ViewInterface;
-import ua.org.petroff.game.engine.interfaces.WorldInterface;
-import ua.org.petroff.game.engine.weapons.WeaponInterface;
-import ua.org.petroff.game.engine.weapons.WeaponListener;
+import ua.org.petroff.game.engine.interfaces.*;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;
+import ua.org.petroff.game.engine.weapons.WeaponInterface;
+import ua.org.petroff.game.engine.weapons.WeaponListener;
+
+import java.util.ArrayList;
 
 public class RangedWeaponFactory implements EntityInterface, SupplierViewInterface, Telegraph {
 

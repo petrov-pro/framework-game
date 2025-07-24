@@ -1,18 +1,17 @@
 package ua.org.petroff.game.engine.weapons;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
+import ua.org.petroff.game.engine.characters.creature.CreatureInterface;
+import ua.org.petroff.game.engine.characters.creature.equipment.Shield;
+import ua.org.petroff.game.engine.entities.Listener;
+import ua.org.petroff.game.engine.entities.map.Surface;
 import ua.org.petroff.game.engine.interfaces.GroundedInterface;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
-import ua.org.petroff.game.engine.entities.Listener;
-import ua.org.petroff.game.engine.characters.creature.CreatureInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
-import ua.org.petroff.game.engine.entities.map.Surface;
-import ua.org.petroff.game.engine.characters.creature.equipment.Shield;
 
 public class WeaponListener extends Listener {
 

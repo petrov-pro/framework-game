@@ -1,14 +1,13 @@
 package ua.org.petroff.game.engine.entities.enemies.simple;
 
-import ua.org.petroff.game.engine.interfaces.SkinInterface;
-import ua.org.petroff.game.engine.interfaces.StateInterface;
-import ua.org.petroff.game.engine.interfaces.WorldInterface;
-import ua.org.petroff.game.engine.characters.enemies.EnemyGraphic;
 import ua.org.petroff.game.engine.characters.creature.View;
+import ua.org.petroff.game.engine.characters.enemies.Enemy;
+import ua.org.petroff.game.engine.characters.enemies.EnemyGraphic;
 import ua.org.petroff.game.engine.characters.graphicLoaders.RangedWeaponGraphic;
 import ua.org.petroff.game.engine.characters.visual.effects.Blood;
-import ua.org.petroff.game.engine.characters.enemies.Enemy;
 import ua.org.petroff.game.engine.entities.weapons.ranged.Telegram;
+import ua.org.petroff.game.engine.interfaces.SkinInterface;
+import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.scenes.core.GraphicResources;
 import ua.org.petroff.game.engine.util.Assets;

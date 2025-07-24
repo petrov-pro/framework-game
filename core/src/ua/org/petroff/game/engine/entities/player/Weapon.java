@@ -1,22 +1,21 @@
 package ua.org.petroff.game.engine.entities.player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import ua.org.petroff.game.engine.entities.hud.HUD;
-import static ua.org.petroff.game.engine.entities.player.Player.FIRE_ARROW_DAMAGE;
-import static ua.org.petroff.game.engine.entities.player.Player.FIRE_ARROW_FORCE;
-import static ua.org.petroff.game.engine.entities.player.Player.FIRE_DAMAGE;
 import ua.org.petroff.game.engine.interfaces.StateInterface;
 import ua.org.petroff.game.engine.scenes.core.GameResources;
 import ua.org.petroff.game.engine.weapons.WeaponInterface;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+
+import static ua.org.petroff.game.engine.entities.player.Player.*;
+
 public class Weapon {
 
     private final GameResources gameResources;
-    private ArrayList<WeaponInterface.Type> slotWeapons = new ArrayList<>(Collections.unmodifiableList(Arrays.asList(WeaponInterface.Type.BARE)));
-    private HashMap<WeaponInterface.Type, Integer> ammo = new HashMap<>();
+    private final ArrayList<WeaponInterface.Type> slotWeapons = new ArrayList<>(Collections.singletonList(WeaponInterface.Type.BARE));
+    private final HashMap<WeaponInterface.Type, Integer> ammo = new HashMap<>();
 
     private WeaponInterface.Type weapon = WeaponInterface.Type.BARE;
 

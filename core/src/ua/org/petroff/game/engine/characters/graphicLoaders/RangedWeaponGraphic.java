@@ -4,15 +4,16 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import java.util.HashMap;
 import ua.org.petroff.game.engine.Settings;
-import ua.org.petroff.game.engine.interfaces.GraphicLoaderInterface;
-import ua.org.petroff.game.engine.interfaces.StateInterface;
-import ua.org.petroff.game.engine.interfaces.WorldInterface;
 import ua.org.petroff.game.engine.characters.base.GraphicElement;
 import ua.org.petroff.game.engine.characters.base.Static;
 import ua.org.petroff.game.engine.characters.creature.View;
+import ua.org.petroff.game.engine.interfaces.GraphicLoaderInterface;
+import ua.org.petroff.game.engine.interfaces.StateInterface;
+import ua.org.petroff.game.engine.interfaces.WorldInterface;
 import ua.org.petroff.game.engine.util.Assets;
+
+import java.util.HashMap;
 
 public class RangedWeaponGraphic implements GraphicLoaderInterface {
 
